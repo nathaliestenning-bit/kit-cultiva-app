@@ -70,7 +70,7 @@
         if (!u) return Promise.resolve({ error: "No encontramos ese legajo en el padrón." });
         return Promise.resolve({ user: u });
       }
-      return client().auth.signInWithPassword({ email: emailFor(legajo), password: legajo })
+      return client.auth.signInWithPassword({ email: emailFor(legajo), password: legajo })
         .then(function (res) {
           if (res.error) return { error: "No encontramos ese legajo o tu cuenta no está activa." };
           return loadProfile().then(function (p) {
