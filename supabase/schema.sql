@@ -138,14 +138,14 @@ alter table public.registros         enable row level security;
 alter table public.escaladas         enable row level security;
 alter table public.escalada_mensajes enable row level security;
 
--- usuarios: cada quien lee su propia ficha; y la ficha de su jefe directo
--- (para mostrar "a quién escalas"). Edición de campos sensibles: solo service key.
+-- usuarios: cada quien lee su propia ficha. (NO usar subconsultas a
+-- `usuarios` aquí dentro: causan recursión infinita 42P17 en RLS.)
+-- La visibilidad jefe→reportes la da `usuarios_reports_select` (Fase C),
+-- que no es recursiva. Edición: solo con service key.
 drop policy if exists usuarios_self_select on public.usuarios;
 create policy usuarios_self_select on public.usuarios
   for select to authenticated
-  using ( legajo = public.current_legajo()
-          or legajo = (select u.legajo_jefe from public.usuarios u
-                       where u.legajo = public.current_legajo()) );
+  using ( legajo = public.current_legajo() );
 
 -- registros: dueño total sobre los suyos.
 drop policy if exists registros_owner_all on public.registros;

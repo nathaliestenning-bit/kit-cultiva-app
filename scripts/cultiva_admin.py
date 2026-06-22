@@ -72,15 +72,31 @@ def load_padron():
     data.sort(key=lambda u: NIVEL_RANK.get(u.get("nivel"), 9))
     return data
 
+_auth_cache = None
+def all_auth_users():
+    """Lista TODOS los usuarios de Auth (paginando, per_page alto) y los
+       cachea por email. Evita el bug de paginación (50 por página)."""
+    global _auth_cache
+    if _auth_cache is not None:
+        return _auth_cache
+    users = {}
+    page = 1
+    while True:
+        st, body = api("GET", f"/admin/users?per_page=1000&page={page}", base="auth")
+        if st != 200:
+            break
+        batch = body.get("users", []) if isinstance(body, dict) else (body or [])
+        for u in batch:
+            if u.get("email"):
+                users[u["email"].lower()] = u
+        if len(batch) < 1000:
+            break
+        page += 1
+    _auth_cache = users
+    return users
+
 def find_auth_user_by_email(email):
-    # GoTrue admin list permite filtrar por email
-    st, body = api("GET", f"/admin/users?email={urllib.parse.quote(email)}", base="auth")
-    if st == 200 and body:
-        users = body.get("users", body if isinstance(body, list) else [])
-        for u in users:
-            if (u.get("email") or "").lower() == email.lower():
-                return u
-    return None
+    return all_auth_users().get((email or "").lower())
 
 def upsert_usuario(u, auth_id):
     # 1ra pasada: SIN legajo_jefe (evita fallos de llave foránea por orden).
@@ -112,7 +128,7 @@ def cmd_provision(dry=False):
             auth_id = existing["id"]; updated += 1; pw = None
             print(f"  ~ existe   {u['legajo']}  ({u['nombre']})")
         else:
-            pw = temp_password()
+            pw = u["legajo"]   # contraseña inicial = legajo (cambio forzado al 1er ingreso)
             st, body = api("POST", "/admin/users", {
                 "email": email, "password": pw, "email_confirm": True,
                 "user_metadata": {"legajo": u["legajo"], "nombre": u["nombre"], "perfil": u["perfil"]},
@@ -166,6 +182,29 @@ def cmd_sync(dry=False):
         else: errors += 1; print(f"  ✗ {u['legajo']}: {st} {body}")
     print(f"\nResumen: actualizados={upd}  errores={errors}")
 
+# ---------------------------------------------------------------- init-pwd
+def cmd_init_passwords(dry=False):
+    """Pone la contraseña de CADA usuario = su propio legajo y fuerza el
+       cambio al primer ingreso. Útil para un arranque simple del piloto."""
+    need_env()
+    padron = load_padron()
+    print(f"Fijando contraseña = legajo en {len(padron)} cuentas (dry-run={dry})…")
+    ok = errors = 0
+    for u in padron:
+        email = email_for(u["legajo"])
+        if dry:
+            print(f"  [dry] {u['legajo']}  pwd={u['legajo']}"); continue
+        user = find_auth_user_by_email(email)
+        if not user:
+            errors += 1; print(f"  ✗ {u['legajo']}: sin cuenta auth"); continue
+        st, body = api("PUT", f"/admin/users/{user['id']}", {"password": u["legajo"]}, base="auth")
+        if st != 200:
+            errors += 1; print(f"  ✗ {u['legajo']}: {st} {body}"); continue
+        api("PATCH", f"/usuarios?legajo=eq.{u['legajo']}", {"must_change_password": True})
+        ok += 1
+    print(f"\nResumen: contraseñas fijadas={ok}  errores={errors}")
+    print("Cada usuario entra con LEGAJO como usuario y contraseña → y crea una nueva.")
+
 # ---------------------------------------------------------------- reset
 def cmd_reset(legajo):
     need_env()
@@ -196,9 +235,10 @@ if __name__ == "__main__":
     cmd = args[0] if args else ""
     if cmd == "provision": cmd_provision(dry="--dry-run" in args)
     elif cmd == "sync": cmd_sync(dry="--dry-run" in args)
+    elif cmd == "init-pwd": cmd_init_passwords(dry="--dry-run" in args)
     elif cmd == "reset" and len(args) >= 2: cmd_reset(args[1])
     elif cmd == "list": cmd_list()
     else:
         print(__doc__ or "")
-        print("Comandos: provision [--dry-run] | sync [--dry-run] | reset <legajo> | list")
+        print("Comandos: provision [--dry-run] | sync [--dry-run] | init-pwd [--dry-run] | reset <legajo> | list")
         sys.exit(1)

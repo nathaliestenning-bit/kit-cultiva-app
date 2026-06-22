@@ -60,6 +60,26 @@
       return user;
     },
 
+    /* acceso SOLO con legajo (sin contraseña visible).
+       Por detrás usa el legajo como contraseña para mantener sesión + RLS. */
+    signInByLegajo: function (legajo) {
+      legajo = String(legajo || "").trim();
+      if (!legajo) return Promise.resolve({ error: "Ingresa tu número de legajo." });
+      if (!hasSb) {
+        var u = window.findUsuario(legajo);
+        if (!u) return Promise.resolve({ error: "No encontramos ese legajo en el padrón." });
+        return Promise.resolve({ user: u });
+      }
+      return client().auth.signInWithPassword({ email: emailFor(legajo), password: legajo })
+        .then(function (res) {
+          if (res.error) return { error: "No encontramos ese legajo o tu cuenta no está activa." };
+          return loadProfile().then(function (p) {
+            if (!p) return { error: "Tu cuenta no tiene un perfil asignado en el padrón." };
+            return { user: p.user };
+          });
+        });
+    },
+
     /* inicia sesión. Devuelve {user, mustChange} | {error}. */
     signIn: function (legajo, pwd) {
       if (!hasSb) {

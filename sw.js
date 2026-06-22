@@ -7,7 +7,7 @@
    en offline la app abre pero el login real requiere conexión.
    Sube CACHE al cambiar cualquier asset para invalidar.
    ============================================================ */
-const CACHE = "cultiva-v4";
+const CACHE = "cultiva-v5";
 const ASSETS = [
   "./",
   "index.html",

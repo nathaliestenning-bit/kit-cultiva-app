@@ -297,7 +297,7 @@ function CosechaApp() {
   useEffect(() => {
     if (!window.CultivaAuth) return;
     window.CultivaAuth.restore().then((p) => {
-      if (p && p.user && !p.mustChange && window.PROFILES[p.user.perfil]) {
+      if (p && p.user && window.PROFILES[p.user.perfil]) {
         setUser(p.user); setProfileId(p.user.perfil); setAccessMode("user"); setView("gallery");
       }
     }).catch(() => {});
