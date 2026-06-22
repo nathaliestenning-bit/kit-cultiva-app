@@ -1,0 +1,458 @@
+/* ============================================================
+   PROGRAMA CULTIVA DESIGN SYSTEM
+   Hortifrut Perú · ONE Hortifrut
+   ------------------------------------------------------------
+   Global entry point. Consumers link THIS file only.
+   Keep this file as @import lines — no rules here.
+   ============================================================ */
+
+/* ============================================================
+   PROGRAMA CULTIVA · FONTS
+   ------------------------------------------------------------
+   SUBSTITUTION NOTE → the original collateral uses a bold
+   semi-condensed grotesque for titles and a neutral humanist
+   sans for body. The exact licensed faces were not supplied,
+   so we ship the closest Google Fonts match:
+     · Barlow Semi Condensed  → display / titles / role names
+     · Barlow                 → UI, body, captions
+   The "Programa Cultiva" and "HORTIFRUT" wordmarks are
+   logotypes — always use the supplied PNG assets, never type.
+   Replace the @import below if licensed fonts are provided.
+   ============================================================ */
+
+/* vietnamese */
+@font-face {
+  font-family: 'Barlow';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fonts/93c02cca-5cee-44c5-ab8f-4b1e5a9f126e.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Barlow';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fonts/2b3b24c0-1803-48e7-8c30-1b60b9cb4fde.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Barlow';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fonts/cd2302e2-a3f1-4fac-b161-c7417559bce8.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/7cc7e9a2-7ceb-4acb-8532-4256f81a3df2.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/9da6c0ce-650e-4638-8de4-16c437949a6d.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/c528093d-ae5e-4500-9e34-256cab2f3500.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fonts/83e05841-7905-42ab-a6f5-8e9945c2c261.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fonts/d4fbb32c-2588-4cc9-aaf4-576abe4ed057.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fonts/b09e0b4d-8c6e-4ec2-bdff-846aa647e37a.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fonts/c447d206-7b4a-45c3-81c5-1a0a9648c350.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fonts/13c63756-772e-4ae7-ae80-992b27caa01e.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fonts/dab0ef8a-6348-4a7c-8dd5-24e36bbb7c32.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/f1e04bac-0bdf-4efa-9639-49cf3c7f540e.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/2d86b7cd-300a-433f-816e-f91683926c0d.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/ef25ced7-d49d-4ffa-b87c-ea454433e38f.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fonts/35b684d9-bee2-487b-bfa4-5a82e6019588.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fonts/c0b4da2b-a09d-49df-9f3d-3f47b07b8a6a.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fonts/48936456-7395-4d9a-ae2b-9d1fd3324753.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fonts/00aee169-db8e-4e0d-884c-6e9e7b641cb3.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fonts/f97bac27-0a01-4596-92ae-c59aff316ad2.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fonts/e19f182a-19f0-4eda-b290-2b24eec77e22.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/02b565ab-6995-4644-92d0-75700f7b6585.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/8d4dc847-56fb-4a50-94c1-88b8d3005d81.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/597b6ebf-a346-493b-9bc4-c3003989b23f.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("fonts/9b19ec67-44dc-4ade-9e69-33f16bc514e7.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("fonts/80f92aa5-5c9a-4bad-832e-73a6f025b27d.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("fonts/209e3989-4495-4e2c-98d1-4af11ce98949.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+
+/* ============================================================
+   PROGRAMA CULTIVA · COLOR TOKENS
+   Hortifrut Perú — "ONE Hortifrut" field program
+   ============================================================ */
+
+:root {
+  /* --- Hortifrut corporate brand --------------------------- */
+  --hf-red:        #E42D2F;  /* apple / globe — primary brand mark   */
+  --hf-red-deep:   #C21F22;  /* pressed / dark red                   */
+  --hf-pine:       #13332E;  /* wordmark deep green — darkest ink     */
+  --hf-green:      #045E46;  /* globe-base green — corporate anchor   */
+  --hf-leaf:       #57AA4E;  /* bright sprout leaf                    */
+  --hf-leaf-soft:  #8CC63F;  /* highlight leaf                        */
+
+  /* --- Programa Cultiva sub-brand -------------------------- */
+  --cultiva-blue:    #4156A2;  /* "Programa" capsule + loop          */
+  --cultiva-blue-deep:#33457F;
+  --cultiva-gold:    #E6B84A;  /* "Cultiva" wordmark                 */
+  --cultiva-gold-deep:#CFA033;
+  --cultiva-cream:   #F5F0DC;  /* cream lockup background             */
+
+  /* --- Role identity colors (uniform program) -------------- */
+  /* Each field role owns a signature color across apparel,    */
+  /* credentials and collateral.                               */
+  --role-navy:    #0B3A66;  /* Líder de Cosecha (Harvest Leader)      */
+  --role-navy-tint:#9BC4E8; /*  celeste polo accent                  */
+  --role-red:     #A81519;  /* Soporte del Líder de Cosecha           */
+  --role-red-tint:#E89A8C;  /*  coral polo accent                    */
+  --role-brown:   #6B3410;  /* Apoyo del Supervisor de Fundo          */
+  --role-brown-tint:#C9A878;/*  beige polo accent                    */
+  --role-green:   #18571F;  /* Técnico de Aseguramiento de Calidad    */
+  --role-green-tint:#B7D29A;/*  light-green polo accent              */
+
+  /* --- Neutrals (warm, pine-tinted) ------------------------ */
+  --ink-900: #1B2420;  /* primary text                              */
+  --ink-700: #3A433E;
+  --ink-500: #5E6863;  /* secondary text                            */
+  --ink-400: #8A938E;  /* muted / captions                          */
+  --ink-200: #D9D7CD;  /* hairline borders (warm)                   */
+  --ink-100: #E8E6DD;
+  --paper:   #FFFFFF;
+  --paper-off:#F8F8F6; /* page background (warm off-white)          */
+  --paper-sunken:#F1F0EA;
+
+  /* --- Semantic status ------------------------------------- */
+  --status-success: #18571F;  /* reuses role-green family           */
+  --status-warning: #CFA033;
+  --status-danger:  #A81519;
+  --status-info:    #4156A2;
+
+  /* ============================================================
+     SEMANTIC ALIASES — author against these in components
+     ============================================================ */
+  --color-brand:          var(--hf-green);
+  --color-brand-strong:   var(--hf-pine);
+  --color-accent:         var(--hf-red);
+  --color-accent-strong:  var(--hf-red-deep);
+
+  --text-strong:   var(--ink-900);
+  --text-body:     var(--ink-700);
+  --text-muted:    var(--ink-500);
+  --text-faint:    var(--ink-400);
+  --text-inverse:  #FFFFFF;
+  --text-brand:    var(--hf-green);
+  --text-link:     var(--cultiva-blue);
+
+  --surface-page:   var(--paper-off);
+  --surface-card:   var(--paper);
+  --surface-cream:  var(--cultiva-cream);
+  --surface-sunken: var(--paper-sunken);
+  --surface-inverse:var(--hf-pine);
+
+  --border-subtle:  var(--ink-200);
+  --border-strong:  var(--ink-400);
+
+  /* role -> active accent (override --role on a scope) */
+  --role: var(--role-navy);
+  --role-tint: var(--role-navy-tint);
+}
+
+/* Role theming scopes — set data-role on any container */
+[data-role="lider"]    { --role: var(--role-navy);  --role-tint: var(--role-navy-tint); }
+[data-role="soporte"]  { --role: var(--role-red);   --role-tint: var(--role-red-tint); }
+[data-role="apoyo"]    { --role: var(--role-brown); --role-tint: var(--role-brown-tint); }
+[data-role="tac"]      { --role: var(--role-green); --role-tint: var(--role-green-tint); }
+
+/* ============================================================
+   PROGRAMA CULTIVA · TYPOGRAPHY TOKENS
+   ============================================================ */
+
+:root {
+  /* --- Families ------------------------------------------- */
+  --font-display: "Barlow Semi Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-sans:    "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* --- Weights -------------------------------------------- */
+  --fw-regular: 400; /* @kind font */
+  --fw-medium:  500; /* @kind font */
+  --fw-semibold:600; /* @kind font */
+  --fw-bold:    700; /* @kind font */
+  --fw-black:   800; /* @kind font */
+
+  /* --- Type scale (1.250 major-third, 16px base) ---------- */
+  --text-xs:   0.75rem;   /* 12 — micro labels        */
+  --text-sm:   0.875rem;  /* 14 — captions, helper     */
+  --text-base: 1rem;      /* 16 — body                 */
+  --text-md:   1.125rem;  /* 18 — lead body            */
+  --text-lg:   1.375rem;  /* 22 — card titles          */
+  --text-xl:   1.75rem;   /* 28 — section heads        */
+  --text-2xl:  2.25rem;   /* 36 — page titles          */
+  --text-3xl:  3rem;      /* 48 — hero                 */
+  --text-4xl:  4rem;      /* 64 — display              */
+
+  /* --- Line heights --------------------------------------- */
+  --leading-tight:  1.05;
+  --leading-snug:   1.2;
+  --leading-normal: 1.5;
+  --leading-relaxed:1.65;
+
+  /* --- Letter spacing ------------------------------------- */
+  --tracking-tight:  -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide:   0.04em;
+  --tracking-caps:   0.08em;  /* uppercase eyebrows / labels */
+}
+
+/* ============================================================
+   PROGRAMA CULTIVA · SPACING & SIZING TOKENS
+   4px base grid
+   ============================================================ */
+
+:root {
+  --space-0:  0;
+  --space-1:  0.25rem;  /*  4 */
+  --space-2:  0.5rem;   /*  8 */
+  --space-3:  0.75rem;  /* 12 */
+  --space-4:  1rem;     /* 16 */
+  --space-5:  1.5rem;   /* 24 */
+  --space-6:  2rem;     /* 32 */
+  --space-7:  2.5rem;   /* 40 */
+  --space-8:  3rem;     /* 48 */
+  --space-9:  4rem;     /* 64 */
+  --space-10: 6rem;     /* 96 */
+
+  /* container widths */
+  --container-sm: 640px;
+  --container-md: 880px;
+  --container-lg: 1120px;
+  --container-xl: 1320px;
+
+  /* control sizing — min 44px touch targets */
+  --control-sm: 36px;
+  --control-md: 44px;
+  --control-lg: 52px;
+}
+
+/* ============================================================
+   PROGRAMA CULTIVA · EFFECTS — radii, shadows, borders, motion
+   ============================================================ */
+
+:root {
+  /* --- Corner radii --------------------------------------- */
+  --radius-xs:  4px;
+  --radius-sm:  8px;
+  --radius-md:  12px;   /* default cards            */
+  --radius-lg:  18px;   /* feature cards            */
+  --radius-xl:  28px;   /* hero panels              */
+  --radius-pill:999px;  /* Cultiva capsule, badges  */
+
+  /* --- Shadows (soft, warm, low contrast) ----------------- */
+  --shadow-xs: 0 1px 2px rgba(27, 36, 32, 0.06);
+  --shadow-sm: 0 2px 6px rgba(27, 36, 32, 0.07);
+  --shadow-md: 0 6px 18px rgba(27, 36, 32, 0.09);
+  --shadow-lg: 0 16px 40px rgba(27, 36, 32, 0.12);
+  /* circular product vignette seen on spec sheets */
+  --shadow-vignette: 0 10px 30px rgba(27, 36, 32, 0.10);
+
+  /* --- Borders -------------------------------------------- */
+  --border-hairline: 1px solid var(--border-subtle);
+  --border-card:     1px solid var(--ink-100);
+
+  /* --- Motion --------------------------------------------- */
+  --ease-out:   cubic-bezier(0.22, 0.61, 0.36, 1); /* @kind other */
+  --ease-in-out:cubic-bezier(0.65, 0, 0.35, 1); /* @kind other */
+  --dur-fast:   120ms; /* @kind other */
+  --dur-base:   200ms; /* @kind other */
+  --dur-slow:   360ms; /* @kind other */
+
+  /* --- Focus ring ----------------------------------------- */
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--cultiva-blue) 45%, transparent);
+}

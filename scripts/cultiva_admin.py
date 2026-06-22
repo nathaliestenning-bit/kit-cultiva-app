@@ -1,0 +1,204 @@
+#!/usr/bin/env python3
+# ============================================================
+#  CULTIVA · ADMIN (aprovisionamiento + reseteo de contraseñas)
+#  Solo Python estándar (sin pip). Usa la SERVICE KEY desde el
+#  entorno — NUNCA va en el bundle ni en el repo.
+#
+#  Requiere variables de entorno:
+#    SUPABASE_URL          = https://xxxx.supabase.co
+#    SUPABASE_SERVICE_KEY  = (service_role key, secreta)
+#
+#  Lee el padrón validado desde:  private/padron.json
+#  (campos: legajo, nombre, cargo, gerencia, area, sede, nivel,
+#           perfil, legajo_jefe)
+#
+#  Uso:
+#    python3 scripts/cultiva_admin.py provision         # crea/actualiza las 51 cuentas
+#    python3 scripts/cultiva_admin.py provision --dry-run
+#    python3 scripts/cultiva_admin.py reset 1070110044  # "mostrador de reseteos"
+#    python3 scripts/cultiva_admin.py list              # diagnóstico
+#
+#  Correo sintético por usuario: <legajo>@cultiva.interno
+#  Primer ingreso: contraseña temporal aleatoria + must_change_password=TRUE
+#  (las temporales se vuelcan a private/credenciales_iniciales.csv — gitignored).
+# ============================================================
+import os, sys, json, csv, secrets, string, urllib.request, urllib.error, urllib.parse
+
+URL = os.environ.get("SUPABASE_URL", "").rstrip("/")
+KEY = os.environ.get("SUPABASE_SERVICE_KEY", "")
+HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PADRON = os.path.join(HERE, "private", "padron.json")
+CREDS  = os.path.join(HERE, "private", "credenciales_iniciales.csv")
+EMAIL_DOMAIN = "cultiva.interno"
+NIVEL_RANK = {"N1": 1, "N2": 2, "N3": 3, "N4": 4}  # jefes (rank menor) primero
+
+def die(msg):
+    print("ERROR:", msg); sys.exit(1)
+
+def need_env():
+    if not URL or not KEY:
+        die("Define SUPABASE_URL y SUPABASE_SERVICE_KEY en el entorno.")
+
+def api(method, path, body=None, base="rest"):
+    """Llama a Supabase. base='rest' (PostgREST) o 'auth' (GoTrue admin)."""
+    root = f"{URL}/{'rest/v1' if base=='rest' else 'auth/v1'}"
+    data = json.dumps(body).encode() if body is not None else None
+    req = urllib.request.Request(root + path, data=data, method=method)
+    req.add_header("apikey", KEY)
+    req.add_header("Authorization", "Bearer " + KEY)
+    req.add_header("Content-Type", "application/json")
+    if base == "rest":
+        req.add_header("Prefer", "resolution=merge-duplicates,return=representation")
+    try:
+        with urllib.request.urlopen(req) as r:
+            raw = r.read().decode()
+            return r.status, (json.loads(raw) if raw else None)
+    except urllib.error.HTTPError as e:
+        raw = e.read().decode()
+        try: payload = json.loads(raw)
+        except Exception: payload = raw
+        return e.code, payload
+
+def email_for(legajo): return f"{legajo}@{EMAIL_DOMAIN}"
+def temp_password():
+    alpha = string.ascii_letters + string.digits
+    return "Cv-" + "".join(secrets.choice(alpha) for _ in range(12))
+
+def load_padron():
+    if not os.path.exists(PADRON):
+        die(f"No existe {PADRON}. Genera/valida el padrón primero.")
+    data = json.load(open(PADRON, encoding="utf-8"))
+    # jefes (nivel superior) primero, para satisfacer el FK legajo_jefe
+    data.sort(key=lambda u: NIVEL_RANK.get(u.get("nivel"), 9))
+    return data
+
+def find_auth_user_by_email(email):
+    # GoTrue admin list permite filtrar por email
+    st, body = api("GET", f"/admin/users?email={urllib.parse.quote(email)}", base="auth")
+    if st == 200 and body:
+        users = body.get("users", body if isinstance(body, list) else [])
+        for u in users:
+            if (u.get("email") or "").lower() == email.lower():
+                return u
+    return None
+
+def upsert_usuario(u, auth_id):
+    # 1ra pasada: SIN legajo_jefe (evita fallos de llave foránea por orden).
+    # La jerarquía se asigna en una 2da pasada, cuando ya existen todas las filas.
+    row = {
+        "legajo": u["legajo"], "auth_id": auth_id, "nombre": u["nombre"],
+        "cargo": u.get("cargo"), "gerencia": u.get("gerencia"), "area": u.get("area"),
+        "sede": u.get("sede"), "nivel": u.get("nivel"), "perfil": u["perfil"],
+        "legajo_jefe": None,
+        "must_change_password": True, "activo": True,
+    }
+    st, body = api("POST", "/usuarios?on_conflict=legajo", row)
+    return st, body
+
+# ---------------------------------------------------------------- provision
+def cmd_provision(dry=False):
+    need_env()
+    padron = load_padron()
+    print(f"Aprovisionando {len(padron)} usuarios (dry-run={dry})…")
+    creds = []
+    created = updated = errors = 0
+    for u in padron:
+        email = email_for(u["legajo"])
+        if dry:
+            print(f"  [dry] {u['legajo']}  {email}  perfil={u['perfil']}  jefe={u.get('legajo_jefe')}")
+            continue
+        existing = find_auth_user_by_email(email)
+        if existing:
+            auth_id = existing["id"]; updated += 1; pw = None
+            print(f"  ~ existe   {u['legajo']}  ({u['nombre']})")
+        else:
+            pw = temp_password()
+            st, body = api("POST", "/admin/users", {
+                "email": email, "password": pw, "email_confirm": True,
+                "user_metadata": {"legajo": u["legajo"], "nombre": u["nombre"], "perfil": u["perfil"]},
+            }, base="auth")
+            if st not in (200, 201):
+                errors += 1; print(f"  ✗ auth    {u['legajo']}: {st} {body}"); continue
+            auth_id = body["id"]; created += 1
+            creds.append({"legajo": u["legajo"], "nombre": u["nombre"], "email": email, "password_temporal": pw})
+            print(f"  + creado   {u['legajo']}  ({u['nombre']})")
+        st, body = upsert_usuario(u, auth_id)
+        if st not in (200, 201):
+            errors += 1; print(f"  ✗ usuarios {u['legajo']}: {st} {body}")
+    # 2da pasada: asignar legajo_jefe ahora que todas las filas existen
+    print("\nAsignando jerarquía (legajo_jefe)…")
+    jefes = jerr = 0
+    for u in padron:
+        if not u.get("legajo_jefe"):
+            continue
+        st, body = api("PATCH", f"/usuarios?legajo=eq.{u['legajo']}", {"legajo_jefe": u["legajo_jefe"]})
+        if st in (200, 204): jefes += 1
+        else: jerr += 1; print(f"  ✗ jefe {u['legajo']} → {u['legajo_jefe']}: {st} {body}")
+    print(f"  jerarquía asignada: {jefes}  | errores jerarquía: {jerr}")
+    if creds:
+        new = not os.path.exists(CREDS)
+        with open(CREDS, "a", newline="", encoding="utf-8-sig") as f:
+            w = csv.DictWriter(f, fieldnames=["legajo", "nombre", "email", "password_temporal"])
+            if new: w.writeheader()
+            w.writerows(creds)
+        print(f"\nContraseñas temporales → {CREDS}  (distribuir 1-a-1; gitignored)")
+    print(f"\nResumen: creados={created}  existentes={updated}  errores={errors}")
+
+# ---------------------------------------------------------------- sync
+def cmd_sync(dry=False):
+    """Actualiza jerarquía/cargos desde private/padron.json SIN tocar
+       contraseñas (no resetea must_change_password). Útil al llegar el
+       organigrama real cuando ya hay gente con su clave creada."""
+    need_env()
+    padron = load_padron()
+    print(f"Sincronizando {len(padron)} usuarios (jerarquía/cargos, sin tocar contraseñas)…")
+    upd = errors = 0
+    for u in padron:
+        fields = {
+            "nombre": u["nombre"], "cargo": u.get("cargo"), "gerencia": u.get("gerencia"),
+            "area": u.get("area"), "sede": u.get("sede"), "nivel": u.get("nivel"),
+            "perfil": u["perfil"], "legajo_jefe": u.get("legajo_jefe") or None,
+        }
+        if dry:
+            print(f"  [dry] {u['legajo']}  jefe={fields['legajo_jefe']}  perfil={fields['perfil']}"); continue
+        st, body = api("PATCH", f"/usuarios?legajo=eq.{u['legajo']}", fields)
+        if st in (200, 204): upd += 1
+        else: errors += 1; print(f"  ✗ {u['legajo']}: {st} {body}")
+    print(f"\nResumen: actualizados={upd}  errores={errors}")
+
+# ---------------------------------------------------------------- reset
+def cmd_reset(legajo):
+    need_env()
+    email = email_for(legajo)
+    user = find_auth_user_by_email(email)
+    if not user: die(f"No existe cuenta para legajo {legajo} ({email}).")
+    pw = temp_password()
+    st, body = api("PUT", f"/admin/users/{user['id']}", {"password": pw}, base="auth")
+    if st != 200: die(f"No se pudo resetear: {st} {body}")
+    # vuelve a forzar cambio al próximo ingreso
+    api("PATCH", f"/usuarios?legajo=eq.{legajo}", {"must_change_password": True})
+    print(f"OK · {legajo} ({user.get('email')})")
+    print(f"   nueva contraseña temporal: {pw}")
+    print("   (se forzará cambio en el próximo ingreso)")
+
+# ---------------------------------------------------------------- list
+def cmd_list():
+    need_env()
+    st, body = api("GET", "/usuarios?select=legajo,nombre,perfil,legajo_jefe,must_change_password&order=perfil")
+    if st != 200: die(f"{st} {body}")
+    print(f"{len(body)} usuarios en la tabla `usuarios`:")
+    for r in body:
+        flag = "  (debe cambiar pwd)" if r.get("must_change_password") else ""
+        print(f"  {r['legajo']:12} {r['perfil']:8} jefe={str(r.get('legajo_jefe')):12} {r['nombre']}{flag}")
+
+if __name__ == "__main__":
+    args = sys.argv[1:]
+    cmd = args[0] if args else ""
+    if cmd == "provision": cmd_provision(dry="--dry-run" in args)
+    elif cmd == "sync": cmd_sync(dry="--dry-run" in args)
+    elif cmd == "reset" and len(args) >= 2: cmd_reset(args[1])
+    elif cmd == "list": cmd_list()
+    else:
+        print(__doc__ or "")
+        print("Comandos: provision [--dry-run] | sync [--dry-run] | reset <legajo> | list")
+        sys.exit(1)

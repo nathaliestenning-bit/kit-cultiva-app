@@ -1,0 +1,352 @@
+/* ============================================================
+   REGISTRO FORM · campos dinámicos por ritual
+   Cambios v5.1:
+   - tipo "tema": desplegable agrupado (Operativos/Culturales) + Otros (texto)
+   - alerta especial al elegir un tema marcado (p.ej. Paralizaciones)
+   - botón «Escalar» ya NO está antes de guardar; aparece bajo cada
+     registro guardado (en el historial)
+   - guarda HISTORIAL por ritual en localStorage
+   - DOS FASES (feedback/coaching): los campos de cierre (acuerdo,
+     comentarios, acordamos, reconocimiento, fecha de seguimiento) NO
+     van en el formulario inicial; se completan DENTRO del registro
+     guardado, después de la conversación. Se puede forzar por campo
+     con "defer": true en la data.
+   ============================================================ */
+const { createElement: rh, useState: rUse, useEffect: rEff } = React;
+const RI = (name, cls) => rh("i", { "data-lucide": name, className: cls || "" });
+
+/* campos que se completan DESPUÉS de guardar, en rituales de feedback/coaching */
+const DEFER_KEYS = ["acuerdo", "acuerdos", "comentarios", "comentario", "coment", "acordamos", "ajusto", "reconocimiento", "reconozco", "fecha", "seguimiento"];
+
+function emptyValues(fields) {
+  const v = {};
+  fields.forEach((f) => { v[f.k] = (f.t === "bool") ? false : ""; });
+  return v;
+}
+
+/* devuelve {label, alerta} del tema elegido */
+function temaInfo(val) {
+  if (!val) return null;
+  for (const g of window.TEMAS.grupos) {
+    for (const it of g.items) {
+      if (it.id === val) return it;
+    }
+  }
+  return null;
+}
+
+function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
+  const reg = ritual.registro;
+  const fields = reg.fields || [];
+  const storeKey = "cultiva3:" + profileId + ":" + ritual.id;
+
+  // ¿este ritual usa campos diferidos? (feedback / coaching, o defer explícito)
+  const isFC = /feedback|coaching/.test(ritual.id || "");
+  function isDefer(f) { return (f.defer != null) ? !!f.defer : (isFC && DEFER_KEYS.indexOf(f.k) >= 0); }
+  const formFields = fields.filter((f) => !isDefer(f));
+  const deferFields = fields.filter(isDefer);
+
+  const [vals, setVals] = rUse(() => emptyValues(formFields));
+  const [temaOtro, setTemaOtro] = rUse("");
+  const [history, setHistory] = rUse([]);
+  const [errs, setErrs] = rUse({});
+  const [justSent, setJustSent] = rUse(null);
+  const [open, setOpen] = rUse(true);
+  const [escaladoIds, setEscaladoIds] = rUse({}); // ts -> true
+  const [drafts, setDrafts] = rUse({});           // ts -> { campoDiferido: valor }
+  const [savedFollow, setSavedFollow] = rUse({});  // ts -> true (acaba de guardar seguimiento)
+
+  function seedDrafts(h) {
+    const d = {};
+    h.forEach((e) => {
+      const row = {};
+      deferFields.forEach((f) => { row[f.k] = e.vals[f.k] || ""; });
+      d[e.ts] = row;
+    });
+    return d;
+  }
+
+  rEff(() => {
+    setVals(emptyValues(formFields));
+    setTemaOtro(""); setErrs({}); setJustSent(null); setOpen(true); setSavedFollow({});
+    setHistory([]); setEscaladoIds({}); setDrafts({});
+    let alive = true;
+    window.CultivaData.listRegistros(profileId, ritual.id).then((h) => {
+      if (!alive) return;
+      setHistory(h);
+      const esc = {}; h.forEach((e) => { if (e.escalado) esc[e.ts] = true; });
+      setEscaladoIds(esc);
+      setDrafts(seedDrafts(h));
+    }).catch(() => {});
+    return () => { alive = false; };
+  }, [storeKey]);
+
+  rEff(() => { if (window.lucide) window.lucide.createIcons(); });
+
+  function setField(k, val) {
+    setVals((p) => Object.assign({}, p, { [k]: val }));
+    if (errs[k]) setErrs((p) => { const n = Object.assign({}, p); delete n[k]; return n; });
+  }
+  function validate() {
+    const e = {};
+    formFields.forEach((f) => {
+      if (!f.req) return;
+      const v = vals[f.k];
+      if (f.t === "bool") { return; }
+      if (v === "" || v == null) e[f.k] = true;
+      if (f.t === "tema" && v === "__otro" && !temaOtro.trim()) e[f.k] = true;
+    });
+    setErrs(e);
+    return Object.keys(e).length === 0;
+  }
+  function submit() {
+    if (!validate()) return;
+    const stored = Object.assign(emptyValues(fields), vals); // incluye los diferidos (vacíos)
+    if (stored.tema === "__otro") stored.tema = "otro:" + temaOtro.trim();
+    const entry = { ts: Date.now(), escalado: false, vals: stored };
+    setHistory((h) => [entry].concat(h).slice(0, 30));
+    setDrafts((p) => { const row = {}; deferFields.forEach((f) => { row[f.k] = ""; }); return Object.assign({}, p, { [entry.ts]: row }); });
+    setVals(emptyValues(formFields)); setTemaOtro(""); setErrs({});
+    setJustSent({ ts: entry.ts });
+    setOpen(true);
+    // persiste (demo localStorage ↔ Supabase) y reconcilia el id real
+    window.CultivaData.saveRegistro(profileId, ritual.id, entry).then((persisted) => {
+      if (persisted && persisted.id) {
+        setHistory((h) => h.map((e) => e.ts === entry.ts ? Object.assign({}, e, { id: persisted.id }) : e));
+      }
+    }).catch(() => {});
+  }
+  function escalar(ts) {
+    const entry = history.find((e) => e.ts === ts);
+    setHistory((h) => h.map((e) => e.ts === ts ? Object.assign({}, e, { escalado: true }) : e));
+    setEscaladoIds((p) => Object.assign({}, p, { [ts]: true }));
+    if (!entry) return;
+    window.CultivaData.setRegistroEscalado(profileId, ritual.id, entry).catch(() => {});
+    // Puente: crear una escalada real enrutada al jefe directo (solo Supabase).
+    if (window.CultivaData.mode() === "supabase") {
+      const v = entry.vals || {};
+      const tema = v.tema ? temaLabel(v.tema) : (ritual.title || "Tema escalado");
+      const detalle = v.detalle || v.problematica || v.situacion || v.observo || "(ver registro)";
+      window.CultivaData.crearEscalada({ tema: tema, detalle: detalle, requiere: v.requiere || null, registro_id: entry.id || null })
+        .catch((err) => console.warn("No se pudo enrutar la escalada:", err));
+    }
+  }
+  function setDraft(ts, k, val) {
+    setDrafts((p) => Object.assign({}, p, { [ts]: Object.assign({}, p[ts], { [k]: val }) }));
+    setSavedFollow((p) => { if (!p[ts]) return p; const n = Object.assign({}, p); delete n[ts]; return n; });
+  }
+  function saveFollow(ts) {
+    const d = drafts[ts] || {};
+    const entry = history.find((e) => e.ts === ts);
+    if (!entry) return;
+    const nv = Object.assign({}, entry.vals);
+    deferFields.forEach((f) => { nv[f.k] = d[f.k] || ""; });
+    setHistory((h) => h.map((e) => e.ts === ts ? Object.assign({}, e, { vals: nv, followTs: Date.now() }) : e));
+    setSavedFollow((p) => Object.assign({}, p, { [ts]: true }));
+    window.CultivaData.updateRegistroFollow(profileId, ritual.id, entry, nv).catch(() => {});
+  }
+  function followDirty(e) {
+    const d = drafts[e.ts] || {};
+    return deferFields.some((f) => (d[f.k] || "") !== (e.vals[f.k] || ""));
+  }
+  function followFilled(e) {
+    return deferFields.some((f) => (e.vals[f.k] || "") !== "");
+  }
+  function fmt(ts) {
+    try {
+      return new Date(ts).toLocaleString("es-PE",
+        { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+    } catch (e) { return ""; }
+  }
+  function temaLabel(raw) {
+    if (!raw) return "—";
+    if (raw.indexOf("otro:") === 0) return raw.slice(5) + " (otro)";
+    const inf = temaInfo(raw); return inf ? inf.label : raw;
+  }
+
+  // ---- field renderer (formulario inicial) ----
+  function renderField(f) {
+    const bad = !!errs[f.k];
+    const idAttr = storeKey + ":" + f.k;
+    const common = { id: idAttr, value: vals[f.k], className: "fld-ctrl" + (bad ? " err" : "") };
+    let control;
+
+    if (f.t === "tema") {
+      control = rh("div", { className: "fld-sel-wrap" },
+        rh("select", Object.assign({}, common, { className: common.className + " fld-sel",
+          onChange: (e) => setField(f.k, e.target.value) }),
+          rh("option", { value: "" }, "Elegir tema…"),
+          window.TEMAS.grupos.map((g) =>
+            rh("optgroup", { key: g.id, label: g.label },
+              g.items.map((it) => rh("option", { key: it.id, value: it.id }, it.label)))),
+          rh("option", { value: "__otro" }, "Otro (especificar)…"),
+        ),
+        RI("chevron-down", "fld-sel-ico"),
+      );
+    } else if (f.t === "area") {
+      control = rh("textarea", Object.assign({}, common, {
+        rows: 2, placeholder: f.ph || "Escribe aquí…",
+        onChange: (e) => setField(f.k, e.target.value),
+      }));
+    } else if (f.t === "sel") {
+      control = rh("div", { className: "fld-sel-wrap" },
+        rh("select", Object.assign({}, common, { className: common.className + " fld-sel",
+          onChange: (e) => setField(f.k, e.target.value) }),
+          rh("option", { value: "" }, "Elegir…"),
+          (f.o || []).map((opt) => rh("option", { key: opt, value: opt }, opt)),
+        ),
+        RI("chevron-down", "fld-sel-ico"),
+      );
+    } else if (f.t === "bool") {
+      control = rh("button", {
+        type: "button",
+        className: "fld-toggle" + (vals[f.k] ? " on" : ""),
+        onClick: () => setField(f.k, !vals[f.k]),
+        "aria-pressed": !!vals[f.k],
+      },
+        rh("span", { className: "fld-toggle-knob" }, vals[f.k] ? RI("check", "ico-xs") : null),
+        rh("span", { className: "fld-toggle-txt" }, vals[f.k] ? "Sí" : "No"),
+      );
+    } else {
+      const typeMap = { text: "text", date: "date", time: "time", num: "number", person: "text" };
+      control = rh("input", Object.assign({}, common, {
+        type: typeMap[f.t] || "text",
+        placeholder: f.ph || (f.t === "person" ? "Nombre…" : ""),
+        inputMode: f.t === "num" ? "numeric" : undefined,
+        onChange: (e) => setField(f.k, e.target.value),
+      }));
+    }
+
+    const wide = (f.t === "area" || f.t === "tema");
+    return rh("div", { className: "fld" + (wide ? " wide" : "") + (f.t === "bool" ? " inline" : ""), key: f.k },
+      rh("label", { className: "fld-l", htmlFor: idAttr },
+        f.l, f.req ? rh("span", { className: "req" }, "*") : null,
+        f.t === "person" ? RI("user", "fld-l-ico") : null,
+      ),
+      control,
+      f.t === "tema" && vals[f.k] === "__otro"
+        ? rh("input", { className: "fld-ctrl", style: { marginTop: "8px" },
+            placeholder: "Escribe el tema…", value: temaOtro,
+            onChange: (e) => setTemaOtro(e.target.value) })
+        : null,
+      bad ? rh("div", { className: "fld-err" }, "Requerido") : null,
+      f.hint ? rh("div", { className: "fld-hint" }, f.hint) : null,
+    );
+  }
+
+  // ---- control diferido (dentro de un registro guardado) ----
+  function renderFollowControl(e, f) {
+    const d = drafts[e.ts] || {};
+    const v = d[f.k] != null ? d[f.k] : "";
+    const idAttr = storeKey + ":" + e.ts + ":" + f.k;
+    const common = { id: idAttr, value: v, className: "fld-ctrl",
+      onChange: (ev) => setDraft(e.ts, f.k, ev.target.value) };
+    let control;
+    if (f.t === "area") {
+      control = rh("textarea", Object.assign({}, common, { rows: 2, placeholder: f.ph || "Escribe aquí…" }));
+    } else if (f.t === "date") {
+      control = rh("input", Object.assign({}, common, { type: "date" }));
+    } else {
+      control = rh("input", Object.assign({}, common, { type: "text", placeholder: f.ph || "Escribe aquí…" }));
+    }
+    return rh("div", { className: "fu-fld", key: f.k },
+      rh("label", { className: "fld-l", htmlFor: idAttr }, f.l),
+      control,
+    );
+  }
+
+  // alerta del tema elegido (p.ej. paralizaciones)
+  const chosen = temaInfo(vals.tema);
+  const alerta = chosen && chosen.alerta ? window.TEMAS.alertas[chosen.alerta] : null;
+
+  return rh("section", { className: "registro" },
+    rh("div", { className: "registro-soporte" },
+      RI("smartphone", "ico-xs"), rh("span", null, reg.soporte)),
+
+    justSent && rh("div", { className: "sent-banner" },
+      RI("check-check", "ico-xs"),
+      rh("div", null,
+        rh("b", null, "Registro guardado"), " · ", fmt(justSent.ts),
+        rh("div", { className: "sent-sub" },
+          deferFields.length
+            ? "Completa el acuerdo y los comentarios abajo, en el registro guardado."
+            : (escalateTo ? "Puedes escalarlo desde el historial si te excede." : "Disponible para tu líder.")),
+      ),
+    ),
+
+    rh("div", { className: "fld-grid" }, formFields.map(renderField)),
+
+    // alerta especial al elegir tema
+    alerta && rh("div", { className: "tema-alerta" },
+      RI("alert-triangle", "ico-sm"),
+      rh("div", null, rh("b", null, chosen.label + ". "), alerta)),
+
+    rh("div", { className: "registro-actions" },
+      rh("button", { className: "btn-send", type: "button", onClick: submit },
+        RI("save", "ico-xs"), "Guardar registro"),
+    ),
+
+    // historial
+    history.length > 0 && rh("div", { className: "hist" },
+      rh("button", { className: "hist-h", type: "button", onClick: () => setOpen(!open) },
+        RI("history", "ico-xs"),
+        rh("span", null, "Registros guardados"),
+        rh("span", { className: "hist-count" }, history.length),
+        RI(open ? "chevron-up" : "chevron-down", "ico-xs"),
+      ),
+      open && rh("div", { className: "hist-list" },
+        history.map((e, i) => {
+          const isEsc = !!escaladoIds[e.ts] || e.escalado;
+          const dirty = followDirty(e);
+          const filled = followFilled(e);
+          const justSaved = !!savedFollow[e.ts];
+          return rh("div", { key: e.ts + ":" + i, className: "hist-item" + (isEsc ? " esc" : "") },
+            rh("div", { className: "hist-top" },
+              isEsc ? rh("span", { className: "hist-badge esc" }, RI("arrow-up", "ico-xs"), "Escalado a tu " + (escalateTo || "líder"))
+                    : rh("span", { className: "hist-badge" }, RI("check", "ico-xs"), "Guardado"),
+              rh("span", { className: "hist-ts" }, fmt(e.ts)),
+            ),
+            rh("div", { className: "hist-detail" },
+              formFields.map((f) => {
+                let v = e.vals[f.k];
+                if (v === "" || v == null || v === false) return null;
+                let disp = (f.t === "bool") ? "Sí" : (f.t === "tema" ? temaLabel(v) : String(v));
+                return rh("div", { key: f.k, className: "hist-kv" },
+                  rh("span", { className: "hist-k" }, f.l), rh("span", { className: "hist-v" }, disp));
+              }),
+            ),
+
+            // bloque de seguimiento: acuerdo / comentarios (se completan después)
+            deferFields.length ? rh("div", { className: "hist-fu" + (filled && !dirty ? " done" : "") },
+              rh("div", { className: "hist-fu-h" },
+                RI(filled && !dirty ? "check-circle-2" : "message-square-plus", "ico-xs"),
+                rh("span", null, "Acuerdo y comentarios"),
+                (filled && !dirty)
+                  ? rh("span", { className: "fu-state" }, justSaved ? "Guardado ahora" : "Completado")
+                  : rh("span", { className: "fu-state pend" }, "Por completar"),
+              ),
+              rh("div", { className: "fu-grid" }, deferFields.map((f) => renderFollowControl(e, f))),
+              rh("button", {
+                className: "btn-fu", type: "button", disabled: !dirty,
+                onClick: () => dirty && saveFollow(e.ts),
+              }, RI("save", "ico-xs"), dirty ? "Guardar" : "Guardado"),
+            ) : null,
+
+            // escalar (solo rituales que lo permiten)
+            escalateTo ? rh("div", { className: "hist-escbar" + (isEsc ? " done" : "") },
+              isEsc
+                ? rh("span", { className: "he-txt" }, "Este tema ya viajó hacia arriba con tu contexto.")
+                : rh("span", { className: "he-txt" }, "¿Este tema te excede? Escálalo a tu " + escalateTo + "."),
+              rh("button", {
+                className: "btn-escalar-mini", type: "button", disabled: isEsc,
+                onClick: () => !isEsc && escalar(e.ts),
+              }, RI(isEsc ? "check" : "arrow-up", "ico-xs"), isEsc ? "Escalado" : "Escalar"),
+            ) : null,
+          );
+        }),
+      ),
+    ),
+  );
+}
+
+window.CultivaRegistroForm = CultivaRegistroForm;

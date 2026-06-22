@@ -1,0 +1,14 @@
+# ── PII / datos sensibles del cliente — NUNCA al repo público ──
+private/
+*.xlsx
+.env
+.env.*
+*.key
+service_role*.txt
+
+# ── temporales / locales ──
+.claude/
+.DS_Store
+node_modules/
+dist/
+*.log

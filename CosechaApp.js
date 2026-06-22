@@ -1,0 +1,343 @@
+/* ============================================================
+   APP · KIT CULTIVA — COSECHA (N1–N4) + ESCALADAS
+   Flujo: START (área → perfil) → GALLERY → DETAIL / ESCALADAS
+   Data-driven: lee window.PROFILES / AREAS / DIMS / TEMAS.
+   ============================================================ */
+const { createElement: h, useState, useEffect, useRef } = React;
+const I = (name, cls) => h("i", { "data-lucide": name, className: cls || "" });
+
+/* a quién escala cada perfil su ritual de escucha (origen de escaladas) */
+const ESCALATE_TO = { "cos-n4": "Supervisor de Fundo", "prod-n4": "Jefe de Producción de Área", "pack-n4": "Jefe de Producción de Planta", "cal-tac": "Supervisor de Calidad" };
+
+/* ---------- pantalla inicial: área → perfil ---------------- */
+function Start({ onEnter, onBackToLogin }) {
+  const [step, setStep] = useState(1);
+  const [area, setArea] = useState(null);
+  useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
+
+  const areaDef = window.AREAS.find((a) => a.id === area);
+  const puestos = area ? (window.PROFILES_BY_AREA[area] || []) : [];
+
+  return h("div", { className: "screen start" },
+    h("div", { className: "start-brand" },
+      h("span", { className: "start-logo" }, h("img", { src: (window.__resources && window.__resources.logo) || "../assets/logo-cultiva-color.png", alt: "Programa Cultiva" })),
+      h("div", null,
+        h("div", { className: "start-kicker" }, "Programa Cultiva"),
+        h("div", { className: "start-prog" }, "Liderazgo en acción"),
+      ),
+    ),
+    h("div", { className: "start-steps" },
+      h("span", { className: "stepdot" + (step >= 1 ? " on" : "") }),
+      h("span", { className: "stepline" + (step >= 2 ? " on" : "") }),
+      h("span", { className: "stepdot" + (step >= 2 ? " on" : "") }),
+    ),
+
+    step === 1
+      ? h("div", { className: "start-body", key: "s1" },
+          h("div", { className: "review-banner" },
+            I("key-round", "ico-xs"),
+            h("span", null, h("b", null, "Acceso de revisión*"), " — sin restricciones a todas las áreas y perfiles."),
+            onBackToLogin ? h("button", { className: "review-exit", type: "button", onClick: onBackToLogin }, "Salir") : null,
+          ),
+          h("h1", { className: "start-q" }, "¿A qué área perteneces?"),
+          h("p", { className: "start-hint" }, "Selecciona un área para revisar sus rituales."),
+          h("div", { className: "area-grid" },
+            window.AREAS.map((a) =>
+              h("button", {
+                key: a.id, type: "button",
+                className: "area-card" + (a.ready ? "" : " soon"),
+                disabled: !a.ready,
+                onClick: () => { if (a.ready) { setArea(a.id); setStep(2); } },
+              },
+                h("span", { className: "area-ico" }, I(a.icon)),
+                h("span", { className: "area-name" }, a.label),
+                a.ready ? null : h("span", { className: "soon-tag" }, "Próximamente"),
+              )),
+          ),
+        )
+      : h("div", { className: "start-body", key: "s2" },
+          h("button", { className: "back-link", type: "button", onClick: () => setStep(1) },
+            I("chevron-left", "ico-sm"), "Cambiar área"),
+          h("div", { className: "start-area-pill" }, I(areaDef.icon, "ico-sm"), areaDef.label),
+          h("h1", { className: "start-q" }, "¿Cuál es tu puesto?"),
+          h("p", { className: "start-hint" }, "Entrarás directo a los rituales de tu puesto."),
+          h("div", { className: "puesto-list" },
+            puestos.map((p) =>
+              h("button", {
+                key: p.id, type: "button", className: "puesto-card",
+                onClick: () => onEnter(p.id),
+              },
+                h("span", { className: "puesto-ico" }, I("user-round"),
+                  h("span", { className: "puesto-lvl" }, p.level)),
+                h("span", { className: "puesto-txt" },
+                  h("span", { className: "puesto-name" }, p.role),
+                  h("span", { className: "puesto-sub" }, p.sub),
+                ),
+                I("arrow-right", "ico-sm"),
+              )),
+          ),
+        ),
+  );
+}
+
+/* ---------- franjas (light + escaladas) -------------------- */
+function DayStrip({ ritual, foot }) {
+  const dim = window.DIMS[ritual.dimension];
+  return h("div", { className: "day-strip" + (foot ? " foot" : " slim"), style: { "--dc": dim.color } },
+    h("span", { className: "ds-ico" }, I(ritual.icon)),
+    h("span", { className: "ds-txt" },
+      h("span", { className: "ds-title" }, ritual.title),
+      h("span", { className: "ds-reminder" }, ritual.reminder),
+    ),
+  );
+}
+function EscStrip({ ritual, count, onOpen }) {
+  return h("button", { className: "esc-strip", type: "button", onClick: onOpen,
+    style: { "--esc": window.DIMS.escucha.color } },
+    h("span", { className: "ds-ico" }, I(ritual.icon)),
+    h("span", { className: "ds-txt" },
+      h("span", { className: "ds-title" }, ritual.title),
+      h("span", { className: "ds-reminder" }, "Revisa lo que tu equipo escaló hoy."),
+    ),
+    h("span", { className: "esc-badge" + (count === 0 ? " zero" : "") }, count, " ", I("inbox", "ico-xs")),
+    I("chevron-right", "esc-chev"),
+  );
+}
+
+/* ---------- gallery ---------------------------------------- */
+function Gallery({ profile, onOpen, onBack, onEscaladas, userName }) {
+  useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
+  const areaDef = window.AREAS.find((a) => a.id === profile.area) || { icon: "wheat", label: "" };
+  const R = profile.rituals;
+  const inicio = R.filter((r) => r.kind === "light" && /inicio/i.test(r.freq));
+  const cierre = R.filter((r) => r.kind === "light" && !/inicio/i.test(r.freq));
+  const escaladas = R.filter((r) => r.kind === "escaladas");
+  const groups = window.DIM_ORDER
+    .map((d) => ({ dim: d, def: window.DIMS[d], items: R.filter((r) => r.dimension === d && r.kind === "full") }))
+    .filter((g) => g.items.length);
+  const escCount = (window.ESCALADAS_DEMO[profile.id] || []).length;
+
+  return h("div", { className: "screen gallery" },
+    h("div", { className: "topbar" },
+      h("button", { className: "icon-btn", type: "button", onClick: onBack, "aria-label": userName ? "Cerrar sesión" : "Cambiar puesto" }, I(userName ? "log-out" : "chevron-left")),
+      h("div", { className: "topbar-id" },
+        h("span", { className: "topbar-role" }, profile.role),
+        h("span", { className: "topbar-area" }, I(areaDef.icon, "ico-xs"), areaDef.label,
+          h("span", { className: "topbar-lvl" }, profile.level)),
+      ),
+    ),
+
+    inicio.map((r) => h(DayStrip, { key: r.id, ritual: r })),
+
+    h("div", { className: "gallery-head" },
+      userName ? h("p", { className: "gallery-hi" }, "Hola, ", h("b", null, userName)) : null,
+      h("h1", { className: "gallery-title" }, "Tus rituales"),
+      h("p", { className: "gallery-sub" }, "Elige uno para ver el detalle."),
+    ),
+
+    groups.map((g) =>
+      h("section", { key: g.dim, className: "dim-group" },
+        h("div", { className: "dim-head", style: { "--dc": g.def.color } },
+          h("span", { className: "dim-dot" }),
+          h("span", { className: "dim-label" }, g.def.label),
+          h("span", { className: "dim-count" }, g.items.length),
+        ),
+        h("div", { className: "thumb-grid" },
+          g.items.map((r) =>
+            h("button", {
+              key: r.id, type: "button", className: "thumb", style: { "--dc": g.def.color },
+              onClick: () => onOpen(r.id),
+            },
+              h("span", { className: "thumb-top" },
+                h("span", { className: "thumb-ico" }, I(r.icon)),
+              ),
+              h("span", { className: "thumb-name" }, r.title),
+              h("span", { className: "thumb-freq" }, I("repeat", "ico-xs"), r.freq),
+            )),
+        ),
+      )),
+
+    escaladas.map((r) => h(EscStrip, { key: r.id, ritual: r, count: escCount, onOpen: onEscaladas })),
+    cierre.map((r) => h(DayStrip, { key: r.id, ritual: r, foot: true })),
+  );
+}
+
+/* ---------- acordeón --------------------------------------- */
+function Accordion({ icon, title, color, children, defaultOpen }) {
+  const [open, setOpen] = useState(!!defaultOpen);
+  useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
+  return h("div", { className: "acc" + (open ? " open" : ""), style: color ? { "--ac": color } : null },
+    h("button", { className: "acc-h", type: "button", onClick: () => setOpen(!open) },
+      I(icon, "ico-sm"),
+      h("span", { className: "acc-title" }, title),
+      I(open ? "chevron-up" : "chevron-down", "ico-sm acc-chev"),
+    ),
+    open ? h("div", { className: "acc-body" }, children) : null,
+  );
+}
+
+/* ---------- ayuda-memoria gráfica de temas ----------------- */
+function TemasHelp() {
+  return h("div", { className: "temas-help" },
+    h("p", { className: "temas-help-intro" },
+      "Cuando registres un tema, lo clasificas en una de estas opciones. Tenlas presentes mientras escuchas:"),
+    window.TEMAS.grupos.map((g) =>
+      h("div", { key: g.id, className: "temas-cat" },
+        h("span", { className: "temas-cat-h", style: { "--tc": g.color } },
+          h("span", { className: "dot" }), g.label),
+        h("div", { className: "temas-chips" },
+          g.items.map((it) =>
+            h("div", { key: it.id, className: "tema-chip", style: { "--tc": g.color } },
+              h("span", { className: "tc-ico" }, I(it.icon)),
+              h("span", { className: "tc-label" }, it.label),
+            ))),
+      )),
+  );
+}
+
+/* ---------- detalle de un ritual --------------------------- */
+function Detail({ profile, ritual, onBack }) {
+  const dim = window.DIMS[ritual.dimension];
+  useEffect(() => { if (window.lucide) window.lucide.createIcons(); }, [ritual.id]);
+
+  const doneKey = "cultiva3:done:" + profile.id + ":" + ritual.id;
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const [done, setDone] = useState(() => {
+    try { return localStorage.getItem(doneKey) === todayStr; } catch (e) { return false; }
+  });
+  function toggleDone() {
+    const next = !done; setDone(next);
+    try { next ? localStorage.setItem(doneKey, todayStr) : localStorage.removeItem(doneKey); } catch (e) {}
+  }
+
+  const isEscucha = ritual.registro && ritual.registro.escuchaTemas;
+  const canEscalate = ritual.registro && (ritual.registro.escuchaTemas || ritual.registro.escalates);
+
+  return h("div", { className: "screen detail", style: { "--dc": dim.color } },
+    h("div", { className: "topbar" },
+      h("button", { className: "icon-btn", type: "button", onClick: onBack, "aria-label": "Volver a la galería" }, I("arrow-left")),
+      h("span", { className: "detail-dim", style: { color: dim.color } },
+        h("span", { className: "dim-dot", style: { width: 10, height: 10, borderRadius: "50%", background: dim.color, display: "inline-block" } }), dim.label),
+    ),
+
+    h("div", { className: "detail-scroll" },
+      h("div", { className: "detail-hero" },
+        h("span", { className: "detail-ico" }, I(ritual.icon)),
+        h("h1", { className: "detail-title" }, ritual.title),
+        h("span", { className: "detail-freq" }, I("repeat", "ico-xs"), ritual.freq),
+      ),
+
+      ritual.kind === "light"
+        ? h("div", { className: "light-wrap" },
+            h("div", { className: "reminder" },
+              I("quote", "reminder-q"),
+              h("p", null, ritual.reminder),
+            ),
+            h("button", { className: "done-btn" + (done ? " on" : ""), type: "button", onClick: toggleDone },
+              I(done ? "check-circle-2" : "circle", "ico-sm"),
+              done ? "Hecho hoy" : "Marcar como hecho hoy"),
+          )
+        : h("div", { className: "full-wrap" },
+            ritual.purpose ? h("p", { className: "purpose" }, ritual.purpose) : null,
+
+            ritual.context ? h("div", { className: "ctx" },
+              ritual.context.freq ? h("div", { className: "ctx-row" }, I("repeat", "ico-xs"), h("span", null, ritual.context.freq)) : null,
+              ritual.context.when ? h("div", { className: "ctx-row" }, I("clock", "ico-xs"), h("span", null, ritual.context.when)) : null,
+              ritual.context.place ? h("div", { className: "ctx-row" }, I("map-pin", "ico-xs"), h("span", null, ritual.context.place)) : null,
+            ) : null,
+
+            ritual.steps ? h("div", { className: "steps-block" },
+              h("div", { className: "block-h" }, I("list-checks", "ico-sm"), "Paso a paso"),
+              h("ol", { className: "steps" },
+                ritual.steps.map((s, i) =>
+                  h("li", { key: i, className: "step" },
+                    h("span", { className: "num" }, i + 1),
+                    h("span", { className: "step-body" },
+                      s.k ? h("b", { className: "step-k" }, s.k + " — ") : null,
+                      h("span", { className: "step-t" }, s.t)),
+                  )),
+              ),
+            ) : null,
+
+            ritual.note ? h("div", { className: "note" }, I("lightbulb", "ico-xs"), h("span", null, ritual.note)) : null,
+
+            ritual.phrases ? h(Accordion, { icon: "quote", title: "Frases que ayudan", color: dim.color },
+              h("div", { className: "phrases" },
+                ritual.phrases.map((p, i) => h("div", { key: i, className: "phrase" }, "“", p, "”")))) : null,
+
+            // Escucha: ayuda-memoria gráfica en vez de "Qué NO hacer"
+            isEscucha
+              ? h(Accordion, { icon: "list-tree", title: "Temas que puedes recoger", color: dim.color, defaultOpen: false },
+                  h(TemasHelp))
+              : (ritual.no ? h(Accordion, { icon: "x-circle", title: "Qué NO hacer", color: "#A81519" },
+                  h("ul", { className: "no-list" }, ritual.no.map((x, i) => h("li", { key: i }, x)))) : null),
+
+            ritual.registro ? h(Accordion, { icon: "square-pen", title: "Registrar", color: "#4156A2", defaultOpen: true },
+              h(window.CultivaRegistroForm, {
+                ritual: ritual, profileId: profile.id,
+                escalateTo: canEscalate ? ESCALATE_TO[profile.id] : null,
+              })) : null,
+          ),
+    ),
+  );
+}
+
+/* ---------- contenedor principal --------------------------- */
+function CosechaApp() {
+  const [view, setView] = useState("login");        // login | start | gallery | detail | escaladas
+  const [accessMode, setAccessMode] = useState(null); // 'user' | 'review'
+  const [user, setUser] = useState(null);
+  const [profileId, setProfileId] = useState(null);
+  const [activeId, setActiveId] = useState(null);
+  const scrollRef = useRef(null);
+
+  useEffect(() => { if (scrollRef.current) scrollRef.current.scrollTop = 0; }, [view, activeId]);
+
+  // Restaurar sesión de Supabase al cargar (en modo demo no hace nada)
+  useEffect(() => {
+    if (!window.CultivaAuth) return;
+    window.CultivaAuth.restore().then((p) => {
+      if (p && p.user && !p.mustChange && window.PROFILES[p.user.perfil]) {
+        setUser(p.user); setProfileId(p.user.perfil); setAccessMode("user"); setView("gallery");
+      }
+    }).catch(() => {});
+  }, []);
+
+  const profile = profileId ? window.PROFILES[profileId] : null;
+  const ritual = profile && activeId ? profile.rituals.find((r) => r.id === activeId) : null;
+
+  function logout() {
+    if (window.CultivaAuth) window.CultivaAuth.signOut().catch(() => {});
+    setUser(null); setProfileId(null); setActiveId(null); setAccessMode(null); setView("login");
+  }
+  function galleryBack() {
+    if (accessMode === "user") { logout(); }
+    else { setProfileId(null); setView("start"); }
+  }
+
+  return h("div", { className: "app", ref: scrollRef },
+    view === "login" ? h(window.LoginScreen, {
+      onLogin: (u) => { setUser(u); setProfileId(u.perfil); setAccessMode("user"); setView("gallery"); },
+      onReview: () => { setUser(null); setProfileId(null); setAccessMode("review"); setView("start"); },
+    }) : null,
+    view === "start" ? h(Start, {
+      onEnter: (pid) => { setProfileId(pid); setView("gallery"); },
+      onBackToLogin: () => { setProfileId(null); setView("login"); },
+    }) : null,
+    view === "gallery" && profile ? h(Gallery, {
+      profile: profile,
+      userName: accessMode === "user" && user ? user.nombre : null,
+      onOpen: (id) => { setActiveId(id); setView("detail"); },
+      onEscaladas: () => setView("escaladas"),
+      onBack: galleryBack,
+    }) : null,
+    view === "detail" && ritual ? h(Detail, {
+      profile: profile, ritual: ritual, onBack: () => setView("gallery"),
+    }) : null,
+    view === "escaladas" && profile ? h(window.EscaladasInbox, {
+      profile: profile, onBack: () => setView("gallery"),
+    }) : null,
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(h(CosechaApp));

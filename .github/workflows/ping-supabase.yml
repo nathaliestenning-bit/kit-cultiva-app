@@ -1,0 +1,30 @@
+name: Ping Supabase (anti-pausa)
+
+# El plan gratuito de Supabase pausa el proyecto tras ~1 semana sin actividad.
+# Este ping ligero lo mantiene activo. Requiere secrets del repo:
+#   SUPABASE_URL        (p.ej. https://xxxx.supabase.co)
+#   SUPABASE_ANON_KEY   (anon public — segura)
+on:
+  schedule:
+    - cron: "0 12 */3 * *"   # cada 3 días, 12:00 UTC
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tocar el endpoint REST
+        env:
+          URL: ${{ secrets.SUPABASE_URL }}
+          ANON: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          set -e
+          if [ -z "$URL" ] || [ -z "$ANON" ]; then
+            echo "Faltan secrets SUPABASE_URL / SUPABASE_ANON_KEY"; exit 1
+          fi
+          code=$(curl -s -o /dev/null -w "%{http_code}" \
+            "$URL/rest/v1/usuarios?select=legajo&limit=1" \
+            -H "apikey: $ANON" -H "Authorization: Bearer $ANON")
+          echo "HTTP $code"
+          # 200 (vacío por RLS para anon) o 401/403 también cuentan como actividad
+          case "$code" in 200|401|403) echo "Proyecto activo." ;; *) echo "Respuesta inesperada"; exit 1 ;; esac

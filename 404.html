@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>App Cultiva</title>
+  <script>
+    // GitHub Pages sirve este 404.html ante cualquier ruta desconocida.
+    // La app no usa enrutamiento por URL, así que reapuntamos a la raíz
+    // del proyecto (primer segmento de la ruta = nombre del repo) para
+    // que index.html y sus assets relativos resuelvan bien.
+    (function () {
+      var segs = location.pathname.split("/").filter(Boolean);
+      var base = segs.length ? "/" + segs[0] + "/" : "/";
+      location.replace(location.origin + base);
+    })();
+  </script>
+</head>
+<body>
+  <noscript><a href="/">Ir a App Cultiva</a></noscript>
+</body>
+</html>

@@ -1,0 +1,53 @@
+name: Deploy a GitHub Pages
+
+# Publica SOLO el cliente (excluye private/ con PII, scripts y supabase).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ensamblar dist/ (solo archivos del cliente)
+        run: |
+          set -e
+          mkdir -p dist
+          # HTML + PWA
+          cp index.html 404.html manifest.webmanifest sw.js dist/
+          # Config + capas + datos + componentes
+          cp config.js cultiva-auth.js cultiva-data.js usuarios.js dist/
+          cp data-*.js dist/
+          cp CultivaRegistroForm.js EscaladasInbox.js LoginScreen.js CosechaApp.js dist/
+          # Estáticos
+          cp -R assets vendor dist/
+          # Salvaguarda: NUNCA publicar PII ni material de servidor
+          rm -rf dist/private dist/scripts dist/supabase
+          echo "Contenido de dist/:" && ls -R dist | head -60
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
