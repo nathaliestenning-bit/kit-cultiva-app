@@ -810,6 +810,7 @@ window.PROFILES = {
           "Resolver sin registrar."
         ],
         "registro": {
+          "hidden": true,
           "soporte": "Registro de calidad en campo",
           "fields": [
             {

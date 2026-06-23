@@ -272,7 +272,7 @@ function Detail({ profile, ritual, onBack }) {
               : (ritual.no ? h(Accordion, { icon: "x-circle", title: "Qué NO hacer", color: "#A81519" },
                   h("ul", { className: "no-list" }, ritual.no.map((x, i) => h("li", { key: i }, x)))) : null),
 
-            ritual.registro ? h(Accordion, { icon: "square-pen", title: "Registrar", color: "#4156A2", defaultOpen: true },
+            (ritual.registro && !ritual.registro.hidden) ? h(Accordion, { icon: "square-pen", title: "Registrar", color: "#4156A2", defaultOpen: true },
               h(window.CultivaRegistroForm, {
                 ritual: ritual, profileId: profile.id,
                 escalateTo: canEscalate ? ESCALATE_TO[profile.id] : null,
