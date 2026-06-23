@@ -191,6 +191,26 @@ Crea dos *secrets* del repo (**Settings › Secrets and variables › Actions**)
 
 ---
 
+## Cómo hacer cambios (día a día)
+
+Ciclo: **editar archivo → commit → Push (GitHub Desktop) → la Action despliega sola (~1–2 min).**
+La versión del Service Worker se inyecta automáticamente en cada deploy, así que
+los usuarios siempre reciben lo último (no hay que tocar `sw.js` a mano).
+
+| Quieres cambiar… | Archivo(s) | Dónde se aplica |
+|---|---|---|
+| Textos de rituales / pasos / frases / temas | `data-cosecha.js`, `data-produccion.js`, `data-packing.js`, `data-calidad.js` | Push a GitHub |
+| Textos de la app (login, botones, títulos) | `LoginScreen.js`, `CosechaApp.js`, … | Push a GitHub |
+| Colores / fuentes | `assets/styles.css` | Push a GitHub |
+| Layout / espaciados | bloque `<style>` en `index.html` | Push a GitHub |
+| Funcionalidades / pantallas | componentes `.js` + `cultiva-data.js` | Push a GitHub |
+| Tablas / permisos (RLS) / escaladas | `supabase/schema.sql`, `policies-hierarchy.sql`, Edge Function | **Supabase** (SQL Editor / redeploy función), NO Pages |
+| Jerarquía (jefes) | `private/jerarquia.csv` → `build_padron.py` → `cultiva_admin.py sync` | Supabase (local, service key) |
+
+Reglas: nunca subir `private/` (PII) ni la service key al repo; `main` es producción
+(para probar sin afectar, pedir una rama de staging). Cambios pequeños de texto se
+pueden hacer directo en github.com (Edit ✏️ → Commit).
+
 ## Resumen de fases
 - **A — Build/PWA:** sin Babel/CDN; React/Lucide/fuentes auto-alojados; manifest
   + íconos + service worker (abre offline). ✅

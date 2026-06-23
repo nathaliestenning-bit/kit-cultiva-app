@@ -35,6 +35,12 @@ jobs:
           cp -R assets vendor dist/
           # Salvaguarda: NUNCA publicar PII ni material de servidor
           rm -rf dist/private dist/scripts dist/supabase
+          # Versión única del Service Worker por deploy (commit + nº de run) →
+          # invalida el caché automáticamente; nadie tiene que tocar sw.js a mano.
+          VER="cultiva-${GITHUB_SHA:0:7}-${GITHUB_RUN_NUMBER}"
+          sed -i "s/const CACHE = \"[^\"]*\";/const CACHE = \"$VER\";/" dist/sw.js
+          echo "Service Worker versionado como: $VER"
+          grep "const CACHE" dist/sw.js
           echo "Contenido de dist/:" && ls -R dist | head -60
 
       - uses: actions/configure-pages@v5

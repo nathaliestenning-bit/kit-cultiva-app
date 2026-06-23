@@ -5,9 +5,11 @@
    - resto: cache-first con relleno en segundo plano.
    Nota: las llamadas a Supabase (auth/rest) NO se cachean (otro origen);
    en offline la app abre pero el login real requiere conexión.
-   Sube CACHE al cambiar cualquier asset para invalidar.
+   La versión (CACHE) la inyecta SOLA la Action de deploy en cada push
+   (commit + nº de run) → no hace falta tocarla a mano. El valor de abajo
+   es solo para correr local.
    ============================================================ */
-const CACHE = "cultiva-v6";
+const CACHE = "cultiva-local";
 const ASSETS = [
   "./",
   "index.html",
