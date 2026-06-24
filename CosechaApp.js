@@ -104,6 +104,16 @@ function EscStrip({ ritual, count, onOpen }) {
   );
 }
 
+/* ---------- encabezado de dimensión (mismo formato, sin número) ---------- */
+function DimHeader({ dim }) {
+  const def = window.DIMS[dim];
+  if (!def) return null;
+  return h("div", { className: "dim-head", style: { "--dc": def.color, padding: "0 18px", margin: "16px 0 0" } },
+    h("span", { className: "dim-dot" }),
+    h("span", { className: "dim-label" }, def.label),
+  );
+}
+
 /* ---------- gallery ---------------------------------------- */
 function Gallery({ profile, onOpen, onBack, onEscaladas, userName }) {
   useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
@@ -127,6 +137,7 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, userName }) {
       ),
     ),
 
+    inicio.length ? h(DimHeader, { key: "ih", dim: inicio[0].dimension }) : null,
     inicio.map((r) => h(DayStrip, { key: r.id, ritual: r })),
 
     h("div", { className: "gallery-head" },
@@ -140,7 +151,6 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, userName }) {
         h("div", { className: "dim-head", style: { "--dc": g.def.color } },
           h("span", { className: "dim-dot" }),
           h("span", { className: "dim-label" }, g.def.label),
-          h("span", { className: "dim-count" }, g.items.length),
         ),
         h("div", { className: "thumb-grid" },
           g.items.map((r) =>
@@ -157,7 +167,9 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, userName }) {
         ),
       )),
 
+    escaladas.length ? h(DimHeader, { key: "eh", dim: escaladas[0].dimension }) : null,
     escaladas.map((r) => h(EscStrip, { key: r.id, ritual: r, count: escCount, onOpen: onEscaladas })),
+    cierre.length ? h(DimHeader, { key: "ch", dim: cierre[0].dimension }) : null,
     cierre.map((r) => h(DayStrip, { key: r.id, ritual: r, foot: true })),
   );
 }
