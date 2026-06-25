@@ -22,7 +22,7 @@ function timeAgo(ts) {
   return "hace " + Math.round(h / 24) + " d";
 }
 
-function EscaladaCard({ item, escState, superiorRole, onStatus, onMessage, onEscalateUp }) {
+function EscaladaCard({ item, escState, superiorRole, canEscalateUp, onStatus, onMessage, onEscalateUp }) {
   const st = escState || {};
   const status = st.status || null;
   const [showComment, setShowComment] = eUse(false);
@@ -60,14 +60,17 @@ function EscaladaCard({ item, escState, superiorRole, onStatus, onMessage, onEsc
 
       // estados
       eh("div", { className: "esc-states" },
-        // "Derivar" oculto por ahora (se definirá luego); la Edge Function lo soporta.
-        window.ESCALADA_ESTADOS.filter((s) => s.id !== "derivo").map((s) =>
+        // "Derivar" oculto; "Escalo" oculto si no hay a quién escalar (tope de la cadena).
+        window.ESCALADA_ESTADOS
+          .filter((s) => s.id !== "derivo" && (s.id !== "escalo" || canEscalateUp))
+          .map((s) =>
           eh("button", {
             key: s.id, type: "button",
             className: "esc-state" + (status === s.id ? " on" : ""),
             style: status === s.id ? { "--sc": s.color } : null,
             onClick: () => setStatus(s.id),
-          }, EI(s.icon), s.label))),
+            // "Resuelvo yo" (acción) → "Resuelto" (estado) cuando ya está resuelto
+          }, EI(s.icon), (s.id === "resuelvo" && status === "resuelvo") ? "Resuelto" : s.label))),
 
       // campo extra al escalar hacia arriba
       status === "escalo" ? eh("div", { className: "esc-escfield" },
@@ -131,6 +134,9 @@ function EscaladasInbox({ profile, onBack }) {
   // rol superior (a quién escala este perfil) — demo
   const supMap = { "cos-n2": "Jefe de Cosecha", "cos-n3": "Jefe de Cosecha", "cos-n1": "Gerencia" };
   const sup = supMap[profile.id] || "superior";
+  // tope de la cadena (sin jefe a quién escalar): N1 de todas las áreas y N2 de Calidad
+  const esTope = profile.level === "N1" || profile.id === "cal-n2";
+  const canEscalateUp = !esTope;
 
   function onStatus(id, s) { D.setStatus(profile.id, id, s).then(reload).catch(() => {}); }
   function onMessage(id, kind, text) { D.addMensaje(profile.id, id, kind, text).then(reload).catch(() => {}); }
@@ -176,7 +182,7 @@ function EscaladasInbox({ profile, onBack }) {
         : eh("div", { className: "esc-list" },
             shown.map((it) => eh(EscaladaCard, {
               key: it.id, item: it, escState: stateOf(it.id),
-              superiorRole: sup,
+              superiorRole: sup, canEscalateUp: canEscalateUp,
               onStatus: (s) => onStatus(it.id, s),
               onMessage: (kind, text) => onMessage(it.id, kind, text),
               onEscalateUp: (req) => onEscalateUp(it.id, req),
