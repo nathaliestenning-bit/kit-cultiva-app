@@ -223,7 +223,8 @@ function Detail({ profile, ritual, onBack }) {
   }
 
   const isEscucha = ritual.registro && ritual.registro.escuchaTemas;
-  const canEscalate = ritual.registro && (ritual.registro.escuchaTemas || ritual.registro.escalates);
+  // autoBroadcast: la subida a la cadena es automática al guardar → sin botón "Escalar" manual
+  const canEscalate = ritual.registro && (ritual.registro.escuchaTemas || ritual.registro.escalates) && !ritual.registro.autoBroadcast;
 
   return h("div", { className: "screen detail", style: { "--dc": dim.color } },
     h("div", { className: "topbar" },

@@ -743,6 +743,7 @@ window.PROFILES = {
         "registro": {
           "soporte": "Temas recogidos del equipo",
           "escuchaTemas": true,
+          "autoBroadcast": {"tema": "tema", "temaEsId": true, "detalle": "detalle", "resuelto": "resuelto"},
           "fields": [
             {
               "k": "tema",

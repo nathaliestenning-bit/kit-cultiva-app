@@ -111,8 +111,13 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
     setOpen(true);
     // persiste (demo localStorage ↔ Supabase) y reconcilia el id real
     window.CultivaData.saveRegistro(profileId, ritual.id, entry).then((persisted) => {
-      if (persisted && persisted.id) {
-        setHistory((h) => h.map((e) => e.ts === entry.ts ? Object.assign({}, e, { id: persisted.id }) : e));
+      const id = persisted && persisted.id;
+      if (id) setHistory((h) => h.map((e) => e.ts === entry.ts ? Object.assign({}, e, { id: id }) : e));
+      // Subida AUTOMÁTICA a toda la cadena de jefes (rituales de escucha del front-line)
+      if (reg.autoBroadcast && window.CultivaData.mode() === "supabase") {
+        const p = broadcastPayload(reg.autoBroadcast, stored);
+        p.registro_id = id || null;
+        window.CultivaData.broadcastChain(p).catch((err) => console.warn("auto-escalada:", err));
       }
     }).catch(() => {});
   }
@@ -162,6 +167,18 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
     if (!raw) return "—";
     if (raw.indexOf("otro:") === 0) return raw.slice(5) + " (otro)";
     const inf = temaInfo(raw); return inf ? inf.label : raw;
+  }
+  // arma el payload para subir a la cadena de jefes (según reg.autoBroadcast)
+  function broadcastPayload(ab, stored) {
+    const tema = ab.temaFijo
+      ? ab.temaFijo
+      : (ab.temaEsId ? temaLabel(stored[ab.tema]) : (stored[ab.tema] || ""));
+    const detalle = String(stored[ab.detalle] || "").trim();
+    return {
+      tema: String(tema || "Tema").slice(0, 120),
+      detalle: detalle || "(sin detalle)",
+      resuelto: ab.resuelto ? !!stored[ab.resuelto] : false,
+    };
   }
 
   // ---- field renderer (formulario inicial) ----

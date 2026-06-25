@@ -155,6 +155,15 @@
       return client().functions.invoke(FN, { body: Object.assign({ action: "crear" }, payload) })
         .then(function (r) { if (r.error) throw r.error; return r.data; });
     },
+
+    /* sube un tema registrado a TODA la cadena de jefes (una copia por jefe).
+       Se usa automáticamente al guardar en los rituales de escucha del front-line.
+       Demo: no hace nada (la cadena vive en Supabase). */
+    broadcastChain: function (payload) {
+      if (!isSb()) return Promise.resolve({ demo: true });
+      return client().functions.invoke(FN, { body: Object.assign({ action: "broadcast" }, payload) })
+        .then(function (r) { if (r.error) throw r.error; return r.data; });
+    },
   };
 
   window.CultivaData = Data;

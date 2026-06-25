@@ -431,6 +431,7 @@ Object.assign(window.PROFILES, {
         ],
         "registro": {
           "soporte": "Agenda Cultiva (temas levantados / escalados al Jefe de Producción)",
+          "autoBroadcast": {"tema": "tema", "detalle": "accion", "resuelto": "resuelto"},
           "fields": [
             { "k": "tema", "l": "Tema", "t": "area", "req": true, "ph": "¿Qué dijeron exactamente?" },
             { "k": "resuelto", "l": "¿Lo resolviste tú?", "t": "bool" },

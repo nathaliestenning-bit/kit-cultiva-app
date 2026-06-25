@@ -105,5 +105,37 @@ Deno.serve(async (req) => {
     return json({ ok: true, derivada: nueva });
   }
 
+  if (action === "broadcast") {
+    // Sube el tema registrado por el front-line a TODA su cadena de jefes
+    // (una copia por jefe: N3 → N2 → N1...). Idempotente por registro_id.
+    if (!body.tema || !body.detalle) return json({ error: "faltan tema/detalle" }, 400);
+    const status = body.resuelto ? "resuelvo" : "pendiente";
+    const enviadas: string[] = [];
+    const seen = new Set<string>([me.legajo]);
+    let current: string | null = me.legajo_jefe;
+    let guard = 0;
+    while (current && !seen.has(current) && guard++ < 8) {
+      seen.add(current);
+      let dup = null;
+      if (body.registro_id) {
+        const r = await admin.from("escaladas").select("id")
+          .eq("registro_id", body.registro_id).eq("to_legajo", current).maybeSingle();
+        dup = r.data;
+      }
+      if (!dup) {
+        const { data } = await admin.from("escaladas").insert({
+          from_legajo: me.legajo, to_legajo: current,
+          from_nombre: me.nombre, from_cargo: me.cargo,
+          tema: body.tema, detalle: body.detalle, requiere: null,
+          registro_id: body.registro_id ?? null, status,
+        }).select("to_legajo").single();
+        if (data) enviadas.push(data.to_legajo);
+      }
+      const nx = await admin.from("usuarios").select("legajo_jefe").eq("legajo", current).single();
+      current = nx.data?.legajo_jefe ?? null;
+    }
+    return json({ ok: true, enviadas: enviadas.length, a: enviadas });
+  }
+
   return json({ error: "acción desconocida" }, 400);
 });

@@ -429,6 +429,7 @@ Object.assign(window.PROFILES, {
         ],
         "registro": {
           "soporte": "Registro de calidad en campo",
+          "autoBroadcast": {"temaFijo": "Calidad en campo", "detalle": "problematica"},
           "fields": [
             { "k": "problematica", "l": "Problemática identificada", "t": "area", "req": true },
             { "k": "accion", "l": "Acción correctiva", "t": "area" }

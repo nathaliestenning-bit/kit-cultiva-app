@@ -423,6 +423,7 @@ Object.assign(window.PROFILES, {
         ],
         "registro": {
           "soporte": "Cuaderno de relevo / Agenda Cultiva",
+          "autoBroadcast": {"temaFijo": "Relevo de turno", "detalle": "temas"},
           "fields": [
             { "k": "fecha", "l": "Fecha", "t": "date" },
             { "k": "temas", "l": "Temas levantados", "t": "area", "req": true },
