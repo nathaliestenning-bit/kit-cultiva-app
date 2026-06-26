@@ -387,6 +387,7 @@ Object.assign(window.PROFILES, {
           "Dar demasiada información en una sola charla."
         ],
         "registro": {
+          "hidden": true,
           "soporte": "App Cultiva — bitácora",
           "fields": [
             { "k": "fecha", "l": "Fecha", "t": "date" },
