@@ -440,6 +440,38 @@ Object.assign(window.PROFILES, {
         }
       },
       {
+        "id": "presencia-activa-en-campo",
+        "kind": "full",
+        "dimension": "lidera",
+        "icon": "footprints",
+        "title": "Presencia activa en campo",
+        "freq": "Diario · 2 veces",
+        "purpose": "Construir autoridad desde la relación — no desde la inspección.",
+        "context": {
+          "freq": "Diario · 2 veces",
+          "when": "10–15 min c/u",
+          "place": "En movimiento por el campo"
+        },
+        "steps": [
+          { "k": "Me muevo", "t": "por todo el sector, no solo donde hay problemas." },
+          { "k": "Observo", "t": "quién se está esforzando, quién parece cansado o frustrado." },
+          { "k": "Me acerco", "t": "a 1–2 personas. Una pregunta simple antes que cualquier instrucción." },
+          { "k": "Reconozco al momento", "t": "si veo algo positivo, lo digo ahí mismo — no espero al cierre." },
+          { "k": "Corrijo en privado", "t": "si debo corregir algo, 1:1, nunca en frente del grupo." },
+          { "k": "Registro", "t": "mentalmente (o en la agenda) a quién visité, para no ir siempre a los mismos." }
+        ],
+        "phrases": [
+          "¿Cómo te está yendo hoy? ¿Algo que te esté complicando?",
+          "Vi lo que hiciste hace un rato. Eso está bien hecho.",
+          "Acompáñame un momento — quiero decirte algo."
+        ],
+        "no": [
+          "Ir solo cuando hay un problema (eso lo convierte en control).",
+          "Corregir en público frente al grupo.",
+          "Recorrer siempre el mismo sector o a las mismas personas."
+        ]
+      },
+      {
         "id": "reconocimiento",
         "kind": "full",
         "dimension": "valora",
