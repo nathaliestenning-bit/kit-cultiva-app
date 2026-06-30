@@ -54,7 +54,7 @@ Object.assign(window.PROFILES, {
           "soporte": "Registro de visita en planta",
           "fields": [
             { "k": "lugar", "l": "Lugar", "t": "text", "req": true },
-            { "k": "turno", "l": "Turno (día/noche)", "t": "text", "req": true },
+            { "k": "turno", "l": "Turno", "t": "sel", "o": ["Día", "Noche"], "req": true },
             { "k": "temas", "l": "Temas levantados", "t": "area", "req": true },
             { "k": "acuerdos", "l": "Acuerdos", "t": "area" },
             { "k": "proxima", "l": "Próxima reunión", "t": "date" }
@@ -100,6 +100,7 @@ Object.assign(window.PROFILES, {
           "soporte": "Tarjeta SCI",
           "fields": [
             { "k": "persona", "l": "Jefe", "t": "person", "req": true },
+            { "k": "turno", "l": "Turno", "t": "sel", "o": ["Día", "Noche"] },
             { "k": "situacion", "l": "Situación", "t": "area", "req": true },
             { "k": "conducta", "l": "Conducta", "t": "area" },
             { "k": "impacto", "l": "Impacto", "t": "area" },
@@ -207,6 +208,7 @@ Object.assign(window.PROFILES, {
           "soporte": "Tarjeta SCI",
           "fields": [
             { "k": "persona", "l": "Jefe", "t": "person", "req": true },
+            { "k": "turno", "l": "Turno", "t": "sel", "o": ["Día", "Noche"] },
             { "k": "situacion", "l": "Situación", "t": "area", "req": true },
             { "k": "conducta", "l": "Conducta", "t": "area" },
             { "k": "impacto", "l": "Impacto", "t": "area" },
@@ -312,7 +314,7 @@ Object.assign(window.PROFILES, {
           "soporte": "Tarjeta de Coaching",
           "fields": [
             { "k": "persona", "l": "Supervisor", "t": "person", "req": true },
-            { "k": "turno", "l": "Turno (día/noche)", "t": "text" },
+            { "k": "turno", "l": "Turno", "t": "sel", "o": ["Día", "Noche"] },
             { "k": "observo", "l": "Observo", "t": "area", "req": true },
             { "k": "acordamos", "l": "Acordamos", "t": "area" },
             { "k": "reconocimiento", "l": "Reconocimiento", "t": "area" }
@@ -427,7 +429,7 @@ Object.assign(window.PROFILES, {
           "fields": [
             { "k": "fecha", "l": "Fecha", "t": "date" },
             { "k": "temas", "l": "Temas levantados", "t": "area", "req": true },
-            { "k": "turno", "l": "Turno (día/noche)", "t": "text" }
+            { "k": "turno", "l": "Turno", "t": "sel", "o": ["Día", "Noche"] }
           ]
         }
       },
@@ -497,7 +499,7 @@ Object.assign(window.PROFILES, {
           "soporte": "Registro de reconocimiento",
           "fields": [
             { "k": "persona", "l": "Trabajador a reconocer", "t": "person", "req": true },
-            { "k": "turno", "l": "Turno (día/noche)", "t": "text" },
+            { "k": "turno", "l": "Turno", "t": "sel", "o": ["Día", "Noche"] },
             { "k": "conducta", "l": "Conducta destacada", "t": "area", "req": true },
             { "k": "impacto", "l": "Impacto", "t": "area" }
           ]
