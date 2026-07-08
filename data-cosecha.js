@@ -73,46 +73,46 @@ window.PROFILES = {
         "kind": "full",
         "dimension": "lidera",
         "icon": "message-square-quote",
-        "title": "Feedback 1:1 Mensual",
-        "freq": "Mensual",
+        "title": "Acompañamiento 1:1",
+        "freq": "1 vez al mes",
         "purpose": "Sesión de feedback con Jefes de Cosecha",
         "context": {
           "freq": "1 vez al mes",
           "when": "30-45 min",
-          "place": "Oficina o caminata por campo"
+          "place": "Oficina o caminata por campo con el Jefe de Cosecha"
         },
         "steps": [
           {
-            "k": "Preparar",
-            "t": "1 ejemplo concreto de algo BIEN hecho y 1 ejemplo de algo a MEJORAR (ambos observados, no oídos) con el método SCI."
+            "k": "Observo",
+            "t": "Identifico una conducta observada para corregir o potenciar."
           },
           {
-            "k": "Abrir",
-            "t": "con la SITUACIÓN específica: '¿Recuerdas el martes pasado cuando [hecho]?'"
+            "k": "Me acerco",
+            "t": "Con tono neutro, sin señal de corrección."
           },
           {
-            "k": "Conectar",
-            "t": "la CONDUCTA observable (sin juicios): 'Vi que tú [hiciste X]'."
+            "k": "Comparto",
+            "t": "\"Observé que [conducta] cuando [situación]. Esto generó [impacto]. ¿Cómo lo ves tú?\""
           },
           {
-            "k": "Conectar",
-            "t": "con el IMPACTO real: 'Eso generó [efecto en el equipo / en la cosecha]'."
+            "k": "Escucho",
+            "t": "2 minutos sin interrumpir; leo qué necesita"
           },
           {
-            "k": "Escuchar",
-            "t": "la versión del SF: '¿Cómo lo viste tú?' — escuchar 2 minutos sin interrumpir."
+            "k": "Impulso",
+            "t": "Pregunto qué podría hacer para mejorar o llevar esa fortaleza al siguiente nivel."
           },
           {
-            "k": "Acordar",
-            "t": "algo concreto: '¿Qué harás distinto a partir de cuándo?'"
+            "k": "Acordamos",
+            "t": "Definimos una acción concreta para poner en práctica."
           },
           {
-            "k": "Cerrar",
-            "t": "con un mensaje positivo, destacar el compromiso y agendar la próxima conversación."
+            "k": "Cierro",
+            "t": "Con reconocimiento por el compromiso."
           },
           {
-            "k": "Hago",
-            "t": "seguimiento posterior: ¿Cómo te funcionó lo que acordamos?"
+            "k": "Vuelvo",
+            "t": "Cuando se haya cumplido la fecha de seguimiento: \"¿Cómo te resultó lo que acordamos?\""
           }
         ],
         "phrases": [
@@ -330,46 +330,46 @@ window.PROFILES = {
         "kind": "full",
         "dimension": "lidera",
         "icon": "message-square-quote",
-        "title": "Feedback 1:1 Mensual",
-        "freq": "Mensual",
+        "title": "Acompañamiento 1:1",
+        "freq": "1 vez al mes",
         "purpose": "Sesión de feedback mensual con el Supervisor de Fundo. Alinear sin imponer, reconocer conducta específica y acordar un ajuste concreto",
         "context": {
           "freq": "1 vez al mes",
           "when": "30 min",
-          "place": "Oficina del fundo o caminata"
+          "place": "Caminata con el Supervisor de Fundo"
         },
         "steps": [
           {
-            "k": "Preparar",
-            "t": "1 ejemplo concreto de algo BIEN hecho y 1 ejemplo de algo a MEJORAR (ambos observados, no oídos) con el método SCI."
+            "k": "Observo",
+            "t": "Identifico una conducta observada para corregir o potenciar."
           },
           {
-            "k": "Abrir",
-            "t": "con la SITUACIÓN específica: '¿Recuerdas el martes pasado cuando [hecho]?'"
+            "k": "Me acerco",
+            "t": "Con tono neutro, sin señal de corrección."
           },
           {
-            "k": "Conectar",
-            "t": "la CONDUCTA observable (sin juicios): 'Vi que tú [hiciste X]'."
+            "k": "Comparto",
+            "t": "\"Observé que [conducta] cuando [situación]. Esto generó [impacto]. ¿Cómo lo ves tú?\""
           },
           {
-            "k": "Conectar",
-            "t": "con el IMPACTO real: 'Eso generó [efecto en el equipo / en la cosecha]'."
+            "k": "Escucho",
+            "t": "2 minutos sin interrumpir; leo qué necesita"
           },
           {
-            "k": "Escuchar",
-            "t": "la versión del SF: '¿Cómo lo viste tú?' — escuchar 2 minutos sin interrumpir."
+            "k": "Impulso",
+            "t": "Pregunto qué podría hacer para mejorar o llevar esa fortaleza al siguiente nivel."
           },
           {
-            "k": "Acordar",
-            "t": "algo concreto: '¿Qué harás distinto a partir de cuándo?'"
+            "k": "Acordamos",
+            "t": "Definimos una acción concreta para poner en práctica."
           },
           {
-            "k": "Cerrar",
-            "t": "con un mensaje positivo, destacar el compromiso y agendar la próxima conversación."
+            "k": "Cierro",
+            "t": "Con reconocimiento por el compromiso."
           },
           {
-            "k": "Hago",
-            "t": "seguimiento posterior: ¿Cómo te funcionó lo que acordamos?"
+            "k": "Vuelvo",
+            "t": "Cuando se haya cumplido la fecha de seguimiento: \"¿Cómo te resultó lo que acordamos?\""
           }
         ],
         "phrases": [
@@ -523,8 +523,8 @@ window.PROFILES = {
         "kind": "full",
         "dimension": "lidera",
         "icon": "compass",
-        "title": "Coaching de Terreno",
-        "freq": "Semanal",
+        "title": "Acompañamiento 1:1",
+        "freq": "A 2 Líderes de Cosecha por semana",
         "purpose": "Desarrollar al Líder de Cosecha en terreno, en tiempo real, sobre situaciones críticas",
         "context": {
           "freq": "2 Líderes de Cosecha  por semana",
@@ -771,8 +771,8 @@ window.PROFILES = {
         "kind": "full",
         "dimension": "lidera",
         "icon": "shield-check",
-        "title": "Asegurando la calidad",
-        "freq": "Diario · 2×",
+        "title": "Acompañamiento 1:1",
+        "freq": "Diario",
         "purpose": "Acercamientos durante la jornada para monitorear un buen balance entre calidad y productividad.",
         "context": {
           "freq": "Diario",

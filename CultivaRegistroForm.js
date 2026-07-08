@@ -14,6 +14,12 @@
    ============================================================ */
 const { createElement: rh, useState: rUse, useEffect: rEff } = React;
 const RI = (name, cls) => rh("i", { "data-lucide": name, className: cls || "" });
+/* check en SVG (NO Lucide): React lo controla y puede quitarlo sin el crash de
+   removeChild que ocurría al resetear el toggle "Sí/No" tras guardar. */
+const CheckIco = (cls) => rh("svg", { className: cls || "", viewBox: "0 0 24 24",
+  width: "1em", height: "1em", fill: "none", stroke: "currentColor",
+  strokeWidth: 3, strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": "true" },
+  rh("polyline", { points: "20 6 9 17 4 12" }));
 
 /* campos que se completan DESPUÉS de guardar, en rituales de feedback/coaching */
 const DEFER_KEYS = ["acuerdo", "acuerdos", "comentarios", "comentario", "coment", "acordamos", "ajusto", "reconocimiento", "reconozco", "fecha", "seguimiento"];
@@ -221,7 +227,7 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
         onClick: () => setField(f.k, !vals[f.k]),
         "aria-pressed": !!vals[f.k],
       },
-        rh("span", { className: "fld-toggle-knob" }, vals[f.k] ? RI("check", "ico-xs") : null),
+        rh("span", { className: "fld-toggle-knob" }, vals[f.k] ? CheckIco("ico-xs") : null),
         rh("span", { className: "fld-toggle-txt" }, vals[f.k] ? "Sí" : "No"),
       );
     } else {

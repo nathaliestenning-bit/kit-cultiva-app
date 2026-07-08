@@ -23,8 +23,8 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "lidera",
         "icon": "footprints",
-        "title": "Caminata día/noche",
-        "freq": "Día y noche",
+        "title": "Caminata de Liderazgo",
+        "freq": "1 recorrido de día + 1 de noche por planta (bimensual)",
         "purpose": "Hacer presencia ejecutiva visible en ambos turnos.",
         "context": {
           "freq": "En el piloto, al menos 1 recorrido de día y 1 de noche por planta (luego 1 vez al mes)",
@@ -66,23 +66,23 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "lidera",
         "icon": "message-square-quote",
-        "title": "Feedback 1:1 Mensual",
-        "freq": "Mensual",
+        "title": "Acompañamiento 1:1",
+        "freq": "1 vez al mes, por persona (día y noche)",
         "purpose": "Sesión de feedback mensual con el Jefe a cargo. Alinear sin imponer, reconocer conducta específica y acordar un ajuste concreto (método SCI).",
         "context": {
           "freq": "1 vez al mes",
           "when": "30-45 min",
-          "place": "Oficina o caminata por la planta"
+          "place": "Oficina o caminata por la planta (Momento no operativa)"
         },
         "steps": [
-          { "k": "Prepara", "t": "1 ejemplo de algo BIEN hecho y 1 de algo a MEJORAR (ambos observados, no oídos) con el método SCI." },
-          { "k": "Abre", "t": "con la SITUACIÓN específica: “¿Recuerdas el martes pasado cuando [hecho]?”" },
-          { "k": "Conecta la conducta", "t": "observable, sin juicios: “Vi que tú [hiciste X]”." },
-          { "k": "Conecta el impacto", "t": "real: “Eso generó [efecto en el equipo / en la línea]”." },
-          { "k": "Escucha", "t": "la versión del Jefe: “¿Cómo lo viste tú?” — 2 minutos sin interrumpir." },
-          { "k": "Acuerda", "t": "algo concreto: “¿Qué harás distinto y a partir de cuándo?”" },
-          { "k": "Cierra", "t": "con un mensaje positivo, destaca el compromiso y agenda la próxima conversación." },
-          { "k": "Da seguimiento", "t": "después: “¿Cómo te funcionó lo que acordamos?”" }
+          { "k": "Observo", "t": "Identifico una conducta observada para corregir o potenciar." },
+          { "k": "Me acerco", "t": "Con tono neutro, sin señal de corrección." },
+          { "k": "Comparto", "t": "\"Observé que [conducta] cuando [situación]. Esto generó [impacto]. ¿Cómo lo ves tú?\"" },
+          { "k": "Escucho", "t": "2 minutos sin interrumpir; leo qué necesita" },
+          { "k": "Impulso", "t": "Pregunto qué podría hacer para mejorar o llevar esa fortaleza al siguiente nivel." },
+          { "k": "Acordamos", "t": "Definimos una acción concreta para poner en práctica." },
+          { "k": "Cierro", "t": "Con reconocimiento por el compromiso." },
+          { "k": "Vuelvo", "t": "Cuando se haya cumplido la fecha de seguimiento: \"¿Cómo te resultó lo que acordamos?\"" }
         ],
         "phrases": [
           "Lo que mejor vi este mes fue cómo manejaste [situación] y que generó [impacto]. Quiero que sepas que lo registré.",
@@ -174,8 +174,8 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "lidera",
         "icon": "message-square-quote",
-        "title": "Feedback 1:1 Mensual (día/noche)",
-        "freq": "Mensual",
+        "title": "Acompañamiento 1:1",
+        "freq": "1 vez al mes por persona (día y noche)",
         "purpose": "Sesión de feedback mensual con el Jefe a cargo. Alinear sin imponer, reconocer conducta específica y acordar un ajuste concreto (método SCI). Aplica con la MISMA profundidad al líder nocturno.",
         "context": {
           "freq": "1 vez al mes (en el piloto, al menos 1 por persona, día y noche)",
@@ -282,13 +282,13 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "lidera",
         "icon": "compass",
-        "title": "Coaching en Terreno",
-        "freq": "2×/mes",
+        "title": "Acompañamiento 1:1",
+        "freq": "A 2 Supervisores al mes",
         "purpose": "Desarrollar al Supervisor en tiempo real sobre la calidad de su labor.",
         "context": {
           "freq": "2 veces por mes",
           "when": "20 min",
-          "place": "En planta, en horario laboral · ambos turnos"
+          "place": "En planta · ambos turnos"
         },
         "steps": [
           { "k": "Observa", "t": "cómo trabajan los supervisores e identifica quiénes requieren acompañamiento para mejorar su forma de actuar, decidir y liderar." },
@@ -438,13 +438,13 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "lidera",
         "icon": "footprints",
-        "title": "Presencia activa en planta",
-        "freq": "Diario · 2 veces",
+        "title": "Acompañamiento 1:1",
+        "freq": "Diario (ambos turnos)",
         "purpose": "Construir autoridad desde la relación — no desde la inspección.",
         "context": {
           "freq": "2 veces por turno (día y noche)",
           "when": "10–15 min c/u",
-          "place": "En movimiento por las líneas y salas"
+          "place": "En movimiento por las líneas durante el turno"
         },
         "steps": [
           { "k": "Me muevo", "t": "por toda la planta, no solo donde hay problemas o cuellos de botella." },

@@ -10,6 +10,266 @@
 
 Object.assign(window.PROFILES, {
 
+  /* ---------------------------------------------------------- N1 (clonado de Cosecha) */
+  "cal-n1":   {
+    "id": "cal-n1",
+    "area": "calidad",
+    "level": "N1",
+    "role": "Gerente de Calidad",
+    "sub": "Garante del sistema",
+    "context": "1 persona en el piloto. Garante del sistema. Modela Cultiva hacia el Jefe y destraba temas estructurales. Si no lo hace visiblemente, los niveles abajo no lo van a hacer.",
+    "rituals": [
+      {
+        "id": "feedback-1-1-mensual",
+        "kind": "full",
+        "dimension": "lidera",
+        "icon": "message-square-quote",
+        "title": "Acompañamiento 1:1",
+        "freq": "1 vez al mes",
+        "purpose": "Sesión de feedback con Jefes de Cosecha",
+        "context": {
+          "freq": "1 vez al mes",
+          "when": "30-45 min",
+          "place": "Oficina o caminata por campo con el Jefe de Cosecha"
+        },
+        "steps": [
+          {
+            "k": "Observo",
+            "t": "Identifico una conducta observada para corregir o potenciar."
+          },
+          {
+            "k": "Me acerco",
+            "t": "Con tono neutro, sin señal de corrección."
+          },
+          {
+            "k": "Comparto",
+            "t": "\"Observé que [conducta] cuando [situación]. Esto generó [impacto]. ¿Cómo lo ves tú?\""
+          },
+          {
+            "k": "Escucho",
+            "t": "2 minutos sin interrumpir; leo qué necesita"
+          },
+          {
+            "k": "Impulso",
+            "t": "Pregunto qué podría hacer para mejorar o llevar esa fortaleza al siguiente nivel."
+          },
+          {
+            "k": "Acordamos",
+            "t": "Definimos una acción concreta para poner en práctica."
+          },
+          {
+            "k": "Cierro",
+            "t": "Con reconocimiento por el compromiso."
+          },
+          {
+            "k": "Vuelvo",
+            "t": "Cuando se haya cumplido la fecha de seguimiento: \"¿Cómo te resultó lo que acordamos?\""
+          }
+        ],
+        "phrases": [
+          "Lo que mejor vi este mes fue cómo manejaste [situación específica] y que generó [impacto]. Quiero que sepas que lo registré.",
+          "Necesito que el foco del mes esté en [X]. ¿Qué te bloquea para empujar eso?",
+          "Si algo está estructuralmente roto y no depende de ti, dímelo ahora. Es mi trabajo destrabarlo.",
+          "No vine a corregirte, vine a alinearnos. ¿Qué necesitas de mí?"
+        ],
+        "no": [
+          "Convertirla en reunión operativa de números.",
+          "Hacerla sin haberla agendado con anticipación.",
+          "Cerrar sin acuerdo concreto.",
+          "Convertirlo en monólogo de instrucciones."
+        ],
+        "registro": {
+          "soporte": "Tarjeta SCI · sesión 1:1",
+          "fields": [
+            {
+              "k": "persona",
+              "l": "Persona",
+              "t": "person",
+              "req": true
+            },
+            {
+              "k": "situacion",
+              "l": "Situación",
+              "t": "area",
+              "req": true,
+              "ph": "¿Qué pasó? (hecho concreto observado)"
+            },
+            {
+              "k": "conducta",
+              "l": "Conducta observada",
+              "t": "area",
+              "req": true
+            },
+            {
+              "k": "impacto",
+              "l": "Impacto",
+              "t": "area"
+            },
+            {
+              "k": "acuerdo",
+              "l": "Acuerdo",
+              "t": "area",
+              "req": true
+            },
+            {
+              "k": "coment",
+              "l": "Comentarios",
+              "t": "area"
+            }
+          ]
+        }
+      },
+      {
+        "id": "caminata-de-liderazgo",
+        "kind": "full",
+        "dimension": "lidera",
+        "icon": "footprints",
+        "title": "Caminata de Liderazgo",
+        "freq": "5×/año",
+        "purpose": "Modelar presencia y escucha directa en terreno",
+        "context": {
+          "freq": "5 veces al año",
+          "when": "",
+          "place": "Gerente/Sub Gerente + Supervisor de Fundo/Líder de Cosecha/Operarios"
+        },
+        "steps": [
+          {
+            "k": "Preséntate",
+            "t": "“Hola, soy [nombre], el Gerente de Cosecha. Vine al campo a conocerlos y ver cómo está yendo la temporada.”"
+          },
+          {
+            "k": "Únete",
+            "t": "“¿Te parece si te acompaño cosechando un rato?” El gerente entra al ritmo del trabajador, no impone el suyo."
+          },
+          {
+            "k": "Pregunta y escucha",
+            "t": "“¿Cómo está el trabajo hoy? ¿Qué te facilita o complica la labor?” (Escucha al menos el 70% del tiempo)."
+          },
+          {
+            "k": "Cierra",
+            "t": "con una promesa cumplible. Si algo no puedes resolverlo ahí, di cuándo tendrás respuesta (nunca prometas lo que no controlas)."
+          },
+          {
+            "k": "Anuncia que volverás",
+            "t": "“Gracias por el tiempo. El próximo mes seguiré visitando a más compañeros.” (La consistencia convierte una visita en un ritual)."
+          }
+        ],
+        "phrases": [
+          "Vine porque quería ver de cerca lo que hacen acá, no a revisar nada.",
+          "Que esto funcione sin que nadie lo note es justo lo que vengo a reconocer.",
+          "Esto que me cuentas lo subo y te traigo respuesta esta semana."
+        ],
+        "no": [
+          "Convertir la caminata en una inspección o auditoría.",
+          "Proponer soluciones en el momento (primero escuchar).",
+          "Visitar solo las áreas visibles y saltarse Riego o la caseta."
+        ],
+        "registro": {
+          "soporte": "Registro de visita en terreno",
+          "fields": [
+            {
+              "k": "jefe",
+              "l": "Persona / equipo visitado",
+              "t": "person",
+              "req": true
+            },
+            {
+              "k": "temas",
+              "l": "Temas levantados",
+              "t": "area",
+              "req": true
+            },
+            {
+              "k": "acuerdos",
+              "l": "Acuerdos",
+              "t": "area"
+            },
+            {
+              "k": "proxima",
+              "l": "Próxima reunión",
+              "t": "date"
+            }
+          ]
+        }
+      },
+      {
+        "id": "revisar-escaladas-diarias",
+        "kind": "escaladas",
+        "dimension": "escucha",
+        "icon": "inbox",
+        "title": "Revisar escaladas diarias",
+        "freq": "Diario · Cierre",
+        "from": "Jefes de Cosecha",
+        "reminder": "Al cierre del día, sentarse a revisar los temas escalados por los Jefes.",
+        "purpose": "Qué el Jefe sienta tu respaldo y que escalar tiene sentido"
+      },
+      {
+        "id": "reconocimiento",
+        "kind": "full",
+        "dimension": "valora",
+        "icon": "award",
+        "title": "Reconocimiento",
+        "freq": "Mensual",
+        "purpose": "Modelar visiblemente que Cultiva es para todos los niveles y reconocer el cumplimiento",
+        "context": {
+          "freq": "1 vez al mes",
+          "when": "3 min",
+          "place": "En espacio público (Comité, reunión de equipo, mensaje grupal)"
+        },
+        "steps": [
+          {
+            "k": null,
+            "t": "Durante la semana observar conscientemente a los Jefes de Cosecha y conductas que destaquen (en comportamiento Cultiva o en rendimiento operativo)."
+          },
+          {
+            "k": null,
+            "t": "Anotar en la plantilla de registro la CONDUCTA destacada ESPECÍFICA y el IMPACTO que esa acción tuvo para la empresa y/o el grupo."
+          },
+          {
+            "k": null,
+            "t": "Elegir el espacio más adecuado para mencionarlo (Reunión grupal es ideal)."
+          },
+          {
+            "k": null,
+            "t": "Nombrar la CONDUCTA específica y el IMPACTO que esta trajo: \"[Nombre], te agradezco por [conducta], esto nos ha ayudado en [impacto].\""
+          }
+        ],
+        "phrases": [
+          "Quiero reconocer a [nombre]. Este mes lo vi [conducta específica] lo que nos está ayudando mucho en [impacto directo]. Eso es Cultiva-Escucha modelado.",
+          "Si tuviera que poner un ejemplo de cómo se hace Cultiva-Valora bien, sería [nombre] cuando [situación]."
+        ],
+        "no": [
+          "Reconocimiento genérico ('todos lo hacen bien').",
+          "Saltárselo un mes (rompe el ritmo).",
+          "Reconocer solo a los mismos cada mes."
+        ],
+        "registro": {
+          "soporte": "Registro de reconocimiento",
+          "fields": [
+            {
+              "k": "persona",
+              "l": "Jefe a reconocer",
+              "t": "person",
+              "req": true
+            },
+            {
+              "k": "conducta",
+              "l": "Conducta destacada",
+              "t": "area",
+              "req": true
+            },
+            {
+              "k": "impacto",
+              "l": "Impacto",
+              "t": "area"
+            }
+          ]
+        }
+      }
+    ]
+  },
+
+
   /* ---------------------------------------------------------- N2 */
   "cal-n2": {
     "id": "cal-n2",
@@ -24,23 +284,23 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "lidera",
         "icon": "message-square-quote",
-        "title": "Feedback 1:1 Mensual",
-        "freq": "Mensual",
+        "title": "Acompañamiento 1:1",
+        "freq": "1 vez al mes",
         "purpose": "Sesión de feedback mensual con cada uno de tus reportes. Alinear sin imponer, reconocer conducta específica y acordar un ajuste concreto.",
         "context": {
           "freq": "Mensual (en el piloto, al menos 1)",
-          "when": "Momento NO operativo",
+          "when": "Momento NO operativo con el coordinador de calidad.",
           "place": ""
         },
         "steps": [
-          { "k": "Prepara", "t": "1 ejemplo de algo BIEN hecho y 1 de algo a MEJORAR (ambos observados, no oídos) con el método SCI." },
-          { "k": "Abre", "t": "con la SITUACIÓN específica: “¿Recuerdas el martes pasado cuando [hecho]?”" },
-          { "k": "Conecta la conducta", "t": "observable, sin juicios: “Vi que tú [hiciste X]”." },
-          { "k": "Conecta el impacto", "t": "real: “Eso generó [efecto en el equipo / en la relación con operaciones]”." },
-          { "k": "Escucha", "t": "la perspectiva de la otra persona: “¿Cómo lo viste tú?” — 2 minutos sin interrumpir." },
-          { "k": "Acuerda", "t": "algo concreto a 30 días: “¿Qué harás distinto y a partir de cuándo?”" },
-          { "k": "Cierra", "t": "con un mensaje positivo, destaca el compromiso y agenda la próxima conversación." },
-          { "k": "Da seguimiento", "t": "después: “¿Cómo te funcionó lo que acordamos?”" }
+          { "k": "Observo", "t": "Cómo el colaborador maneja la fricción con operaciones, no solo el resultado técnico." },
+          { "k": "Identifico", "t": "Una conducta observada para corregir o potenciar." },
+          { "k": "Me acerco", "t": "Con apertura neutra: \"Oye, ¿cómo fue ese momento con el supervisor de campo?\"" },
+          { "k": "Abro con SCI", "t": "\"Vi que [conducta] cuando [situación de fricción]. Eso generó [impacto]. ¿Cómo lo ves tú?\"" },
+          { "k": "Impulso", "t": "Pregunto qué podría hacer para mejorar o llevar esa fortaleza al siguiente nivel." },
+          { "k": "Acordamos", "t": "Definimos una acción concreta para poner en práctica." },
+          { "k": "Cierro", "t": "Con reconocimiento por el compromiso." },
+          { "k": "Vuelvo", "t": "Cuando se haya cumplido la fecha de seguimiento: \"¿Cómo te resultó lo que acordamos?\"" }
         ],
         "phrases": [
           "Observé cómo hiciste _____. Cuéntame por qué lo hiciste así.",
@@ -131,8 +391,8 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "lidera",
         "icon": "compass",
-        "title": "Coaching",
-        "freq": "Mensual",
+        "title": "Acompañamiento 1:1",
+        "freq": "1 vez al mes por Supervisor",
         "purpose": "Sesión de feedback mensual con cada uno de tus reportes. Alinear sin imponer, reconocer conducta específica y acordar un ajuste concreto.",
         "context": {
           "freq": "Mensual (en el piloto, al menos 1 por supervisor)",
@@ -245,8 +505,8 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "lidera",
         "icon": "compass",
-        "title": "Coaching en Terreno",
-        "freq": "Mensual",
+        "title": "Acompañamiento 1:1",
+        "freq": "2 veces por semana",
         "purpose": "Desarrollar al TAC en diferentes habilidades y conocimiento que potencien su perfil.",
         "context": {
           "freq": "Mensual (en el piloto, al menos 1 por supervisor)",
@@ -484,7 +744,7 @@ Object.assign(window.PROFILES, {
 /* índice área → perfiles (extiende el de data-cosecha.js)
    Nota: N1 de Calidad NO se incluye (no participa del ejercicio). */
 window.PROFILES_BY_AREA.calidad =
-  ["cal-n2", "cal-n3", "cal-n4", "cal-tac"].map(function (id) { return window.PROFILES[id]; });
+  ["cal-n1", "cal-n2", "cal-n3", "cal-n4", "cal-tac"].map(function (id) { return window.PROFILES[id]; });
 
 /* datos demo de la bandeja de escaladas (cascadeo de Calidad · fricción c/ operaciones) */
 Object.assign(window.ESCALADAS_DEMO, {

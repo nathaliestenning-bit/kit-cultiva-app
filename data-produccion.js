@@ -24,8 +24,8 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "lidera",
         "icon": "footprints",
-        "title": "Caminata por áreas",
-        "freq": "Quincenal",
+        "title": "Caminata de Liderazgo",
+        "freq": "1 visita a cada área al trimestre",
         "purpose": "Hacer visible que la Gerencia ve el trabajo que nadie nombra.",
         "context": {
           "freq": "1 visita a CADA área (Sanidad / Riego / Premezcla) en 2 semanas",
@@ -66,23 +66,23 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "lidera",
         "icon": "message-square-quote",
-        "title": "Feedback 1:1 Mensual",
-        "freq": "Mensual",
+        "title": "Acompañamiento 1:1",
+        "freq": "1 vez al mes",
         "purpose": "Sesión de feedback con Jefaturas. Alinear sin imponer, reconocer conducta específica y acordar un ajuste concreto (método SCI).",
         "context": {
           "freq": "1 vez al mes",
           "when": "30-45 min",
-          "place": "Oficina o caminata por campo"
+          "place": "Oficina o caminata por campo con la Jefatura"
         },
         "steps": [
-          { "k": "Prepara", "t": "1 ejemplo de algo BIEN hecho y 1 de algo a MEJORAR (ambos observados, no oídos) con el método SCI." },
-          { "k": "Abre", "t": "con la SITUACIÓN específica: “¿Recuerdas el martes pasado cuando [hecho]?”" },
-          { "k": "Conecta la conducta", "t": "observable, sin juicios: “Vi que tú [hiciste X]”." },
-          { "k": "Conecta el impacto", "t": "real: “Eso generó [efecto en el equipo / en la cosecha]”." },
-          { "k": "Escucha", "t": "la versión del Jefe: “¿Cómo lo viste tú?” — 2 minutos sin interrumpir." },
-          { "k": "Acuerda", "t": "algo concreto: “¿Qué harás distinto y a partir de cuándo?”" },
-          { "k": "Cierra", "t": "con un mensaje positivo, destaca el compromiso y agenda la próxima conversación." },
-          { "k": "Da seguimiento", "t": "después: “¿Cómo te funcionó lo que acordamos?”" }
+          { "k": "Prepara", "t": "Identifico una conducta observada para corregir o potenciar." },
+          { "k": "Abre", "t": "Con tono neutro, sin señal de corrección." },
+          { "k": "Conecta la conducta", "t": "\"Observé que [conducta] cuando [situación]. Esto generó [impacto]. ¿Cómo lo ves tú?\"" },
+          { "k": "Conecta el impacto", "t": "2 minutos sin interrumpir; leo qué necesita" },
+          { "k": "Escucha", "t": "Pregunto qué podría hacer para mejorar o llevar esa fortaleza al siguiente nivel." },
+          { "k": "Acuerda", "t": "Definimos una acción concreta para poner en práctica." },
+          { "k": "Cierro", "t": "Con reconocimiento por el compromiso." },
+          { "k": "Vuelvo", "t": "Cuando se haya cumplido la fecha de seguimiento: \"¿Cómo te resultó lo que acordamos?\"" }
         ],
         "phrases": [
           "Lo que mejor vi este mes fue cómo manejaste [situación] y que generó [impacto]. Quiero que sepas que lo registré.",
@@ -173,23 +173,23 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "lidera",
         "icon": "message-square-quote",
-        "title": "Feedback 1:1 Mensual",
-        "freq": "Mensual",
+        "title": "Acompañamiento 1:1",
+        "freq": "1 vez al mes",
         "purpose": "Sesión de feedback mensual con el líder a cargo. Alinear sin imponer, reconocer conducta específica y acordar un ajuste concreto.",
         "context": {
           "freq": "1 vez al mes",
           "when": "30 min",
-          "place": "Oficina del fundo o caminata"
+          "place": "Caminata con el Supervisor/Coordinador"
         },
         "steps": [
-          { "k": "Prepara", "t": "1 ejemplo de algo BIEN hecho y 1 de algo a MEJORAR (ambos observados, no oídos) con el método SCI." },
-          { "k": "Abre", "t": "con la SITUACIÓN específica: “¿Recuerdas el martes pasado cuando [hecho]?”" },
-          { "k": "Conecta la conducta", "t": "observable, sin juicios: “Vi que tú [hiciste X]”." },
-          { "k": "Conecta el impacto", "t": "real: “Eso generó [efecto en el equipo / en la cosecha]”." },
-          { "k": "Escucha", "t": "la versión del Supervisor / Coordinador: “¿Cómo lo viste tú?” — 2 minutos sin interrumpir." },
-          { "k": "Acuerda", "t": "algo concreto: “¿Qué harás distinto y a partir de cuándo?”" },
-          { "k": "Cierra", "t": "con un mensaje positivo, destaca el compromiso y agenda la próxima conversación." },
-          { "k": "Da seguimiento", "t": "después: “¿Cómo te funcionó lo que acordamos?”" }
+          { "k": "Observo", "t": "Identifico una conducta observada para corregir o potenciar." },
+          { "k": "Me acerco", "t": "Con tono neutro, sin señal de corrección." },
+          { "k": "Comparto", "t": "\"Observé que [conducta] cuando [situación]. Esto generó [impacto]. ¿Cómo lo ves tú?\"" },
+          { "k": "Escucho", "t": "2 minutos sin interrumpir; leo qué necesita" },
+          { "k": "Impulso", "t": "Pregunto qué podría hacer para mejorar o llevar esa fortaleza al siguiente nivel." },
+          { "k": "Acordamos", "t": "Definimos una acción concreta para poner en práctica." },
+          { "k": "Cierro", "t": "Con reconocimiento por el compromiso." },
+          { "k": "Vuelvo", "t": "Cuando se haya cumplido la fecha de seguimiento: \"¿Cómo te resultó lo que acordamos?\"" }
         ],
         "phrases": [
           "Recuerdo el martes en el lote 4 cuando [situación]. Vi que tú [conducta]. Eso generó [impacto]. ¿Cómo lo ves tú?",
@@ -289,8 +289,8 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "lidera",
         "icon": "compass",
-        "title": "Coaching de Terreno",
-        "freq": "2×/semana",
+        "title": "Acompañamiento 1:1",
+        "freq": "2 Supervisores por semana",
         "purpose": "Desarrollar al Supervisor en terreno, en tiempo real, sobre situaciones críticas.",
         "context": {
           "freq": "2 veces por semana",
@@ -444,13 +444,13 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "lidera",
         "icon": "footprints",
-        "title": "Presencia activa en campo",
-        "freq": "Diario · 2 veces",
+        "title": "Acompañamiento 1:1",
+        "freq": "Diario",
         "purpose": "Construir autoridad desde la relación — no desde la inspección.",
         "context": {
           "freq": "Diario · 2 veces",
           "when": "10–15 min c/u",
-          "place": "En movimiento por el campo"
+          "place": "En movimiento por el área durante la jornada"
         },
         "steps": [
           { "k": "Me muevo", "t": "por todo el sector, no solo donde hay problemas." },
