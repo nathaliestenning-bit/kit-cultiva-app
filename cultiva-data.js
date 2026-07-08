@@ -90,6 +90,58 @@
         .eq("id", entry.id).then(function () { return Date.now(); });
     },
 
+    /* ---- PUNTOS (semanal) ---- */
+    /* inicio de la semana (lunes 00:00) en ms */
+    weekStartTs: function () {
+      var d = new Date(); var off = (d.getDay() + 6) % 7; // lunes = 0
+      d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - off); return d.getTime();
+    },
+    /* todos los registros del perfil (todos los rituales) como [{ritual_id, ts}] */
+    listRegistrosPerfil: function (perfil) {
+      if (!isSb()) {
+        var out = []; var pref = "cultiva3:" + perfil + ":";
+        try {
+          for (var i = 0; i < localStorage.length; i++) {
+            var k = localStorage.key(i);
+            if (k && k.indexOf(pref) === 0) {
+              var rid = k.slice(pref.length);
+              (JSON.parse(localStorage.getItem(k) || "[]") || []).forEach(function (e) {
+                out.push({ ritual_id: rid, ts: e.ts });
+              });
+            }
+          }
+        } catch (e) {}
+        return Promise.resolve(out);
+      }
+      return client().from("registros").select("ritual_id,created_at").eq("perfil", perfil)
+        .then(function (q) {
+          return (q.data || []).map(function (r) { return { ritual_id: r.ritual_id, ts: Date.parse(r.created_at) }; });
+        });
+    },
+    /* puntos = por cada ritual con ≥1 registro en la semana: 10 + 3×(extras) */
+    puntosDe: function (registros, desde) {
+      var byR = {};
+      (registros || []).forEach(function (r) { if (r.ts >= desde) byR[r.ritual_id] = (byR[r.ritual_id] || 0) + 1; });
+      var total = 0; Object.keys(byR).forEach(function (k) { total += 10 + 3 * (byR[k] - 1); });
+      return total;
+    },
+    /* marca un ritual como "aplicado" (rituales sin formulario). Idempotente por día. */
+    registrarHecho: function (perfil, ritualId) {
+      var day = new Date(); day.setHours(0, 0, 0, 0); var dayStart = day.getTime();
+      if (!isSb()) {
+        var arr = rRead(perfil, ritualId);
+        if (!arr.some(function (e) { return e.ts >= dayStart; })) {
+          rWrite(perfil, ritualId, [{ ts: Date.now(), hecho: true, vals: {} }].concat(arr).slice(0, 60));
+        }
+        return Promise.resolve();
+      }
+      return client().from("registros").select("id").eq("perfil", perfil).eq("ritual_id", ritualId)
+        .gte("created_at", new Date(dayStart).toISOString()).limit(1).then(function (q) {
+          if (q.data && q.data.length) return;
+          return client().from("registros").insert({ perfil: perfil, ritual_id: ritualId, vals: { _hecho: true }, escalado: false }).then(function () {});
+        });
+    },
+
     /* inbox: lo que me escalaron. Devuelve [{item, state}]. */
     listInbox: function (pid) {
       if (!isSb()) {

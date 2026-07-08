@@ -127,6 +127,19 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, userName }) {
     .filter((g) => g.items.length);
   const escCount = (window.ESCALADAS_DEMO[profile.id] || []).length;
 
+  // puntos de la semana (tope 100)
+  const [pts, setPts] = useState(null);
+  useEffect(() => {
+    let alive = true; const D = window.CultivaData;
+    if (D && D.listRegistrosPerfil) {
+      D.listRegistrosPerfil(profile.id)
+        .then((regs) => { if (alive) setPts(D.puntosDe(regs, D.weekStartTs())); })
+        .catch(() => { if (alive) setPts(0); });
+    }
+    return () => { alive = false; };
+  }, [profile.id]);
+  const ptsCap = Math.min(pts || 0, 100);
+
   return h("div", { className: "screen gallery" },
     h("div", { className: "topbar" },
       h("button", { className: "icon-btn", type: "button", onClick: onBack, "aria-label": userName ? "Cerrar sesión" : "Cambiar puesto" }, I(userName ? "log-out" : "chevron-left")),
@@ -135,6 +148,14 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, userName }) {
         h("span", { className: "topbar-area" }, I(areaDef.icon, "ico-xs"), areaDef.label,
           h("span", { className: "topbar-lvl" }, profile.level)),
       ),
+    ),
+
+    h("div", { style: { margin: "14px 18px 0", background: "#fff", border: "1px solid #eadfd0", borderRadius: "12px", padding: "12px 14px" } },
+      h("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "13px", marginBottom: "8px", color: "#5a4a38" } },
+        h("span", null, I("star", "ico-xs"), " Tus puntos · esta semana"),
+        h("b", null, (pts == null ? "…" : pts) + " / 100")),
+      h("div", { style: { height: "10px", background: "#f0e7da", borderRadius: "999px", overflow: "hidden" } },
+        h("div", { style: { height: "100%", width: ptsCap + "%", background: "#C9651C", borderRadius: "999px", transition: "width .3s" } })),
     ),
 
     inicio.length ? h(DimHeader, { key: "ih", dim: inicio[0].dimension }) : null,
@@ -220,6 +241,10 @@ function Detail({ profile, ritual, onBack }) {
   function toggleDone() {
     const next = !done; setDone(next);
     try { next ? localStorage.setItem(doneKey, todayStr) : localStorage.removeItem(doneKey); } catch (e) {}
+    // al marcarlo hecho, registra el ritual como aplicado (para puntos)
+    if (next && window.CultivaData && window.CultivaData.registrarHecho) {
+      window.CultivaData.registrarHecho(profile.id, ritual.id).catch(() => {});
+    }
   }
 
   const isEscucha = ritual.registro && ritual.registro.escuchaTemas;
