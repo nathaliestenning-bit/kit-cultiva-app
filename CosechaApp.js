@@ -290,6 +290,11 @@ function Detail({ profile, ritual, onBack }) {
                 ritual: ritual, profileId: profile.id,
                 escalateTo: canEscalate ? ESCALATE_TO[profile.id] : null,
               })) : null,
+
+            // rituales "full" SIN formulario de registro: botón para marcar "se realizó"
+            (!ritual.registro || ritual.registro.hidden) ? h("button", { className: "done-btn" + (done ? " on" : ""), type: "button", onClick: toggleDone },
+              I(done ? "check-circle-2" : "circle", "ico-sm"),
+              done ? "Se realizó" : "Marcar como realizado") : null,
           ),
     ),
   );
