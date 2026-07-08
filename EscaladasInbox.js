@@ -138,6 +138,20 @@ function EscaladasInbox({ profile, onBack }) {
   const esTope = profile.level === "N1" || profile.id === "cal-n2";
   const canEscalateUp = !esTope;
 
+  // "se realizó" del ritual de revisar escaladas → suma puntos (1 vez al día)
+  const escRitual = (profile.rituals || []).find((r) => r.kind === "escaladas") || {};
+  const revKey = "cultiva3:done:" + profile.id + ":" + (escRitual.id || "esc");
+  const revToday = new Date().toISOString().slice(0, 10);
+  const [revHecho, setRevHecho] = eUse(function () { try { return localStorage.getItem(revKey) === revToday; } catch (e) { return false; } });
+  function marcarRevisado() {
+    if (revHecho) return;
+    setRevHecho(true);
+    try { localStorage.setItem(revKey, revToday); } catch (e) {}
+    if (escRitual.id && window.CultivaData && window.CultivaData.registrarHecho) {
+      window.CultivaData.registrarHecho(profile.id, escRitual.id).catch(function () {});
+    }
+  }
+
   function onStatus(id, s) { D.setStatus(profile.id, id, s).then(reload).catch(() => {}); }
   function onMessage(id, kind, text) { D.addMensaje(profile.id, id, kind, text).then(reload).catch(() => {}); }
   function onEscalateUp(id, req) { D.escalateUp(profile.id, id, req).then(reload).catch(() => {}); }
@@ -166,6 +180,13 @@ function EscaladasInbox({ profile, onBack }) {
         eh("h1", { className: "escbox-title" }, "Temas escalados a ti"),
         eh("p", { className: "escbox-sub" },
           "Lo que tu equipo te subió hoy. Dale destino a cada tema: resuélvelo, ponlo en proceso, derívalo o escálalo."),
+        eh("button", {
+          type: "button", onClick: marcarRevisado, disabled: revHecho,
+          style: { marginTop: "12px", display: "inline-flex", alignItems: "center", gap: "6px",
+            fontSize: "13px", padding: "9px 14px", borderRadius: "999px", cursor: revHecho ? "default" : "pointer",
+            border: "1px solid " + (revHecho ? "#18571F" : "#cdd7d9"),
+            background: revHecho ? "#e7f2e8" : "#fff", color: revHecho ? "#18571F" : "#2F6E7A" },
+        }, EI("clipboard-check", "ico-xs"), revHecho ? "Revisado hoy · +puntos" : "Marcar revisión de hoy"),
       ),
       loaded ? eh("div", { className: "escbox-filters" },
         [["todos", "Todos", list.length], ["pendientes", "Pendientes", pendientes.length],

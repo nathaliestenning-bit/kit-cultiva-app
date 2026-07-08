@@ -973,7 +973,7 @@ Object.assign(window.PROFILES, {
         "dimension": "valora",
         "icon": "thumbs-up",
         "title": "Reconocimiento Sincero",
-        "freq": "Según lo amerite · mín. 1 vez/semana · Opción diferida al día siguiente",
+        "freq": "Semanal",
         "purpose": "Reconocer las mejoras del equipo para reforzar buenas prácticas — lo que se nombra se repite.",
         "context": {
           "freq": "Según lo amerite · mín. 1 vez/semana · Opción diferida al día siguiente",
