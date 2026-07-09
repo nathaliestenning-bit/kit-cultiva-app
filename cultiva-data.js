@@ -163,6 +163,40 @@
       return client().rpc("equipo_escaladas").then(function (q) { if (q.error) throw q.error; return q.data || []; });
     },
 
+    /* ---- SEGUIMIENTOS DE HOY (fecha propia + escaladas por vencer) ---- */
+    /* {propios: [{ritual_id, vals}], porResolver: n, enviadasPendientes: n} */
+    seguimientosHoy: function (perfil) {
+      var hoy = new Date().toISOString().slice(0, 10);
+      if (!isSb()) {
+        var out = []; var pref = "cultiva3:" + perfil + ":";
+        try {
+          for (var i = 0; i < localStorage.length; i++) {
+            var k = localStorage.key(i);
+            if (k && k.indexOf(pref) === 0) {
+              var rid = k.slice(pref.length);
+              (JSON.parse(localStorage.getItem(k) || "[]") || []).forEach(function (e) {
+                if (e.vals && e.vals.fecha === hoy) out.push({ ritual_id: rid, vals: e.vals });
+              });
+            }
+          }
+        } catch (e) {}
+        return Promise.resolve({ propios: out, porResolver: 0, enviadasPendientes: 0 });
+      }
+      return me().then(function (legajo) {
+        var finHoy = new Date(hoy + "T23:59:59.999").toISOString();
+        return Promise.all([
+          client().from("registros").select("ritual_id,vals").eq("perfil", perfil),
+          client().from("escaladas").select("id").eq("to_legajo", legajo).in("status", ["pendiente", "proceso"]).lte("plazo", finHoy),
+          client().from("escaladas").select("id").eq("from_legajo", legajo).in("status", ["pendiente", "proceso"]).lte("plazo", finHoy),
+        ]).then(function (r) {
+          var propios = (r[0].data || [])
+            .filter(function (row) { return row.vals && row.vals.fecha === hoy; })
+            .map(function (row) { return { ritual_id: row.ritual_id, vals: row.vals }; });
+          return { propios: propios, porResolver: (r[1].data || []).length, enviadasPendientes: (r[2].data || []).length };
+        });
+      });
+    },
+
     /* inbox: lo que me escalaron. Devuelve [{item, state}]. */
     listInbox: function (pid) {
       if (!isSb()) {

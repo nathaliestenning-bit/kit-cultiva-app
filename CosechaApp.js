@@ -91,6 +91,31 @@ function DayStrip({ ritual, foot }) {
     ),
   );
 }
+/* ---------- banner de seguimientos de hoy ------------------ */
+function SeguimientosBanner({ segs, open, onToggle, onOpenRitual, onEscaladas, ritualsById }) {
+  useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
+  if (!segs) return null;
+  const total = segs.propios.length + segs.porResolver;
+  if (total === 0 && !segs.enviadasPendientes) return null;
+  return h("div", { className: "segs-banner" + (open ? " open" : "") },
+    h("button", { className: "segs-h", type: "button", onClick: onToggle },
+      I("bell", "ico-sm"),
+      h("span", null, "Tienes ", h("b", null, total), " seguimiento", total === 1 ? "" : "s", " para hoy"),
+      I(open ? "chevron-up" : "chevron-down", "ico-xs"),
+    ),
+    open ? h("div", { className: "segs-list" },
+      segs.propios.map((p, i) =>
+        h("button", { key: "p" + i, type: "button", className: "segs-item", onClick: () => onOpenRitual(p.ritual_id) },
+          I("calendar-check", "ico-xs"),
+          h("span", null, "Seguimiento pactado en ", (ritualsById[p.ritual_id] || {}).title || p.ritual_id))),
+      segs.porResolver > 0 ? h("button", { className: "segs-item alert", type: "button", onClick: onEscaladas },
+        I("inbox", "ico-xs"), h("span", null, "Tienes ", segs.porResolver, " escalada(s) por resolver hoy")) : null,
+      segs.enviadasPendientes > 0 ? h("div", { className: "segs-item info" },
+        I("clock", "ico-xs"), h("span", null, "Tu líder aún no resuelve ", segs.enviadasPendientes, " tema(s) que escalaste")) : null,
+    ) : null,
+  );
+}
+
 function EscStrip({ ritual, count, onOpen }) {
   return h("button", { className: "esc-strip", type: "button", onClick: onOpen,
     style: { "--esc": window.DIMS.escucha.color } },
@@ -126,6 +151,7 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
     .map((d) => ({ dim: d, def: window.DIMS[d], items: R.filter((r) => r.dimension === d && (r.kind === "full" || r.kind === "escaladas")) }))
     .filter((g) => g.items.length);
   const escCount = (window.ESCALADAS_DEMO[profile.id] || []).length;
+  const ritualsById = {}; R.forEach((r) => { ritualsById[r.id] = r; });
 
   // puntos de la semana (tope 100)
   const [pts, setPts] = useState(null);
@@ -139,6 +165,18 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
     return () => { alive = false; };
   }, [profile.id]);
   const ptsCap = Math.min(pts || 0, 100);
+
+  // seguimientos de hoy (fecha propia + escaladas por vencer)
+  const [segs, setSegs] = useState(null);
+  const [segsOpen, setSegsOpen] = useState(false);
+  useEffect(() => {
+    let alive = true; const D = window.CultivaData;
+    if (D && D.seguimientosHoy) {
+      D.seguimientosHoy(profile.id).then((r) => { if (alive) setSegs(r); })
+        .catch(() => { if (alive) setSegs({ propios: [], porResolver: 0, enviadasPendientes: 0 }); });
+    }
+    return () => { alive = false; };
+  }, [profile.id]);
 
   return h("div", { className: "screen gallery" },
     h("div", { className: "topbar" },
@@ -157,6 +195,11 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
       h("div", { style: { height: "10px", background: "#f0e7da", borderRadius: "999px", overflow: "hidden" } },
         h("div", { style: { height: "100%", width: ptsCap + "%", background: "#C9651C", borderRadius: "999px", transition: "width .3s" } })),
     ),
+
+    h(SeguimientosBanner, {
+      segs: segs, open: segsOpen, onToggle: () => setSegsOpen(!segsOpen),
+      onOpenRitual: onOpen, onEscaladas: onEscaladas, ritualsById: ritualsById,
+    }),
 
     (["N1", "N2", "N3"].indexOf(profile.level) >= 0) ? h("button", {
       type: "button", onClick: onEquipo,
