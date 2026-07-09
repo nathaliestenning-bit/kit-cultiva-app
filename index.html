@@ -247,6 +247,23 @@
   .esc-badge.zero { background: var(--ink-200); color: var(--ink-500); }
   .esc-chev { color: var(--esc); flex: none; }
 
+  /* banner de seguimientos de hoy (pantalla principal) */
+  .segs-banner { margin: 10px 18px 0; border-radius: 12px; border: 1px solid rgba(230,184,74,0.5);
+    background: rgba(230,184,74,0.12); overflow: hidden; flex-shrink: 0; }
+  .segs-h { display: flex; align-items: center; gap: 8px; width: 100%; padding: 11px 14px;
+    border: none; background: none; cursor: pointer; font-family: var(--font-sans);
+    font-size: 13px; color: #6b4e12; text-align: left; }
+  .segs-h > i:first-child { color: var(--cultiva-gold-deep); flex: none; }
+  .segs-h > i:last-child { margin-left: auto; flex: none; }
+  .segs-list { display: flex; flex-direction: column; gap: 6px; padding: 0 12px 12px; }
+  .segs-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 10px;
+    background: var(--paper); border: 1px solid var(--ink-100); font-family: var(--font-sans);
+    font-size: 12.5px; color: var(--ink-700); text-align: left; cursor: pointer; }
+  .segs-item i { flex: none; color: var(--ink-500); }
+  .segs-item.alert { border-color: #A81519; color: #A81519; }
+  .segs-item.alert i { color: #A81519; }
+  .segs-item.info { cursor: default; }
+
   /* ================= DETAIL ================= */
   .detail { display: flex; flex-direction: column; min-height: 0; }
   .detail-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 22px 18px 36px; }
