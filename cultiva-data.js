@@ -142,6 +142,27 @@
         });
     },
 
+    /* ---- MI EQUIPO (por jerarquía) ---- */
+    /* puntos de la semana de todo el equipo hacia abajo. */
+    equipoPuntos: function (perfil) {
+      if (!isSb()) return Promise.resolve([
+        { legajo: "demo1", nombre: "Ana Torres", cargo: "—", nivel: "N4", perfil: perfil, puntos: 64 },
+        { legajo: "demo2", nombre: "Luis Ramos", cargo: "—", nivel: "N4", perfil: perfil, puntos: 38 },
+        { legajo: "demo3", nombre: "Marta Ríos", cargo: "—", nivel: "N4", perfil: perfil, puntos: 92 },
+      ]);
+      return client().rpc("equipo_puntos").then(function (q) { if (q.error) throw q.error; return q.data || []; });
+    },
+    /* escaladas levantadas por todo el equipo hacia abajo. */
+    equipoEscaladas: function (perfil) {
+      if (!isSb()) return Promise.resolve([
+        { id: "d1", from_nombre: "Ana Torres", nivel: "N4", tema: "Falta de agua",
+          detalle: "Sin agua para consumo en el sector desde temprano.", status: "pendiente", created_at: new Date().toISOString() },
+        { id: "d2", from_nombre: "Marta Ríos", nivel: "N4", tema: "Reconocimiento al esfuerzo",
+          detalle: "El equipo siente que su esfuerzo no se ve.", status: "proceso", created_at: new Date(Date.now() - 86400000).toISOString() },
+      ]);
+      return client().rpc("equipo_escaladas").then(function (q) { if (q.error) throw q.error; return q.data || []; });
+    },
+
     /* inbox: lo que me escalaron. Devuelve [{item, state}]. */
     listInbox: function (pid) {
       if (!isSb()) {

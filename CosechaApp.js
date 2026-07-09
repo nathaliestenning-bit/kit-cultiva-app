@@ -115,7 +115,7 @@ function DimHeader({ dim }) {
 }
 
 /* ---------- gallery ---------------------------------------- */
-function Gallery({ profile, onOpen, onBack, onEscaladas, userName }) {
+function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
   useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
   const areaDef = window.AREAS.find((a) => a.id === profile.area) || { icon: "wheat", label: "" };
   const R = profile.rituals;
@@ -157,6 +157,13 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, userName }) {
       h("div", { style: { height: "10px", background: "#f0e7da", borderRadius: "999px", overflow: "hidden" } },
         h("div", { style: { height: "100%", width: ptsCap + "%", background: "#C9651C", borderRadius: "999px", transition: "width .3s" } })),
     ),
+
+    (["N1", "N2", "N3"].indexOf(profile.level) >= 0) ? h("button", {
+      type: "button", onClick: onEquipo,
+      style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "7px",
+        margin: "10px 18px 0", width: "calc(100% - 36px)", padding: "11px", borderRadius: "12px",
+        border: "1px solid #cdd7d9", background: "#eef4f5", color: "#2F6E7A", fontSize: "14px", cursor: "pointer" },
+    }, I("users", "ico-sm"), "Ver a mi equipo") : null,
 
     inicio.length ? h(DimHeader, { key: "ih", dim: inicio[0].dimension }) : null,
     inicio.map((r) => h(DayStrip, { key: r.id, ritual: r })),
@@ -330,6 +337,60 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
   );
 }
 
+/* ---------- Mi equipo (solo lectura, por jerarquía) -------- */
+function MiEquipo({ profile, onBack }) {
+  const D = window.CultivaData;
+  const [team, setTeam] = useState([]);
+  const [escs, setEscs] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    let alive = true; setLoaded(false);
+    Promise.all([
+      D && D.equipoPuntos ? D.equipoPuntos(profile.id) : Promise.resolve([]),
+      D && D.equipoEscaladas ? D.equipoEscaladas(profile.id) : Promise.resolve([]),
+    ]).then((res) => { if (!alive) return; setTeam(res[0] || []); setEscs(res[1] || []); setLoaded(true); })
+      .catch(() => { if (alive) setLoaded(true); });
+    return () => { alive = false; };
+  }, [profile.id]);
+  useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
+
+  function fmt(ts) { try { return new Date(ts).toLocaleDateString("es-PE", { day: "2-digit", month: "short" }); } catch (e) { return ""; } }
+
+  return h("div", { className: "screen" },
+    h("div", { className: "topbar" },
+      h("button", { className: "icon-btn", type: "button", onClick: onBack, "aria-label": "Volver" }, I("arrow-left")),
+      h("div", { className: "topbar-id" },
+        h("span", { className: "topbar-role" }, "Mi equipo"),
+        h("span", { className: "topbar-area" }, I("users", "ico-xs"), "Puntos y escaladas de tu equipo")),
+    ),
+    !loaded ? null : h("div", { style: { padding: "16px 18px" } },
+      h("h2", { style: { fontSize: "18px", margin: "6px 0 8px" } }, "Puntos de la semana"),
+      team.length === 0
+        ? h("p", { style: { color: "#8a7a68", fontSize: "14px" } }, "Aún no hay actividad de tu equipo esta semana.")
+        : team.map((m, i) => {
+            const cap = Math.min(m.puntos || 0, 100);
+            return h("div", { key: m.legajo || i, style: { margin: "12px 0" } },
+              h("div", { style: { display: "flex", justifyContent: "space-between", fontSize: "13px", marginBottom: "5px", color: "#5a4a38" } },
+                h("span", null, h("b", null, m.nombre), m.nivel ? h("span", { style: { color: "#9a8a78" } }, " · " + m.nivel) : null),
+                h("b", null, (m.puntos || 0) + " / 100")),
+              h("div", { style: { height: "9px", background: "#f0e7da", borderRadius: "999px", overflow: "hidden" } },
+                h("div", { style: { height: "100%", width: cap + "%", background: "#C9651C", borderRadius: "999px" } })));
+          }),
+      h("h2", { style: { fontSize: "18px", margin: "24px 0 8px" } }, "Escaladas del equipo"),
+      escs.length === 0
+        ? h("p", { style: { color: "#8a7a68", fontSize: "14px" } }, "Sin escaladas de tu equipo.")
+        : escs.map((e, i) =>
+            h("div", { key: e.id || i, style: { border: "1px solid #e6ddcf", borderRadius: "10px", padding: "10px 12px", margin: "8px 0" } },
+              h("div", { style: { display: "flex", justifyContent: "space-between", fontSize: "12px", color: "#8a7a68" } },
+                h("span", null, (e.from_nombre || "—") + (e.nivel ? " · " + e.nivel : "")),
+                h("span", null, fmt(e.created_at))),
+              h("div", { style: { fontSize: "14px", fontWeight: 500, margin: "3px 0" } }, e.tema),
+              h("div", { style: { fontSize: "13px", color: "#5a4a38" } }, e.detalle),
+              (e.status && e.status !== "pendiente") ? h("div", { style: { fontSize: "11px", color: "#18571F", marginTop: "4px" } }, "Estado: " + e.status) : null)),
+    ),
+  );
+}
+
 /* ---------- contenedor principal --------------------------- */
 function CosechaApp() {
   const [view, setView] = useState("login");        // login | start | gallery | detail | escaladas
@@ -377,7 +438,11 @@ function CosechaApp() {
       userName: accessMode === "user" && user ? user.nombre : null,
       onOpen: (id) => { setActiveId(id); setView("detail"); },
       onEscaladas: () => setView("escaladas"),
+      onEquipo: () => setView("equipo"),
       onBack: galleryBack,
+    }) : null,
+    view === "equipo" && profile ? h(MiEquipo, {
+      profile: profile, onBack: () => setView("gallery"),
     }) : null,
     view === "detail" && ritual ? h(Detail, {
       profile: profile, ritual: ritual, onBack: () => setView("gallery"),
