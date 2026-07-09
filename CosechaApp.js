@@ -123,7 +123,7 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, userName }) {
   const cierre = R.filter((r) => r.kind === "light" && !/inicio/i.test(r.freq));
   const escaladas = R.filter((r) => r.kind === "escaladas");
   const groups = window.DIM_ORDER
-    .map((d) => ({ dim: d, def: window.DIMS[d], items: R.filter((r) => r.dimension === d && r.kind === "full") }))
+    .map((d) => ({ dim: d, def: window.DIMS[d], items: R.filter((r) => r.dimension === d && (r.kind === "full" || r.kind === "escaladas")) }))
     .filter((g) => g.items.length);
   const escCount = (window.ESCALADAS_DEMO[profile.id] || []).length;
 
@@ -174,22 +174,24 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, userName }) {
           h("span", { className: "dim-label" }, g.def.label),
         ),
         h("div", { className: "thumb-grid" },
-          g.items.map((r) =>
-            h("button", {
-              key: r.id, type: "button", className: "thumb", style: { "--dc": g.def.color },
-              onClick: () => onOpen(r.id),
+          g.items.map((r) => {
+            const isEsc = r.kind === "escaladas";
+            return h("button", {
+              key: r.id, type: "button", className: "thumb" + (isEsc ? " thumb-esc" : ""),
+              style: { "--dc": g.def.color },
+              onClick: isEsc ? onEscaladas : () => onOpen(r.id),
             },
               h("span", { className: "thumb-top" },
                 h("span", { className: "thumb-ico" }, I(r.icon)),
+                isEsc ? h("span", { className: "esc-badge" + (escCount === 0 ? " zero" : ""), style: { marginLeft: "auto" } }, escCount, " ", I("inbox", "ico-xs")) : null,
               ),
               h("span", { className: "thumb-name" }, r.title),
               h("span", { className: "thumb-freq" }, I("repeat", "ico-xs"), r.freq),
-            )),
+            );
+          }),
         ),
       )),
 
-    escaladas.length ? h(DimHeader, { key: "eh", dim: escaladas[0].dimension }) : null,
-    escaladas.map((r) => h(EscStrip, { key: r.id, ritual: r, count: escCount, onOpen: onEscaladas })),
     cierre.length ? h(DimHeader, { key: "ch", dim: cierre[0].dimension }) : null,
     cierre.map((r) => h(DayStrip, { key: r.id, ritual: r, foot: true })),
   );
