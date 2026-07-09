@@ -1054,7 +1054,6 @@ window.PROFILES = {
         "purpose": "Construir autoridad desde la relación — presencia visible que observa, conversa y da feedback en el momento.",
         "context": {
           "freq": "Diario",
-          "when": "En el campo",
           "place": "En el campo"
         },
         "steps": [

@@ -21,8 +21,11 @@ const CheckIco = (cls) => rh("svg", { className: cls || "", viewBox: "0 0 24 24"
   strokeWidth: 3, strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": "true" },
   rh("polyline", { points: "20 6 9 17 4 12" }));
 
-/* campos que se completan DESPUÉS de guardar, en rituales de feedback/coaching */
-const DEFER_KEYS = ["acuerdo", "acuerdos", "comentarios", "comentario", "coment", "acordamos", "ajusto", "reconocimiento", "reconozco", "fecha", "seguimiento"];
+/* campos que se completan DESPUÉS de guardar, en rituales de feedback/coaching.
+   Nota: "fecha"/"seguimiento" salieron de esta lista para que la "Fecha de
+   seguimiento" se pueda elegir directamente en el formulario (dispara la
+   notificación del día pactado). */
+const DEFER_KEYS = ["acuerdo", "acuerdos", "comentarios", "comentario", "coment", "acordamos", "ajusto", "reconocimiento", "reconozco"];
 
 function emptyValues(fields) {
   const v = {};

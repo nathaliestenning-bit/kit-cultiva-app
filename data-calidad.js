@@ -1422,9 +1422,10 @@ Object.assign(window.PROFILES, {
 });
 
 /* índice área → perfiles (extiende el de data-cosecha.js)
-   Nota: N1 de Calidad NO se incluye (no participa del ejercicio). */
+   Nota: "cal-n1" (Gerente de Calidad) NO aparece en el selector de puesto,
+   pero SIGUE en window.PROFILES para el login / la programación del sistema. */
 window.PROFILES_BY_AREA.calidad =
-  ["cal-n1", "cal-n2", "cal-n3", "cal-n4", "cal-tac"].map(function (id) { return window.PROFILES[id]; });
+  ["cal-n2", "cal-n3", "cal-n4", "cal-tac"].map(function (id) { return window.PROFILES[id]; });
 
 /* datos demo de la bandeja de escaladas (cascadeo de Calidad · fricción c/ operaciones) */
 Object.assign(window.ESCALADAS_DEMO, {

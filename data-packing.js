@@ -1073,7 +1073,6 @@ Object.assign(window.PROFILES, {
         "purpose": "Construir autoridad desde la relación — presencia visible que observa, conversa y da feedback en el momento.",
         "context": {
           "freq": "Diario (ambos turnos)",
-          "when": "En movimiento por la línea durante el turno",
           "place": "En movimiento por las líneas durante el turno"
         },
         "steps": [
