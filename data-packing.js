@@ -19,102 +19,51 @@ Object.assign(window.PROFILES, {
     "context": "Sponsor del piloto en Packing (plantas Chao y Salaverry, día y noche). La regla de oro: LA NOCHE EXISTE Y TIENE AUTORIDAD EQUIVALENTE AL DÍA. Si el sponsor solo aparece de día, el mensaje es que la noche no importa.",
     "rituals": [
       {
-        "id": "caminata-dia-noche",
-        "kind": "full",
-        "dimension": "lidera",
-        "icon": "footprints",
-        "title": "Caminata de Liderazgo",
-        "freq": "1 recorrido de día + 1 de noche por planta (bimensual)",
-        "purpose": "Hacer presencia ejecutiva visible en AMBOS turnos — la noche tiene autoridad equivalente al día.",
-        "context": {
-          "freq": "1 recorrido de día + 1 de noche por planta (trimestralmente)",
-          "when": "En la línea durante la operación — ambos turnos",
-          "place": "En la línea durante la operación — ambos turnos"
-        },
-        "steps": [
-          {
-            "k": "Programo",
-            "t": "el recorrido diurno/nocturno en horario real de operación."
-          },
-          {
-            "k": "Llego",
-            "t": ", saludo por nombre y observo la labor SIN corregir ni dar instrucciones."
-          },
-          {
-            "k": "Pregunto",
-            "t": "y ESCUCHO — el 70% del tiempo escucho."
-          },
-          {
-            "k": "Cierro",
-            "t": "con una promesa cumplible."
-          },
-          {
-            "k": "Anuncio",
-            "t": "que volveré."
-          }
-        ],
-        "phrases": [
-          "Vine porque quería ver cómo va el turno.",
-          "De día esto no se nota. Ustedes lo sostienen.",
-          "Esto que me cuentas lo reviso y vuelvo con respuesta."
-        ],
-        "no": [
-          "Recorrer solo el turno día y reportar 'la planta'.",
-          "No saludar por nombre.",
-          "Convertir la caminata en inspección o auditoría."
-        ],
-        "registro": {
-          "soporte": "Registro de visita en planta",
-          "fields": [
-            {
-              "k": "lugar",
-              "l": "Lugar",
-              "t": "text",
-              "req": true
-            },
-            {
-              "k": "turno",
-              "l": "Turno",
-              "t": "sel",
-              "o": [
-                "Día",
-                "Noche"
-              ],
-              "req": true
-            },
-            {
-              "k": "temas",
-              "l": "Temas levantados",
-              "t": "area",
-              "req": true
-            },
-            {
-              "k": "acuerdos",
-              "l": "Acuerdos",
-              "t": "area"
-            },
-            {
-              "k": "proxima",
-              "l": "Próxima reunión",
-              "t": "date"
-            }
-          ]
-        }
-      },
-      {
         "id": "feedback-1-1-mensual",
         "kind": "full",
         "dimension": "lidera",
         "icon": "message-square-quote",
-        "title": "Acompañamiento 1:1",
-        "freq": "1 vez al mes, por persona (día y noche)",
+        "title": "Acompañamiento 1 a 1",
+        "freq": "1 vez al mes por persona (día y noche)",
         "purpose": "Desarrollar al nivel de abajo mediante observación, pregunta y acuerdo concreto — SCI integrado.",
         "context": {
           "freq": "1 vez al mes por persona (día y noche)",
           "when": "30-45 min",
-          "place": "Oficina o caminata por la planta (Momento no operativa)"
+          "place": "Oficina o caminata por planta (Momento no operativo)"
         },
         "steps": [
+          {
+            "k": "Observo",
+            "t": "identifico 1 conducta positiva y 1 a mejorar (ambas observadas, no oídas)."
+          },
+          {
+            "k": "Me acerco",
+            "t": "con tono neutro, sin señal de corrección."
+          },
+          {
+            "k": "Abro",
+            "t": "con SCI — \"Vi que [conducta] cuando [situación]. Eso generó [impacto]. ¿Cómo lo ves tú?\""
+          },
+          {
+            "k": "Escucho",
+            "t": "2 minutos sin interrumpir."
+          },
+          {
+            "k": "Pregunto",
+            "t": "dejo que reflexione y proponga la solución."
+          },
+          {
+            "k": "Acordamos",
+            "t": "una sola cosa concreta que hará distinto."
+          },
+          {
+            "k": "Cierro",
+            "t": "con reconocimiento por el compromiso."
+          },
+          {
+            "k": "Vuelvo",
+            "t": "en días siguientes: \"¿Cómo te resultó lo que acordamos?\" Recomendación:"
+          },
           {
             "k": "Observo",
             "t": "Identifico una conducta observada para corregir o potenciar."
@@ -129,7 +78,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Escucho",
-            "t": "2 minutos sin interrumpir; leo qué necesita"
+            "t": "2 minutos sin interrumpir."
           },
           {
             "k": "Impulso",
@@ -141,20 +90,20 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Cierro",
-            "t": "Con reconocimiento por el compromiso."
+            "t": "con reconocimiento por el compromiso."
           },
           {
             "k": "Vuelvo",
-            "t": "Cuando se haya cumplido la fecha de seguimiento: \"¿Cómo te resultó lo que acordamos?\""
+            "t": "cuando se haya cumplido la fecha de seguimiento: \"¿Cómo te resultó lo que acordamos?\""
           }
         ],
         "phrases": [
-          "Vi que [conducta] cuando [situación]. Eso generó [impacto]. ¿Cómo lo ves tú?",
-          "Lo que mejor vi este mes fue cómo manejaste [situación específica] y que generó [impacto]. Quiero que sepas que lo registré.",
-          "No vine a corregirte, vine a alinearnos. ¿Qué necesitas de mí?",
-          "¿Qué crees que pasó? ¿Qué cambiarías tú?",
-          "Repíteme el acuerdo para asegurarnos de que quedamos igual.",
-          "Antes de cerrar quiero reconocer que [conducta positiva]. Eso me da confianza."
+          "\"Vi que [conducta] cuando [situación]. Eso generó [impacto]. ¿Cómo lo ves tú?\"",
+          "“Lo que mejor vi este mes fue cómo manejaste [situación específica] y que generó [impacto]. Quiero que sepas que lo registré.”",
+          "\"No vine a corregirte, vine a alinearnos. ¿Qué necesitas de mí?\"",
+          "\"¿Qué crees que pasó? ¿Qué cambiarías tú?\"",
+          "\"Repíteme el acuerdo para asegurarnos de que quedamos igual.\"",
+          "\"Antes de cerrar quiero reconocer que [conducta positiva]. Eso me da confianza.\""
         ],
         "no": [
           "Hablar de personas, no de hechos observados.",
@@ -211,11 +160,143 @@ Object.assign(window.PROFILES, {
         }
       },
       {
+        "id": "caminata-dia-noche",
+        "kind": "full",
+        "dimension": "lidera",
+        "icon": "footprints",
+        "title": "Caminata de Liderazgo",
+        "freq": "1 recorrido de día + 1 de noche por planta (bimensual)",
+        "purpose": "Hacer presencia ejecutiva visible en AMBOS turnos — la noche tiene autoridad equivalente al día.",
+        "context": {
+          "freq": "1 recorrido de día + 1 de noche por planta (bimensual)",
+          "when": "Ambos turnos",
+          "place": "En la línea durante la operación"
+        },
+        "steps": [
+          {
+            "k": "Programo",
+            "t": "el recorrido diurno/nocturno en horario real de operación."
+          },
+          {
+            "k": "Llego",
+            "t": ", saludo por nombre y observo la labor SIN corregir ni dar instrucciones."
+          },
+          {
+            "k": "Pregunto",
+            "t": "y ESCUCHO — el 70% del tiempo escucho."
+          },
+          {
+            "k": "Cierro",
+            "t": "con una promesa cumplible."
+          },
+          {
+            "k": "Anuncio",
+            "t": "que volveré."
+          }
+        ],
+        "phrases": [
+          "\"Vine porque quería ver cómo va el turno.\"",
+          "\"De día esto no se nota. Ustedes lo sostienen.\"",
+          "\"Esto que me cuentas lo reviso y vuelvo con respuesta.\""
+        ],
+        "no": [
+          "Recorrer solo el turno día y reportar 'la planta'.",
+          "No saludar por nombre.",
+          "Convertir la caminata en inspección o auditoría."
+        ],
+        "registro": {
+          "soporte": "Registro de visita en planta",
+          "fields": [
+            {
+              "k": "lugar",
+              "l": "Lugar",
+              "t": "text",
+              "req": true
+            },
+            {
+              "k": "turno",
+              "l": "Turno",
+              "t": "sel",
+              "o": [
+                "Día",
+                "Noche"
+              ],
+              "req": true
+            },
+            {
+              "k": "temas",
+              "l": "Temas levantados",
+              "t": "area",
+              "req": true
+            },
+            {
+              "k": "acuerdos",
+              "l": "Acuerdos",
+              "t": "area"
+            },
+            {
+              "k": "proxima",
+              "l": "Próxima reunión",
+              "t": "date"
+            }
+          ]
+        }
+      },
+      {
+        "id": "espacio-de-confianza",
+        "kind": "full",
+        "dimension": "escucha",
+        "icon": "ear",
+        "title": "Espacio de confianza",
+        "freq": "Semanal",
+        "purpose": "Recoger inquietudes antes de que se conviertan en problemas, fomentar la comunicación, cercanía y espacios seguros.",
+        "context": {
+          "when": "en espacios ya programados o existentes con tus reportes directos"
+        },
+        "steps": [
+          {
+            "k": "Abro",
+            "t": "\"¿Algo que necesiten que escuche antes de empezar?\""
+          },
+          {
+            "k": "Espero",
+            "t": "20-30 segundos en silencio; la gente no responde de inmediato."
+          },
+          {
+            "k": "Escucho",
+            "t": "Sin interrumpir. Si nadie habla: \"¿Cómo vienen hoy?\""
+          },
+          {
+            "k": "Registro",
+            "t": "(vía app): Registro el tema y su contexto."
+          },
+          {
+            "k": "Actúo",
+            "t": "Para cada tema, elijo una opción: • Si puedo resolverlo: defino la acción y establezco la urgencia (Hoy / Esta semana). • Si no puedo resolverlo: marco \"No resuelvo yo\", agradezco que lo haya compartido, reconozco la importancia del tema y le brindo una orientación sobre qué podría hacer."
+          },
+          {
+            "k": "Doy cierre",
+            "t": "Al día siquiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / esta es la actualización].\""
+          }
+        ],
+        "phrases": [
+          "\"¿Algo que quieran conversar antes de empezar?\"",
+          "\"Ese tema lo veo yo esta semana. Vuelvo con respuesta.\"",
+          "\"Eso es estructural — lo llevo a la mesa que corresponde. Te confirmo el jueves.\"",
+          "\"La semana pasada [nombre] planteó [tema]. Esto es lo que se decidió.\""
+        ],
+        "no": [
+          "Escuchar sin dejar rastro — si no lo registras, se pierde el patrón.",
+          "Prometer respuesta sin fecha.",
+          "No cerrar el loop la siguiente semana con quien lo trajo."
+        ]
+      },
+      {
         "id": "revisar-escaladas-diarias",
         "kind": "escaladas",
         "dimension": "escucha",
         "icon": "inbox",
-        "title": "Espacio de confianza",
+        "title": "Revisión de escaladas",
         "freq": "Diario (ambos turnos)",
         "from": "Jefes de Planta",
         "reminder": "Al cierre del día, sentarse a revisar los temas escalados por los Jefes de Planta (día y noche).",
@@ -235,19 +316,23 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Comunico",
-            "t": "de vuelta al N2 mi decisión para que el loop cierre hacia abajo."
+            "t": "de vuelta a mi equipo mi decisión para que el loop cierre hacia abajo."
           }
         ],
         "phrases": [
-          "Este patrón no es de planta — es sistémico. Lo trabajo yo.",
-          "Lo derivo a RRLL con instrucción clara y fecha.",
-          "Comunico al N2 mi decisión para que llegue al equipo."
+          "\"Este patrón no es de planta — es sistémico. Lo trabajo yo.\"",
+          "\"Lo derivo a RRLL con instrucción clara y fecha.\"",
+          "\"Comunico al N2 mi decisión para que llegue al equipo.\""
         ],
         "no": [
           "Revisar el panel como si fuera un reporte operativo.",
           "Dejar temas estructurales sin dueño ni fecha.",
           "No cerrar el loop hacia abajo con la decisión tomada."
-        ]
+        ],
+        "context": {
+          "freq": "Diario (ambos turnos)",
+          "when": "Al cierre de cada turno"
+        }
       },
       {
         "id": "reconocimiento",
@@ -260,7 +345,7 @@ Object.assign(window.PROFILES, {
         "context": {
           "freq": "1 vez al mes",
           "when": "Durante las caminatas",
-          "place": "Ambos turnos"
+          "place": "En ambos turnos"
         },
         "steps": [
           {
@@ -273,12 +358,12 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo: \"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno frente al grupo: \"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\" RECONOCIMIENTO SKIP-LEVEL (opcional): También puedo reconocer a Jefes de Producción (N3). Condición: Coordinado con el Jefe de Planta. El reconocimiento al turno noche ocurre durante la caminata nocturna — nunca postergado al día."
           }
         ],
         "phrases": [
-          "Antes de seguir, quiero mencionar a [nombre]. Vi [conducta específica] cuando [situación]. Eso sumó mucho en [impacto].",
-          "Si tuviera que poner un ejemplo de Cultiva en acción, sería [nombre] cuando [situación]."
+          "\"Antes de seguir, quiero mencionar a [nombre]. Vi [conducta específica] cuando [situación]. Eso sumó mucho en [impacto].\"",
+          "\"Si tuviera que poner un ejemplo de Cultiva en acción, sería [nombre] cuando [situación].\""
         ],
         "no": [
           "Reconocimiento vago: \"buen trabajo\" o \"todos lo hicieron bien\".",
@@ -327,55 +412,59 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "lidera",
         "icon": "message-square-quote",
-        "title": "Acompañamiento 1:1",
+        "title": "Acompañamiento 1 a 1",
         "freq": "1 vez al mes por persona (día y noche)",
-        "purpose": "Desarrollar al nivel de abajo mediante la observación, la reflexión y acuerdos concretos para potenciar sus fortalezas y mejorar su desempeño",
+        "purpose": "Desarrollar al nivel de abajo mediante observación, pregunta y acuerdo concreto — SCI integrado. Recomendación: Desarrollar al nivel de abajo mediante la observación, la reflexión y acuerdos concretos para potenciar sus fortalezas y mejorar su desempeño",
         "context": {
           "freq": "1 vez al mes por persona (día y noche)",
-          "when": "Donde -> Oficina o caminata por la planta",
-          "place": "Donde -> Oficina o caminata por la planta"
+          "when": "Momento no operativo",
+          "place": "Ambos turnos"
         },
         "steps": [
           {
-            "k": "Prepara",
-            "t": "Identifico 1 conducta positiva y 1 a mejorar (ambas observadas, no oídas)."
+            "k": null,
+            "t": "Recomendación:"
           },
           {
-            "k": "Abre",
-            "t": "Con tono neutro, sin señal de corrección."
+            "k": "Observo",
+            "t": "Identifico una conducta observada para corregir o potenciar."
           },
           {
-            "k": "Conecta la conducta",
-            "t": "Con SCI — \"Vi que [conducta] cuando [situación]. Eso generó [impacto]. ¿Cómo lo ves tú?\""
+            "k": "Me acerco",
+            "t": "Inicio una conversación breve y cercana."
           },
           {
-            "k": "Conecta el impacto",
-            "t": "2 minutos sin interrumpir."
+            "k": "Comparto",
+            "t": "\"Observé que [conducta] cuando [situación]. Esto generó [impacto]. ¿Cómo lo ves?\""
           },
           {
-            "k": "Escucha",
-            "t": "Dejo que reflexione y proponga la solución."
+            "k": "Escucho",
+            "t": "Dejo que reflexione antes de responder."
           },
           {
-            "k": "Acuerda",
-            "t": "Una sola cosa concreta que hará distinto."
+            "k": "Impulso",
+            "t": "Pregunto qué podría hacer para mejorar o llevar esa fortaleza al siguiente nivel."
           },
           {
-            "k": "Cierra",
-            "t": "Con reconocimiento por el compromiso."
+            "k": "Acordamos",
+            "t": "Definimos una acción concreta para poner en práctica."
           },
           {
-            "k": "Da seguimiento",
-            "t": "En días siguientes: \"¿Cómo te resultó lo que acordamos?\""
+            "k": "Reconozco",
+            "t": "Agradezco su apertura y compromiso."
+          },
+          {
+            "k": "Hago seguimiento",
+            "t": "Retomo la conversación para revisar cómo le fue."
           }
         ],
         "phrases": [
-          "Vi que [conducta] cuando [situación]. Eso generó [impacto]. ¿Cómo lo ves tú?",
-          "Lo que mejor vi este mes fue cómo manejaste [situación específica] y que generó [impacto]. Quiero que sepas que lo registré.",
-          "No vine a corregirte, vine a alinearnos. ¿Qué necesitas de mí?",
-          "¿Qué crees que pasó? ¿Qué cambiarías tú?",
-          "Repíteme el acuerdo para asegurarnos de que quedamos igual.",
-          "Antes de cerrar quiero reconocer que [conducta positiva]. Eso me da confianza."
+          "\"Vi que [conducta] cuando [situación]. Eso generó [impacto]. ¿Cómo lo ves tú?\"",
+          "“Lo que mejor vi este mes fue cómo manejaste [situación específica] y que generó [impacto]. Quiero que sepas que lo registré.”",
+          "\"No vine a corregirte, vine a alinearnos. ¿Qué necesitas de mí?\"",
+          "\"¿Qué crees que pasó? ¿Qué cambiarías tú?\"",
+          "\"Repíteme el acuerdo para asegurarnos de que quedamos igual.\"",
+          "\"Antes de cerrar quiero reconocer que [conducta positiva]. Eso me da confianza.\""
         ],
         "no": [
           "Hablar de personas, no de hechos observados.",
@@ -432,12 +521,61 @@ Object.assign(window.PROFILES, {
         }
       },
       {
+        "id": "espacio-de-confianza",
+        "kind": "full",
+        "dimension": "escucha",
+        "icon": "ear",
+        "title": "Espacio de confianza",
+        "freq": "Semanal",
+        "purpose": "Recoger inquietudes antes de que se conviertan en problemas, fomentar la comunicación, cercanía y espacios seguros.",
+        "context": {
+          "when": "en espacios ya programados o existentes con tus reportes directos"
+        },
+        "steps": [
+          {
+            "k": "Abro",
+            "t": "\"Cómo están?\" \"¿Algo que necesiten conversar antes de empezar?\""
+          },
+          {
+            "k": "Espero",
+            "t": "20-30 seg en silencio — la gente no responde de inmediato."
+          },
+          {
+            "k": "Escucho",
+            "t": "sin interrumpir. Si nadie habla: \"¿Cómo vienen hoy?\""
+          },
+          {
+            "k": "Resuelvo",
+            "t": "fomentando confianza y apertura"
+          },
+          {
+            "k": "Registro",
+            "t": "vía app: escribo contexto +  establenzco Urgencia (Hoy / Esta semana)."
+          },
+          {
+            "k": "Doy cierre",
+            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\" También puedes aplicarlo 1:1 — en privado la persona se abre más."
+          }
+        ],
+        "phrases": [
+          "\"¿Cómo viene la semana? ¿Algo antes de arrancar?\"",
+          "\"Ese tema lo resuelvo yo. Te confirmo el viernes.\"",
+          "\"Eso no está en mis manos. Lo escalo a mi jefe — vuelvo con respuesta.\"",
+          "\"La semana pasada [nombre] planteó [tema]. Así quedó.\""
+        ],
+        "no": [
+          "Convertir el espacio en un reporte operativo del turno.",
+          "Escalar a mi jefe sin haber intentado resolverlo primero.",
+          "No devolver la respuesta a quien lo trajo."
+        ]
+      },
+      {
         "id": "revisar-escaladas-diarias",
         "kind": "escaladas",
         "dimension": "escucha",
         "icon": "inbox",
-        "title": "Espacio de confianza",
-        "freq": "Diario (ambos turnos)",
+        "title": "Revisión de escaladas",
+        "freq": "Semanal (ambos turnos)",
         "from": "Jefes de Producción de Planta",
         "reminder": "Al cierre del día, sentarse a revisar los temas escalados por los Jefes de Producción (día y noche).",
         "purpose": "Primer nivel de visión consolidada — detectar patrones en ambos turnos.",
@@ -456,19 +594,23 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Escalo",
-            "t": "al N1 con mi análisis del patrón — no solo el listado de temas."
+            "t": "a mi jefe con mi análisis del patrón — no solo el listado de temas."
           }
         ],
         "phrases": [
-          "Este tema lleva 3 días sin respuesta — lo tomo yo.",
-          "Veo que el tema X aparece en varios sectores esta semana. Eso no es operativo — es estructural.",
-          "Le comunico al N1 el patrón, no el incidente."
+          "\"Este tema lleva 3 días sin respuesta — lo tomo yo.\"",
+          "\"Veo que el tema X aparece en varios sectores esta semana. Eso no es operativo — es estructural.\"",
+          "\"Le comunico al N1 el patrón, no el incidente.\""
         ],
         "no": [
           "Revisar el panel solo cuando algo explota.",
           "Escalar al N1 sin haber identificado el patrón.",
           "Dejar que el panel se convierta en archivo muerto."
-        ]
+        ],
+        "context": {
+          "freq": "Semanal (ambos turnos)",
+          "when": "Al cierre de cada turno"
+        }
       },
       {
         "id": "reconocimiento",
@@ -481,7 +623,7 @@ Object.assign(window.PROFILES, {
         "context": {
           "freq": "1 vez cada 2 semanas",
           "when": "3 min",
-          "place": "En reunión de tu equipo (Día y noche por separado)"
+          "place": "Reunión de equipo · Día y noche por separado"
         },
         "steps": [
           {
@@ -494,12 +636,12 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo: \"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno frente al grupo: \"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\" RECONOCIMIENTO SKIP-LEVEL (opcional): También puedo reconocer a Supervisores de Producción (N4). Condición: Coordinado con el Jefe de Producción correspondiente. Cubrir ambos turnos en el período."
           }
         ],
         "phrases": [
-          "Antes de seguir, quiero mencionar a [nombre]. Vi [conducta específica] cuando [situación]. Eso sumó mucho en [impacto].",
-          "Si tuviera que poner un ejemplo de Cultiva en acción, sería [nombre] cuando [situación]."
+          "\"Antes de seguir, quiero mencionar a [nombre]. Vi [conducta específica] cuando [situación]. Eso sumó mucho en [impacto].\"",
+          "\"Si tuviera que poner un ejemplo de Cultiva en acción, sería [nombre] cuando [situación].\""
         ],
         "no": [
           "Reconocimiento vago: \"buen trabajo\" o \"todos lo hicieron bien\".",
@@ -548,50 +690,54 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "lidera",
         "icon": "compass",
-        "title": "Acompañamiento 1:1",
-        "freq": "A 2 Supervisores al mes",
-        "purpose": "Desarrollar al líder en terreno, en tiempo real, mediante la observación, la reflexión y acuerdos concretos para potenciar sus fortalezas y mejorar su desempeño",
+        "title": "Acompañamiento 1 a 1",
+        "freq": "2 Supervisores al mes",
+        "purpose": "Desarrollar al líder en terreno, en tiempo real, mediante observación, pregunta y acuerdo — SCI integrado. Recomendación: Desarrollar al líder en terreno, en tiempo real, mediante la observación, la reflexión y acuerdos concretos para potenciar sus fortalezas y mejorar su desempeño",
         "context": {
           "freq": "2 Supervisores al mes",
           "when": "20 min",
-          "place": "En planta · ambos turnos"
+          "place": "Ambos turnos · En planta"
         },
         "steps": [
           {
-            "k": "Observa",
-            "t": "Noto en terreno cómo trabaja el líder: sus decisiones, su trato al equipo, su presencia."
+            "k": "Observo",
+            "t": "noto en terreno cómo trabaja el líder: sus decisiones, su trato al equipo, su presencia."
           },
           {
-            "k": "Acércate",
-            "t": "Con apertura neutra: \"Oye, ¿cómo va esto? ¿Qué te está costando más?\""
+            "k": "Identifico",
+            "t": "una conducta observada para corregir o potenciar."
           },
           {
-            "k": "Pregunta",
-            "t": "Con SCI — \"Vi que [conducta] cuando [situación]. Eso generó [impacto]. ¿Cómo lo ves tú?\""
+            "k": "Comparto",
+            "t": "\"Observé que [conducta] cuando [situación]. Esto generó [impacto]. ¿Cómo lo ves tú?\""
           },
           {
-            "k": "Acuerda",
-            "t": "Dejo que reflexione y proponga la solución."
+            "k": "Escucho",
+            "t": "2 minutos sin interrumpir."
           },
           {
-            "k": "Cierra",
-            "t": "Una sola cosa concreta que hará distinto."
+            "k": "Impulso",
+            "t": "Pregunto qué podría hacer para mejorar o llevar esa fortaleza al siguiente nivel."
           },
           {
-            "k": "Vuelve",
-            "t": "Con reconocimiento por el compromiso."
+            "k": "Acordamos",
+            "t": "Definimos una acción concreta para poner en práctica."
           },
           {
-            "k": null,
-            "t": "En días siguientes: \"¿Cómo te resultó?\""
+            "k": "Cierro",
+            "t": "con reconocimiento por el compromiso."
+          },
+          {
+            "k": "Vuelvo",
+            "t": "cuando se haya cumplido la fecha de seguimiento: \"¿Cómo te resultó lo que acordamos?\""
           }
         ],
         "phrases": [
-          "Vi que [conducta] cuando [situación]. Eso generó [impacto]. ¿Cómo lo ves tú?",
-          "Lo que mejor vi este mes fue cómo manejaste [situación específica] y que generó [impacto]. Quiero que sepas que lo registré.",
-          "¿Qué necesitas de mí para que esto salga mejor?",
-          "Repíteme el acuerdo para asegurarnos de que quedamos igual.",
-          "Antes de irme quiero reconocer que [conducta positiva]. Eso marca la diferencia."
+          "\"Vi que [conducta] cuando [situación]. Eso generó [impacto]. ¿Cómo lo ves tú?\"",
+          "“Lo que mejor vi este mes fue cómo manejaste [situación específica] y que generó [impacto]. Quiero que sepas que lo registré.”",
+          "\"¿Qué necesitas de mí para que esto salga mejor?\"",
+          "\"Repíteme el acuerdo para asegurarnos de que quedamos igual.\"",
+          "\"Antes de irme quiero reconocer que [conducta positiva]. Eso marca la diferencia.\""
         ],
         "no": [
           "Corregir antes de observar.",
@@ -639,11 +785,60 @@ Object.assign(window.PROFILES, {
         }
       },
       {
+        "id": "espacio-de-confianza",
+        "kind": "full",
+        "dimension": "escucha",
+        "icon": "ear",
+        "title": "Espacio de confianza",
+        "freq": "Semanal",
+        "purpose": "Recoger inquietudes antes de que se conviertan en problemas, fomentar la comunicación, cercanía y espacios seguros.",
+        "context": {
+          "when": "en espacios ya programados o existentes con tus reportes directos"
+        },
+        "steps": [
+          {
+            "k": "Abro",
+            "t": "\"Cómo están?\" \"¿Algo que necesiten conversar antes de empezar?\""
+          },
+          {
+            "k": "Espero",
+            "t": "20-30 seg en silencio — la gente no responde de inmediato."
+          },
+          {
+            "k": "Escucho",
+            "t": "sin interrumpir. Si nadie habla: \"¿Cómo vienen hoy?\""
+          },
+          {
+            "k": "Resuelvo",
+            "t": "fomentando confianza y apertura"
+          },
+          {
+            "k": "Registro",
+            "t": "vía app: escribo contexto +  establenzco Urgencia (Hoy / Esta semana)."
+          },
+          {
+            "k": "Doy cierre",
+            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\" También puedes aplicarlo 1:1 — en privado la persona se abre más."
+          }
+        ],
+        "phrases": [
+          "\"¿Cómo viene la semana? ¿Algo que necesite saber?\"",
+          "\"Ese tema lo veo yo — te aviso en el próximo turno.\"",
+          "\"Eso no está en mis manos. Lo escalo a mi jefe — vuelvo esta semana.\"",
+          "\"El lunes [nombre] planteó [tema]. Así quedó.\""
+        ],
+        "no": [
+          "Prometer a tu equipo lo que no puedes cumplir.",
+          "Escalar a mi jefe sin contexto — no puede actuar sobre algo que no entiende.",
+          "No cerrar el loop con quien lo trajo."
+        ]
+      },
+      {
         "id": "revisar-escaladas-diarias",
         "kind": "escaladas",
         "dimension": "escucha",
         "icon": "inbox",
-        "title": "Espacio de confianza",
+        "title": "Revisión de escaladas",
         "freq": "Diario (ambos turnos)",
         "from": "Supervisores de Planta / Control",
         "reminder": "Al cierre del día, sentarse a revisar los temas escalados por los Supervisores (día y noche).",
@@ -655,7 +850,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Decido",
-            "t": "con un toque para cada tema: Resuelvo yo · En proceso · Escalo al nivel superior."
+            "t": "con un toque para cada tema: Resuelvo yo · En proceso · Escalo a mi jefe."
           },
           {
             "k": "Respondo",
@@ -663,7 +858,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Escalo",
-            "t": "con criterio: el tema sube con mi decisión y contexto adicional."
+            "t": "a mi jefe con criterio: el tema sube con mi decisión y contexto adicional."
           },
           {
             "k": "Cierro",
@@ -671,15 +866,19 @@ Object.assign(window.PROFILES, {
           }
         ],
         "phrases": [
-          "Tu tema lo revisé. Lo resuelvo yo — te confirmo mañana.",
-          "Lo escalé arriba. Tendrás respuesta el [día].",
-          "Queda en proceso — necesito [dato]. Dame hasta [fecha]."
+          "\"Tu tema lo revisé. Lo resuelvo yo — te confirmo mañana.\"",
+          "\"Lo escalé arriba. Tendrás respuesta el [día].\"",
+          "\"Queda en proceso — necesito [dato]. Dame hasta [fecha].\""
         ],
         "no": [
           "Dejar temas sin decisión más de 48 horas.",
           "Escalar sin agregar tu propio criterio.",
           "Silencio — destruye la confianza en el sistema."
-        ]
+        ],
+        "context": {
+          "freq": "Diario (ambos turnos)",
+          "when": "Al cierre de cada turno"
+        }
       },
       {
         "id": "reconocimiento",
@@ -692,7 +891,7 @@ Object.assign(window.PROFILES, {
         "context": {
           "freq": "1 vez al mes",
           "when": "3 min",
-          "place": "En reunión del equipo (ambos turnos)"
+          "place": "Reunión del equipo · Ambos turnos"
         },
         "steps": [
           {
@@ -709,8 +908,8 @@ Object.assign(window.PROFILES, {
           }
         ],
         "phrases": [
-          "Antes de seguir, quiero mencionar a [nombre]. Vi [conducta específica] cuando [situación]. Eso sumó mucho en [impacto].",
-          "Si tuviera que poner un ejemplo de Cultiva en acción, sería [nombre] cuando [situación]."
+          "\"Antes de seguir, quiero mencionar a [nombre]. Vi [conducta específica] cuando [situación]. Eso sumó mucho en [impacto].\"",
+          "\"Si tuviera que poner un ejemplo de Cultiva en acción, sería [nombre] cuando [situación].\""
         ],
         "no": [
           "Reconocimiento vago: \"buen trabajo\" o \"todos lo hicieron bien\".",
@@ -761,7 +960,64 @@ Object.assign(window.PROFILES, {
         "title": "Saludo con propósito",
         "freq": "Diario (ambos turnos)",
         "reminder": "Al inicio del turno no olvides saludar a tu equipo con energía para iniciar bien la jornada.",
-        "hasDone": true
+        "hasDone": true,
+        "purpose": "Al inicio de cada turno (día y noche) no olvides saludar a tu equipo con energía.",
+        "context": {
+          "freq": "Diario (ambos turnos)",
+          "when": "Inicio de turno"
+        },
+        "registro": {
+          "hidden": true
+        }
+      },
+      {
+        "id": "presencia-activa-en-planta",
+        "kind": "full",
+        "dimension": "lidera",
+        "icon": "footprints",
+        "title": "Acompañamiento 1 a 1",
+        "freq": "Diario (ambos turnos)",
+        "purpose": "Construir autoridad desde la relación — presencia visible que observa, conversa y da feedback en el momento.",
+        "context": {
+          "freq": "Diario (ambos turnos)",
+          "when": "En movimiento por la línea durante el turno",
+          "place": "En movimiento por las líneas durante el turno"
+        },
+        "steps": [
+          {
+            "k": "Me muevo",
+            "t": "por todo el sector — no solo donde hay problemas."
+          },
+          {
+            "k": "Observo",
+            "t": "quién se está esforzando, quién parece cansado."
+          },
+          {
+            "k": "Me acerco",
+            "t": "a 1-2 personas — una pregunta simple antes que cualquier instrucción."
+          },
+          {
+            "k": "Digo",
+            "t": "lo positivo ahí mismo con SCI: \"Vi que [conducta] cuando [situación]. Eso sumó en [impacto].\""
+          },
+          {
+            "k": "Corrijo",
+            "t": "lo que corresponda en privado, 1:1, nunca frente al grupo."
+          }
+        ],
+        "phrases": [
+          "\"¿Cómo te está yendo en este turno? ¿Algo que te esté complicando?\"",
+          "\"Vi que [conducta] cuando [situación]. Eso está bien hecho.\"",
+          "\"¿Hay algo del turno que deba saber antes de seguir?\""
+        ],
+        "no": [
+          "Aparecer solo cuando hay un problema en la línea.",
+          "Corregir en público frente al equipo.",
+          "Tratar el turno noche como turno de segunda."
+        ],
+        "registro": {
+          "hidden": true
+        }
       },
       {
         "id": "escucha-antes-de-iniciar",
@@ -794,20 +1050,20 @@ Object.assign(window.PROFILES, {
             "t": "para cada tema: ¿resuelvo yo o escalo?"
           },
           {
-            "k": "Escalo",
-            "t": "vía app: 2 líneas de contexto + Tipo (Operativo / Cultural) + Urgencia (Hoy / Esta semana)."
+            "k": "Registro",
+            "t": "vía app: escribo contexto +  establenzco Urgencia (Hoy / Esta semana)."
           },
           {
-            "k": "Cierro el loop",
-            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\" También puedes aplicarlo 1:1 — en privado el equipo se abre más."
+            "k": "Doy cierre",
+            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\" También puedes aplicarlo 1:1 — en privado la persona se abre más."
           }
         ],
         "note": "Este ritual también puedes aplicarlo en conversaciones individuales; en ese espacio privado tu equipo puede sentirse más cómodo para abrirse contigo.  También puedes aplicarlo 1:1 — en privado el equipo se abre más.",
         "phrases": [
-          "Antes de arrancar, ¿algo que necesiten que sepa o que tenga que escalar?",
-          "Ese tema lo resuelvo yo en este turno. Te aviso antes del cierre.",
-          "No está en mis manos. Lo subo ahora — mañana te traigo respuesta.",
-          "Ayer [nombre] planteó [tema]. Lo resolví / llega el [día]."
+          "\"Antes de arrancar, ¿algo que necesiten que sepa o que tenga que escalar?\"",
+          "\"Ese tema lo resuelvo yo en este turno. Te aviso antes del cierre.\"",
+          "\"No está en mis manos. Lo subo ahora — mañana te traigo respuesta.\"",
+          "\"Ayer [nombre] planteó [tema]. Lo resolví / llega el [día].\""
         ],
         "no": [
           "Prometer lo que no puedes cumplir.",
@@ -845,52 +1101,6 @@ Object.assign(window.PROFILES, {
         }
       },
       {
-        "id": "presencia-activa-en-planta",
-        "kind": "full",
-        "dimension": "lidera",
-        "icon": "footprints",
-        "title": "Acompañamiento 1:1",
-        "freq": "Diario (ambos turnos)",
-        "purpose": "Construir autoridad desde la relación — presencia visible que observa, conversa y da feedback en el momento.",
-        "context": {
-          "freq": "Diario (ambos turnos)",
-          "when": "En movimiento por la línea durante el turno",
-          "place": "En movimiento por las líneas durante el turno"
-        },
-        "steps": [
-          {
-            "k": "Me muevo",
-            "t": "Por todo el sector — no solo donde hay problemas."
-          },
-          {
-            "k": "Observo",
-            "t": "Quién se está esforzando, quién parece cansado."
-          },
-          {
-            "k": "Me acerco",
-            "t": "A 1-2 personas — una pregunta simple antes que cualquier instrucción."
-          },
-          {
-            "k": "Reconozco al momento",
-            "t": "Lo positivo ahí mismo con SCI: \"Vi que [conducta] cuando [situación]. Eso sumó en [impacto].\""
-          },
-          {
-            "k": "Corrijo en privado",
-            "t": "Lo que corresponda en privado, 1:1, nunca frente al grupo."
-          }
-        ],
-        "phrases": [
-          "¿Cómo te está yendo en este turno? ¿Algo que te esté complicando?",
-          "Vi que [conducta] cuando [situación]. Eso está bien hecho.",
-          "¿Hay algo del turno que deba saber antes de seguir?"
-        ],
-        "no": [
-          "Aparecer solo cuando hay un problema en la línea.",
-          "Corregir en público frente al equipo.",
-          "Tratar el turno noche como turno de segunda."
-        ]
-      },
-      {
         "id": "reconocimiento",
         "kind": "full",
         "dimension": "valora",
@@ -918,8 +1128,8 @@ Object.assign(window.PROFILES, {
           }
         ],
         "phrases": [
-          "Antes de seguir, quiero mencionar a [nombre]. Vi [conducta específica] cuando [situación]. Eso sumó mucho en [impacto].",
-          "Si tuviera que poner un ejemplo de Cultiva en acción, sería [nombre] cuando [situación]."
+          "\"Antes de seguir, quiero mencionar a [nombre]. Vi [conducta específica] cuando [situación]. Eso sumó mucho en [impacto].\"",
+          "\"Si tuviera que poner un ejemplo de Cultiva en acción, sería [nombre] cuando [situación].\""
         ],
         "no": [
           "Reconocimiento vago: \"buen trabajo\" o \"todos lo hicieron bien\".",
@@ -967,7 +1177,15 @@ Object.assign(window.PROFILES, {
         "title": "Cierre con agradecimiento",
         "freq": "Diario (ambos turnos)",
         "reminder": "Al cierre del turno (ambos) no olvides agradecer a tu equipo por el esfuerzo realizado.",
-        "hasDone": true
+        "hasDone": true,
+        "purpose": "Al cierre del turno (día y noche) no olvides agradecer a tu equipo.",
+        "context": {
+          "freq": "Diario (ambos turnos)",
+          "when": "Cierre de turno"
+        },
+        "registro": {
+          "hidden": true
+        }
       }
     ]
   }
