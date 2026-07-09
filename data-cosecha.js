@@ -75,7 +75,7 @@ window.PROFILES = {
         "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "1 vez al mes",
-        "purpose": "Desarrollar al nivel de abajo mediante observación, pregunta y acuerdo concreto — SCI integrado. Recomendación: Desarrollar al nivel de abajo mediante la observación, la reflexión y acuerdos concretos para potenciar sus fortalezas y mejorar su desempeño",
+        "purpose": "Desarrollar al nivel de abajo mediante la observación, la reflexión y acuerdos concretos para potenciar sus fortalezas y mejorar su desempeño",
         "context": {
           "freq": "1 vez al mes",
           "when": "30-45 min",
@@ -84,35 +84,35 @@ window.PROFILES = {
         "steps": [
           {
             "k": "Observo",
-            "t": "identifico 1 conducta positiva y 1 a mejorar (ambas observadas, no oídas)."
+            "t": "Identifico una conducta observada para corregir o potenciar."
           },
           {
             "k": "Me acerco",
-            "t": "con tono neutro, sin señal de corrección."
+            "t": "Inicio una conversación breve y cercana."
           },
           {
             "k": "Abro",
-            "t": "con SCI — \"Vi que [conducta] cuando [situación]. Eso generó [impacto]. ¿Cómo lo ves tú?\""
+            "t": "\"Observé que [conducta] cuando [situación]. Esto generó [impacto]. ¿Cómo lo ves?\""
           },
           {
             "k": "Escucho",
-            "t": "2 minutos sin interrumpir."
+            "t": "Dejo que reflexione antes de responder."
           },
           {
             "k": "Pregunto",
-            "t": "dejo que reflexione y proponga la solución."
+            "t": "Pregunto qué podría hacer para mejorar o llevar esa fortaleza al siguiente nivel."
           },
           {
             "k": "Acordamos",
-            "t": "una sola cosa concreta que hará distinto."
+            "t": "Definimos una acción concreta para poner en práctica."
           },
           {
             "k": "Cierro",
-            "t": "con reconocimiento por el compromiso."
+            "t": "Agradezco su apertura y compromiso."
           },
           {
             "k": "Vuelvo",
-            "t": "en días siguientes: \"¿Cómo te resultó lo que acordamos?\" Recomendación: OBSERVO — Identifico una conducta observada para corregir o potenciar. ME ACERCO — Inicio una conversación breve y cercana. COMPARTO — \"Observé que [conducta] cuando [situación]. Esto generó [impacto]. ¿Cómo lo ves?\" ESCUCHO — Dejo que reflexione antes de responder. IMPULSO — Pregunto qué podría hacer para mejorar o llevar esa fortaleza al siguiente nivel. ACORDAMOS — Definimos una acción concreta para poner en práctica. RECONOZCO — Agradezco su apertura y compromiso. HAGO SEGUIMIENTO — Retomo la conversación para revisar cómo le fue."
+            "t": "Retomo la conversación para revisar cómo le fue."
           }
         ],
         "phrases": [
@@ -294,7 +294,7 @@ window.PROFILES = {
         "freq": "Semanal",
         "purpose": "Recoger inquietudes antes de que se conviertan en problemas, fomentar la comunicación, cercanía y espacios seguros.",
         "context": {
-          "when": "en espacios ya programados o existentes con tus reportes directos"
+          "when": "En espacios ya programados o existentes con tus reportes directos"
         },
         "steps": [
           {
@@ -311,11 +311,11 @@ window.PROFILES = {
           },
           {
             "k": "Registro",
-            "t": "(vía app): Registro el tema y su contexto."
+            "t": "Registro el tema y su contexto."
           },
           {
             "k": "Actúo",
-            "t": "Para cada tema, elijo una opción: • Si puedo resolverlo: defino la acción y establezco la urgencia (Hoy / Esta semana). • Si no puedo resolverlo: marco \"No resuelvo yo\", agradezco que lo haya compartido, reconozco la importancia del tema y le brindo una orientación sobre qué podría hacer."
+            "t": "Para cada tema:\n• Si puedo resolverlo: defino la acción y establezco la urgencia (Hoy / Esta semana).\n• Si no puedo resolverlo: marco \"No resuelvo yo\", agradezco su apertura y le brindo una orientación sobre qué hacer."
           },
           {
             "k": "Doy cierre",
@@ -386,7 +386,7 @@ window.PROFILES = {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo: \"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\" RECONOCIMIENTO SKIP-LEVEL (opcional): También puedo reconocer a Supervisores de Fundo (N3). Condición: Siempre coordinado con el Jefe de Cosecha — él aporta el contexto de qué hizo el SF y por qué merece ser nombrado."
+            "t": "en el momento oportuno frente al grupo:\n\"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -438,45 +438,13 @@ window.PROFILES = {
         "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "1 vez al mes",
-        "purpose": "Desarrollar al nivel de abajo mediante observación, pregunta y acuerdo concreto — SCI integrado. Recomendación: Desarrollar al nivel de abajo mediante la observación, la reflexión y acuerdos concretos para potenciar sus fortalezas y mejorar su desempeño",
+        "purpose": "Desarrollar al nivel de abajo mediante la observación, la reflexión y acuerdos concretos para potenciar sus fortalezas y mejorar su desempeño",
         "context": {
           "freq": "1 vez al mes",
           "when": "30 min",
           "place": "Caminata con el Supervisor de Fundo"
         },
         "steps": [
-          {
-            "k": "Observo",
-            "t": "identifico 1 conducta positiva y 1 a mejorar (ambas observadas, no oídas)."
-          },
-          {
-            "k": "Me acerco",
-            "t": "con tono neutro, sin señal de corrección."
-          },
-          {
-            "k": "Abro",
-            "t": "con SCI — \"Vi que [conducta] cuando [situación]. Eso generó [impacto]. ¿Cómo lo ves tú?\""
-          },
-          {
-            "k": "Escucho",
-            "t": "2 minutos sin interrumpir."
-          },
-          {
-            "k": "Pregunto",
-            "t": "dejo que reflexione y proponga la solución."
-          },
-          {
-            "k": "Acordamos",
-            "t": "una sola cosa concreta que hará distinto."
-          },
-          {
-            "k": "Cierro",
-            "t": "con reconocimiento por el compromiso."
-          },
-          {
-            "k": "Vuelvo",
-            "t": "en días siguientes: \"¿Cómo te resultó lo que acordamos?\" Recomendación:"
-          },
           {
             "k": "Observo",
             "t": "Identifico una conducta observada para corregir o potenciar."
@@ -618,7 +586,7 @@ window.PROFILES = {
         "freq": "Semanal",
         "purpose": "Recoger inquietudes antes de que se conviertan en problemas, fomentar la comunicación, cercanía y espacios seguros.",
         "context": {
-          "when": "en espacios ya programados o existentes con tus reportes directos"
+          "when": "En espacios ya programados o existentes con tus reportes directos"
         },
         "steps": [
           {
@@ -639,11 +607,11 @@ window.PROFILES = {
           },
           {
             "k": "Registro",
-            "t": "vía app: escribo contexto +  establenzco Urgencia (Hoy / Esta semana)."
+            "t": "vía app: escribo contexto + establenzco Urgencia (Hoy / Esta semana)."
           },
           {
             "k": "Doy cierre",
-            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\" También puedes aplicarlo 1:1 — en privado la persona se abre más."
+            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\""
           }
         ],
         "phrases": [
@@ -715,7 +683,7 @@ window.PROFILES = {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo: \"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\" RECONOCIMIENTO SKIP-LEVEL (opcional): También puedo reconocer a Líderes de Cosecha (N4). Condición: Siempre coordinado con el Supervisor de Fundo correspondiente."
+            "t": "en el momento oportuno frente al grupo:\n\"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -926,7 +894,7 @@ window.PROFILES = {
         "freq": "Semanal",
         "purpose": "Recoger inquietudes antes de que se conviertan en problemas, fomentar la comunicación, cercanía y espacios seguros.",
         "context": {
-          "when": "en espacios ya programados o existentes con tus reportes directos"
+          "when": "En espacios ya programados o existentes con tus reportes directos"
         },
         "steps": [
           {
@@ -947,11 +915,11 @@ window.PROFILES = {
           },
           {
             "k": "Registro",
-            "t": "vía app: escribo contexto +  establenzco Urgencia (Hoy / Esta semana)."
+            "t": "vía app: escribo contexto + establenzco Urgencia (Hoy / Esta semana)."
           },
           {
             "k": "Doy cierre",
-            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\" También puedes aplicarlo 1:1 — en privado la persona se abre más."
+            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\""
           }
         ],
         "phrases": [
@@ -1095,7 +1063,7 @@ window.PROFILES = {
         "purpose": "Construir autoridad desde la relación — presencia visible que observa, conversa y da feedback en el momento.",
         "context": {
           "freq": "Diario",
-          "when": "En movimiento por el campo  Recomendación: En el campo",
+          "when": "En el campo",
           "place": "En el campo"
         },
         "steps": [
@@ -1168,11 +1136,11 @@ window.PROFILES = {
           },
           {
             "k": "Registro",
-            "t": "vía app: escribo contexto +  establenzco Urgencia (Hoy / Esta semana)."
+            "t": "vía app: escribo contexto + establenzco Urgencia (Hoy / Esta semana)."
           },
           {
             "k": "Doy cierre",
-            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\" También puedes aplicarlo 1:1 — en privado la persona se abre más."
+            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\""
           }
         ],
         "note": "Este ritual también puedes aplicarlo en conversaciones individuales, en ese espacio privado tu equipo puede sentirse más cómodo para abrirse contigo.  También puedes aplicarlo 1:1 — en privado el equipo se abre más.",

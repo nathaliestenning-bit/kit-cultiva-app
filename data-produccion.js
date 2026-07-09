@@ -26,7 +26,7 @@ Object.assign(window.PROFILES, {
         "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "1 vez al mes",
-        "purpose": "\"Desarrollar al nivel de abajo mediante observación, pregunta y acuerdo concreto — SCI integrado. Recomendación: Desarrollar al nivel de abajo mediante la observación, la reflexión y acuerdos concretos para potenciar sus fortalezas y mejorar su desempeño\"",
+        "purpose": "\"Desarrollar al nivel de abajo mediante observación, pregunta y acuerdo concreto — SCI integrado.",
         "context": {
           "freq": "1 vez al mes",
           "when": "30-45 min",
@@ -249,7 +249,7 @@ Object.assign(window.PROFILES, {
         "freq": "Diario",
         "purpose": "Recoger inquietudes antes de que se conviertan en problemas, fomentar la comunicación, cercanía y espacios seguros.",
         "context": {
-          "when": "en espacios ya programados o existentes con tus reportes directos"
+          "when": "En espacios ya programados o existentes con tus reportes directos"
         },
         "steps": [
           {
@@ -266,11 +266,11 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Registro",
-            "t": "(vía app): Registro el tema y su contexto."
+            "t": "Registro el tema y su contexto."
           },
           {
             "k": "Actúo",
-            "t": "Para cada tema, elijo una opción: • Si puedo resolverlo: defino la acción y establezco la urgencia (Hoy / Esta semana). • Si no puedo resolverlo: marco \"No resuelvo yo\", agradezco que lo haya compartido, reconozco la importancia del tema y le brindo una orientación sobre qué podría hacer."
+            "t": "Para cada tema:\n• Si puedo resolverlo: defino la acción y establezco la urgencia (Hoy / Esta semana).\n• Si no puedo resolverlo: marco \"No resuelvo yo\", agradezco su apertura y le brindo una orientación sobre qué hacer."
           },
           {
             "k": "Doy cierre",
@@ -333,7 +333,7 @@ Object.assign(window.PROFILES, {
         "steps": [
           {
             "k": "Observo",
-            "t": "conscientemente a las Jefaturas que destaquen en conducta o rendimiento durante el período."
+            "t": "conscientemente a la persona del equipo que destaquen en conducta o rendimiento durante el período."
           },
           {
             "k": "Anoto",
@@ -341,7 +341,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo: \"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\" RECONOCIMIENTO SKIP-LEVEL (opcional): También puedo reconocer a Jefes de Producción / Coordinadores (N3). Condición: Siempre coordinado con la Jefatura correspondiente antes de nombrar."
+            "t": "en el momento oportuno frente al grupo:\n\"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -395,7 +395,7 @@ Object.assign(window.PROFILES, {
         "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "1 vez al mes",
-        "purpose": "Desarrollar al nivel de abajo mediante observación, pregunta y acuerdo concreto — SCI integrado. Recomendación: Desarrollar al nivel de abajo mediante la observación, la reflexión y acuerdos concretos para potenciar sus fortalezas y mejorar su desempeño",
+        "purpose": "Desarrollar al nivel de abajo mediante observación, pregunta y acuerdo concreto — SCI integrado.",
         "context": {
           "freq": "1 vez al mes",
           "when": "30 min",
@@ -543,7 +543,7 @@ Object.assign(window.PROFILES, {
         "freq": "Diario",
         "purpose": "Recoger inquietudes antes de que se conviertan en problemas, fomentar la comunicación, cercanía y espacios seguros.",
         "context": {
-          "when": "en espacios ya programados o existentes con tus reportes directos"
+          "when": "En espacios ya programados o existentes con tus reportes directos"
         },
         "steps": [
           {
@@ -564,11 +564,11 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Registro",
-            "t": "vía app: escribo contexto +  establenzco Urgencia (Hoy / Esta semana)."
+            "t": "vía app: escribo contexto + establenzco Urgencia (Hoy / Esta semana)."
           },
           {
             "k": "Doy cierre",
-            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\" También puedes aplicarlo 1:1 — en privado la persona se abre más."
+            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\""
           }
         ],
         "phrases": [
@@ -632,7 +632,7 @@ Object.assign(window.PROFILES, {
         "steps": [
           {
             "k": "Observo",
-            "t": "conscientemente a los Jefes de Producción / Coordinadores que destaquen en conducta o rendimiento durante el período."
+            "t": "conscientemente a la persona del equipo que destaquen en conducta o rendimiento durante el período."
           },
           {
             "k": "Anoto",
@@ -640,7 +640,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo: \"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\" RECONOCIMIENTO SKIP-LEVEL (opcional): También puedo reconocer a Supervisores de Producción (N4). Condición: Siempre coordinado con el Jefe de Producción / Coordinador correspondiente."
+            "t": "en el momento oportuno frente al grupo:\n\"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -712,7 +712,7 @@ Object.assign(window.PROFILES, {
         "icon": "compass",
         "title": "Acompañamiento 1 a 1",
         "freq": "2 Supervisores por semana",
-        "purpose": "Desarrollar al líder en terreno, en tiempo real, mediante observación, pregunta y acuerdo — SCI integrado. Recomendación: Desarrollar al líder en terreno mediante la observación, la reflexión y acuerdos concretos para potenciar sus fortalezas y mejorar su desempeño\"",
+        "purpose": "Desarrollar al líder en terreno, en tiempo real, mediante observación, pregunta y acuerdo — SCI integrado.",
         "context": {
           "freq": "2 Supervisores por semana",
           "when": "20 min",
@@ -850,7 +850,7 @@ Object.assign(window.PROFILES, {
         "freq": "Semanal",
         "purpose": "Recoger inquietudes antes de que se conviertan en problemas, fomentar la comunicación, cercanía y espacios seguros.",
         "context": {
-          "when": "en espacios ya programados o existentes con tus reportes directos"
+          "when": "En espacios ya programados o existentes con tus reportes directos"
         },
         "steps": [
           {
@@ -871,11 +871,11 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Registro",
-            "t": "vía app: escribo contexto +  establenzco Urgencia (Hoy / Esta semana)."
+            "t": "vía app: escribo contexto + establenzco Urgencia (Hoy / Esta semana)."
           },
           {
             "k": "Doy cierre",
-            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\" También puedes aplicarlo 1:1 — en privado la persona se abre más."
+            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\""
           }
         ],
         "phrases": [
@@ -1093,11 +1093,11 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Registro",
-            "t": "vía app: escribo contexto +  establenzco Urgencia (Hoy / Esta semana)."
+            "t": "vía app: escribo contexto + establenzco Urgencia (Hoy / Esta semana)."
           },
           {
             "k": "Doy cierre",
-            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\" También puedes aplicarlo 1:1 — en privado la persona se abre más."
+            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\""
           }
         ],
         "note": "Este ritual también puedes aplicarlo en conversaciones individuales; en ese espacio privado tu equipo puede sentirse más cómodo para abrirse contigo.  También puedes aplicarlo 1:1 — en privado el equipo se abre más.",
