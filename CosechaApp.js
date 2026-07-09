@@ -119,8 +119,8 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, userName }) {
   useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
   const areaDef = window.AREAS.find((a) => a.id === profile.area) || { icon: "wheat", label: "" };
   const R = profile.rituals;
-  const inicio = R.filter((r) => r.kind === "light" && /inicio/i.test(r.freq));
-  const cierre = R.filter((r) => r.kind === "light" && !/inicio/i.test(r.freq));
+  const inicio = R.filter((r) => r.kind === "light" && /saludo|inicio/i.test(r.id + " " + r.freq));
+  const cierre = R.filter((r) => r.kind === "light" && !/saludo|inicio/i.test(r.id + " " + r.freq));
   const escaladas = R.filter((r) => r.kind === "escaladas");
   const groups = window.DIM_ORDER
     .map((d) => ({ dim: d, def: window.DIMS[d], items: R.filter((r) => r.dimension === d && (r.kind === "full" || r.kind === "escaladas")) }))
@@ -179,7 +179,7 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, userName }) {
             return h("button", {
               key: r.id, type: "button", className: "thumb" + (isEsc ? " thumb-esc" : ""),
               style: { "--dc": g.def.color },
-              onClick: isEsc ? onEscaladas : () => onOpen(r.id),
+              onClick: () => onOpen(r.id),
             },
               h("span", { className: "thumb-top" },
                 h("span", { className: "thumb-ico" }, I(r.icon)),
@@ -231,7 +231,7 @@ function TemasHelp() {
 }
 
 /* ---------- detalle de un ritual --------------------------- */
-function Detail({ profile, ritual, onBack }) {
+function Detail({ profile, ritual, onBack, onEscaladas }) {
   const dim = window.DIMS[ritual.dimension];
   useEffect(() => { if (window.lucide) window.lucide.createIcons(); }, [ritual.id]);
 
@@ -279,6 +279,9 @@ function Detail({ profile, ritual, onBack }) {
           )
         : h("div", { className: "full-wrap" },
             ritual.purpose ? h("p", { className: "purpose" }, ritual.purpose) : null,
+
+            ritual.kind === "escaladas" ? h("button", { className: "done-btn on", type: "button", onClick: onEscaladas, style: { marginBottom: "10px" } },
+              I("inbox", "ico-sm"), "Ver bandeja de escaladas") : null,
 
             ritual.context ? h("div", { className: "ctx" },
               ritual.context.freq ? h("div", { className: "ctx-row" }, I("repeat", "ico-xs"), h("span", null, ritual.context.freq)) : null,
@@ -378,6 +381,7 @@ function CosechaApp() {
     }) : null,
     view === "detail" && ritual ? h(Detail, {
       profile: profile, ritual: ritual, onBack: () => setView("gallery"),
+      onEscaladas: () => setView("escaladas"),
     }) : null,
     view === "escaladas" && profile ? h(window.EscaladasInbox, {
       profile: profile, onBack: () => setView("gallery"),

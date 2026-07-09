@@ -258,7 +258,7 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "contexto",
-              "l": "Contexto del tema",
+              "l": "Contexto",
               "t": "area"
             },
             {
@@ -574,7 +574,7 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "contexto",
-              "l": "Contexto del tema",
+              "l": "Contexto",
               "t": "area"
             },
             {
@@ -603,11 +603,6 @@ Object.assign(window.PROFILES, {
                 "Día",
                 "Noche"
               ]
-            },
-            {
-              "k": "mi",
-              "l": "Mi jefe recibe el tema con mi contexto — no tiene que pedirlo.",
-              "t": "area"
             }
           ]
         }
@@ -739,7 +734,7 @@ Object.assign(window.PROFILES, {
         "id": "coaching-en-terreno",
         "kind": "full",
         "dimension": "lidera",
-        "icon": "compass",
+        "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "2 Supervisores al mes",
         "purpose": "Desarrollar al líder en terreno, en tiempo real, mediante observación, pregunta y acuerdo — SCI integrado.",
@@ -890,7 +885,7 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "contexto",
-              "l": "Contexto del tema",
+              "l": "Contexto",
               "t": "area"
             },
             {
@@ -919,11 +914,6 @@ Object.assign(window.PROFILES, {
                 "Día",
                 "Noche"
               ]
-            },
-            {
-              "k": "mi",
-              "l": "Mi jefe recibe el tema con mi criterio ya agregado.",
-              "t": "area"
             }
           ]
         }
@@ -1076,7 +1066,7 @@ Object.assign(window.PROFILES, {
         "id": "presencia-activa-en-planta",
         "kind": "full",
         "dimension": "lidera",
-        "icon": "footprints",
+        "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "Diario (ambos turnos)",
         "purpose": "Construir autoridad desde la relación — presencia visible que observa, conversa y da feedback en el momento.",
@@ -1175,20 +1165,32 @@ Object.assign(window.PROFILES, {
         "registro": {
           "soporte": "Escalada vía app",
           "autoBroadcast": {
-            "temaFijo": "Relevo de turno",
-            "detalle": "temas"
+            "temaFijo": "Espacio de confianza",
+            "detalle": "contexto"
           },
           "fields": [
             {
-              "k": "fecha",
-              "l": "Fecha",
-              "t": "date"
+              "k": "contexto",
+              "l": "Contexto",
+              "t": "area"
             },
             {
-              "k": "temas",
-              "l": "Temas levantados",
-              "t": "area",
-              "req": true
+              "k": "tipo",
+              "l": "Tipo",
+              "t": "sel",
+              "o": [
+                "Operativo",
+                "Cultural"
+              ]
+            },
+            {
+              "k": "urgencia",
+              "l": "Urgencia",
+              "t": "sel",
+              "o": [
+                "Hoy",
+                "Esta semana"
+              ]
             },
             {
               "k": "turno",

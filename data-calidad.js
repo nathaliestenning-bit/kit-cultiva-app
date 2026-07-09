@@ -237,6 +237,34 @@ Object.assign(window.PROFILES, {
         "context": {
           "freq": "Semanal",
           "when": "En espacios ya programados o existentes con tus reportes directos"
+        },
+        "registro": {
+          "fields": [
+            {
+              "k": "contexto",
+              "l": "Contexto",
+              "t": "area"
+            },
+            {
+              "k": "tipo",
+              "l": "Tipo",
+              "t": "sel",
+              "o": [
+                "Operativo",
+                "Cultural"
+              ]
+            },
+            {
+              "k": "urgencia",
+              "l": "Urgencia",
+              "t": "sel",
+              "o": [
+                "Hoy",
+                "Esta semana"
+              ]
+            }
+          ],
+          "soporte": "Registro vía app"
         }
       },
       {
@@ -480,7 +508,7 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "contexto",
-              "l": "Contexto del tema",
+              "l": "Contexto",
               "t": "area"
             },
             {
@@ -500,11 +528,6 @@ Object.assign(window.PROFILES, {
                 "Hoy",
                 "Esta semana"
               ]
-            },
-            {
-              "k": "mi",
-              "l": "Mi jefe recibe el tema con mi contexto — no tiene que pedirlo.",
-              "t": "area"
             }
           ]
         }
@@ -627,7 +650,7 @@ Object.assign(window.PROFILES, {
         "id": "coaching-friccion",
         "kind": "full",
         "dimension": "lidera",
-        "icon": "compass",
+        "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "1 vez al mes por Supervisor",
         "purpose": "Desarrollar al Supervisor sobre cómo manejar la fricción con operaciones sin perder el estándar.",
@@ -762,7 +785,7 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "contexto",
-              "l": "Contexto del tema",
+              "l": "Contexto",
               "t": "area"
             },
             {
@@ -782,11 +805,6 @@ Object.assign(window.PROFILES, {
                 "Hoy",
                 "Esta semana"
               ]
-            },
-            {
-              "k": "mi",
-              "l": "Mi jefe recibe el tema con mi criterio ya agregado.",
-              "t": "area"
             }
           ]
         }
@@ -930,7 +948,7 @@ Object.assign(window.PROFILES, {
         "id": "coaching-en-terreno",
         "kind": "full",
         "dimension": "lidera",
-        "icon": "compass",
+        "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "2 veces por semana",
         "purpose": "Desarrollar al TAC sobre cómo llegar al área como aliado — no como inspector.",
@@ -1060,8 +1078,8 @@ Object.assign(window.PROFILES, {
           "soporte": "Escalada vía app",
           "fields": [
             {
-              "k": "2",
-              "l": "2 líneas de contexto",
+              "k": "contexto",
+              "l": "Contexto",
               "t": "area"
             },
             {
@@ -1309,20 +1327,32 @@ Object.assign(window.PROFILES, {
         "registro": {
           "soporte": "Registro de calidad en campo",
           "autoBroadcast": {
-            "temaFijo": "Calidad en campo",
-            "detalle": "problematica"
+            "temaFijo": "Espacio de confianza",
+            "detalle": "contexto"
           },
           "fields": [
             {
-              "k": "problematica",
-              "l": "Problemática identificada",
-              "t": "area",
-              "req": true
+              "k": "contexto",
+              "l": "Contexto",
+              "t": "area"
             },
             {
-              "k": "accion",
-              "l": "Acción correctiva",
-              "t": "area"
+              "k": "tipo",
+              "l": "Tipo",
+              "t": "sel",
+              "o": [
+                "Operativo",
+                "Cultural"
+              ]
+            },
+            {
+              "k": "urgencia",
+              "l": "Urgencia",
+              "t": "sel",
+              "o": [
+                "Hoy",
+                "Esta semana"
+              ]
             }
           ]
         }
@@ -1333,10 +1363,10 @@ Object.assign(window.PROFILES, {
         "dimension": "valora",
         "icon": "thumbs-up",
         "title": "Reconocimiento Sincero",
-        "freq": "Según lo amerite · mín. 1 vez/semana · Opción diferida al día siguiente",
+        "freq": "Semanal",
         "purpose": "Reconocer las mejoras del equipo para reforzar buenas prácticas — lo que se nombra se repite.",
         "context": {
-          "freq": "Según lo amerite · mín. 1 vez/semana · Opción diferida al día siguiente",
+          "freq": "Semanal",
           "when": "En grupo o 1:1",
           "place": "Al inicio o al cierre"
         },

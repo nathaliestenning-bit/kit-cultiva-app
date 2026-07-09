@@ -338,7 +338,7 @@ window.PROFILES = {
           "fields": [
             {
               "k": "contexto",
-              "l": "Contexto del tema",
+              "l": "Contexto",
               "t": "area"
             },
             {
@@ -630,7 +630,7 @@ window.PROFILES = {
           "fields": [
             {
               "k": "contexto",
-              "l": "Contexto del tema",
+              "l": "Contexto",
               "t": "area"
             },
             {
@@ -650,11 +650,6 @@ window.PROFILES = {
                 "Hoy",
                 "Esta semana"
               ]
-            },
-            {
-              "k": "mi",
-              "l": "Mi jefe recibe el tema con mi contexto — no tiene que pedirlo.",
-              "t": "area"
             }
           ]
         }
@@ -750,7 +745,7 @@ window.PROFILES = {
         "id": "coaching-de-terreno",
         "kind": "full",
         "dimension": "lidera",
-        "icon": "compass",
+        "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "2 Líderes de Cosecha por semana",
         "purpose": "Desarrollar al líder en terreno, en tiempo real, mediante observación, pregunta y acuerdo — SCI integrado. Recomendación: Desarrollar al líder en terreno mediante la observación, la reflexión y acuerdos concretos para potenciar sus fortalezas y mejorar su desempeño\"",
@@ -938,7 +933,7 @@ window.PROFILES = {
           "fields": [
             {
               "k": "contexto",
-              "l": "Contexto del tema",
+              "l": "Contexto",
               "t": "area"
             },
             {
@@ -958,11 +953,6 @@ window.PROFILES = {
                 "Hoy",
                 "Esta semana"
               ]
-            },
-            {
-              "k": "mi",
-              "l": "Mi jefe recibe el tema con mi criterio ya agregado.",
-              "t": "area"
             }
           ]
         }
@@ -1057,7 +1047,7 @@ window.PROFILES = {
         "id": "asegurando-la-calidad",
         "kind": "full",
         "dimension": "lidera",
-        "icon": "shield-check",
+        "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "Diario",
         "purpose": "Construir autoridad desde la relación — presencia visible que observa, conversa y da feedback en el momento.",
@@ -1157,31 +1147,33 @@ window.PROFILES = {
         ],
         "registro": {
           "soporte": "Escalada vía app",
-          "escuchaTemas": true,
           "autoBroadcast": {
-            "tema": "tema",
-            "temaEsId": true,
-            "detalle": "detalle",
-            "resuelto": "resuelto"
+            "temaFijo": "Espacio de confianza",
+            "detalle": "contexto"
           },
           "fields": [
             {
-              "k": "tema",
-              "l": "Tema",
-              "t": "tema",
-              "req": true
+              "k": "contexto",
+              "l": "Contexto",
+              "t": "area"
             },
             {
-              "k": "detalle",
-              "l": "Detalle",
-              "t": "area",
-              "req": true,
-              "ph": "¿Qué dijeron exactamente?"
+              "k": "tipo",
+              "l": "Tipo",
+              "t": "sel",
+              "o": [
+                "Operativo",
+                "Cultural"
+              ]
             },
             {
-              "k": "resuelto",
-              "l": "¿Lo resolviste tú?",
-              "t": "bool"
+              "k": "urgencia",
+              "l": "Urgencia",
+              "t": "sel",
+              "o": [
+                "Hoy",
+                "Esta semana"
+              ]
             }
           ]
         }
