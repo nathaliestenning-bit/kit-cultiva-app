@@ -456,3 +456,6 @@
   /* --- Focus ring ----------------------------------------- */
   --focus-ring: 0 0 0 3px color-mix(in srgb, var(--cultiva-blue) 45%, transparent);
 }
+
+/* pasos con sub-viñetas: respetar saltos de línea para que se vean ordenados */
+.step-t { white-space: pre-line; }

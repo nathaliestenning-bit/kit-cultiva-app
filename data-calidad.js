@@ -26,7 +26,7 @@ Object.assign(window.PROFILES, {
         "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "1 vez al mes",
-        "purpose": "Desarrollar al nivel de abajo mediante observación, pregunta y acuerdo concreto — SCI integrado. Recomendación: Desarrollar al nivel de abajo mediante la observación, la reflexión y acuerdos concretos para potenciar sus fortalezas y mejorar su desempeño",
+        "purpose": "Desarrollar al nivel de abajo mediante observación, pregunta y acuerdo concreto (SCI integrado).",
         "steps": [
           {
             "k": "Observo",
@@ -132,7 +132,7 @@ Object.assign(window.PROFILES, {
         "purpose": "Hacer visible a la sub-gerencia en terreno",
         "context": {
           "freq": "1 visita a campo y planta trimestralmente",
-          "when": "En el lote o en la línea — nunca en oficina",
+          "when": "En el lote o en la línea, nunca en oficina",
           "place": "Gerente/Sub Gerente + Supervisor de Fundo/Líder de Cosecha/Operarios"
         },
         "steps": [
@@ -216,11 +216,11 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Registro",
-            "t": "(vía app): Registro el tema y su contexto. ( 5. ACTÚO: Para cada tema, elijo una opción: • Si puedo resolverlo: defino la acción y establezco la urgencia (Hoy / Esta semana). • Si no puedo resolverlo: marco \"No resuelvo yo\", agradezco que lo haya compartido, reconozco la importancia del tema y le brindo una orientación sobre qué podría hacer."
+            "t": "Registro el tema y su contexto."
           },
           {
             "k": "Doy cierre",
-            "t": "Al día siquiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / esta es la actualización].\""
+            "t": "Para cada tema:\n• Si puedo resolverlo: defino la acción y establezco la urgencia (Hoy / Esta semana).\n• Si no puedo resolverlo: marco \"No resuelvo yo\", agradezco su apertura y le brindo una orientación sobre qué hacer."
           }
         ],
         "phrases": [
@@ -236,7 +236,35 @@ Object.assign(window.PROFILES, {
         ],
         "context": {
           "freq": "Semanal",
-          "when": "en espacios ya programados o existentes con tus reportes directos"
+          "when": "En espacios ya programados o existentes con tus reportes directos"
+        },
+        "registro": {
+          "fields": [
+            {
+              "k": "contexto",
+              "l": "Contexto",
+              "t": "area"
+            },
+            {
+              "k": "tipo",
+              "l": "Tipo",
+              "t": "sel",
+              "o": [
+                "Operativo",
+                "Cultural"
+              ]
+            },
+            {
+              "k": "urgencia",
+              "l": "Urgencia",
+              "t": "sel",
+              "o": [
+                "Hoy",
+                "Esta semana"
+              ]
+            }
+          ],
+          "soporte": "Registro vía app"
         }
       },
       {
@@ -246,9 +274,40 @@ Object.assign(window.PROFILES, {
         "icon": "inbox",
         "title": "Revisión de escaladas",
         "freq": "Diario",
-        "purpose": "Detectar lo que se repite — dar destino institucional a lo que el Jefe de Calidad no puede resolver.",
+        "purpose": "Detectar lo que se repite: dar destino institucional a lo que el Jefe de Calidad no puede resolver.",
         "from": "tu equipo",
-        "reminder": "Revisa y dale destino a lo que tu equipo escaló."
+        "reminder": "Revisa y dale destino a lo que tu equipo escaló.",
+        "context": {
+          "when": "Al cierre del día"
+        },
+        "steps": [
+          {
+            "k": null,
+            "t": "el panel consolidado — busco patrones, no el detalle de cada tema."
+          },
+          {
+            "k": null,
+            "t": "qué temas estructurales requieren mi intervención o una decisión institucional."
+          },
+          {
+            "k": null,
+            "t": "a lo estructural: resuelvo, derivo a RRLL/Ops o marco para seguimiento con fecha."
+          },
+          {
+            "k": null,
+            "t": "de vuelta a mi equipo mi decisión para que el loop cierre hacia abajo."
+          }
+        ],
+        "phrases": [
+          "\"Este patrón no es de fundo/planta — es sistémico. Lo trabajo yo.\"",
+          "\"Lo derivo a RRLL con instrucción clara y fecha.\"",
+          "\"Comunico al N2 mi decisión para que llegue al equipo.\""
+        ],
+        "no": [
+          "Revisar el panel como si fuera un reporte operativo.",
+          "Dejar temas estructurales sin dueño ni fecha.",
+          "No cerrar el loop hacia abajo con la decisión tomada."
+        ]
       },
       {
         "id": "reconocimiento-sincero",
@@ -261,7 +320,7 @@ Object.assign(window.PROFILES, {
         "steps": [
           {
             "k": "Observo",
-            "t": "conscientemente a los Jefes de Calidad que destaquen en conducta o rendimiento durante el período."
+            "t": "conscientemente a la persona del equipo que destaquen en conducta o rendimiento durante el período."
           },
           {
             "k": "Anoto",
@@ -269,7 +328,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo: \"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\" RECONOCIMIENTO SKIP-LEVEL (opcional): También puedo reconocer a Coordinadores de Calidad (N3). Condición: Coordinado con el Jefe de Calidad antes de nombrar."
+            "t": "en el momento oportuno: \"[Nombre], te agradezco por [conducta], eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -282,7 +341,7 @@ Object.assign(window.PROFILES, {
           "Hacerlo en privado cuando merece ser público (o viceversa).",
           "Hacerlo con excesiva frecuencia — pierde sinceridad."
         ],
-        "note": "RECONOCIMIENTO SKIP-LEVEL (opcional): También puedo reconocer a Coordinadores de Calidad (N3). Condición: Coordinado con el Jefe de Calidad antes de nombrar.",
+        "note": "Reconocimiento opcional: También puedo reconocer al equipo de mis reportes (coordinado con jefe directo)",
         "context": {
           "freq": "1 vez al mes",
           "when": "3 min",
@@ -329,7 +388,7 @@ Object.assign(window.PROFILES, {
         "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "1 vez al mes",
-        "purpose": "Desarrollar al Coordinador sobre el conflicto real del rol: fiscalizar sin generar conflicto innecesario con operaciones. Recomendación: Desarrollar al Coordinador sobre el conflicto real del rol: fiscalizar sin generar conflicto innecesario con operaciones.",
+        "purpose": "Desarrollar al Coordinador sobre el conflicto real del rol: fiscalizar sin generar conflicto innecesario con operaciones.",
         "context": {
           "freq": "1 vez al mes",
           "when": "Momento no operativo con el Coordinador de Calidad",
@@ -350,7 +409,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Abro",
-            "t": "con SCI — \"Vi que [conducta] cuando [situación de fricción]. Eso generó [impacto]. ¿Cómo lo ves tú?\" IMPULSO — Pregunto qué podría hacer para mejorar o llevar esa fortaleza al siguiente nivel. ACORDAMOS — Definimos una acción concreta para poner en práctica."
+            "t": "con SCI — \"Vi que [conducta] cuando [situación de fricción]. Eso generó [impacto]. ¿Cómo lo ves tú?\""
           },
           {
             "k": "Cierro",
@@ -409,7 +468,7 @@ Object.assign(window.PROFILES, {
         "freq": "Semanal",
         "purpose": "Recoger inquietudes antes de que se conviertan en problemas, fomentar la comunicación, cercanía y espacios seguros.",
         "context": {
-          "when": "en espacios ya programados o existentes con tus reportes directos"
+          "when": "En espacios ya programados o existentes con tus reportes directos"
         },
         "steps": [
           {
@@ -426,11 +485,11 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Registro",
-            "t": "(vía app): Registro el tema y su contexto. ( 5. ACTÚO: Para cada tema, elijo una opción: • Si puedo resolverlo: defino la acción y establezco la urgencia (Hoy / Esta semana). • Si no puedo resolverlo: marco \"No resuelvo yo\", agradezco que lo haya compartido, reconozco la importancia del tema y le brindo una orientación sobre qué podría hacer."
+            "t": "Registro el tema y su contexto."
           },
           {
             "k": "Doy cierre",
-            "t": "Al día siquiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / esta es la actualización].\""
+            "t": "Para cada tema:\n• Si puedo resolverlo: defino la acción y establezco la urgencia (Hoy / Esta semana).\n• Si no puedo resolverlo: marco \"No resuelvo yo\", agradezco su apertura y le brindo una orientación sobre qué hacer."
           }
         ],
         "phrases": [
@@ -449,7 +508,7 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "contexto",
-              "l": "Contexto del tema",
+              "l": "Contexto",
               "t": "area"
             },
             {
@@ -469,11 +528,6 @@ Object.assign(window.PROFILES, {
                 "Hoy",
                 "Esta semana"
               ]
-            },
-            {
-              "k": "mi",
-              "l": "Mi jefe recibe el tema con mi contexto — no tiene que pedirlo.",
-              "t": "area"
             }
           ]
         }
@@ -537,7 +591,7 @@ Object.assign(window.PROFILES, {
         "steps": [
           {
             "k": "Observo",
-            "t": "conscientemente a los Coordinadores de Calidad que destaquen en conducta o rendimiento durante el período."
+            "t": "conscientemente a la persona del equipo que destaquen en conducta o rendimiento durante el período."
           },
           {
             "k": "Anoto",
@@ -545,7 +599,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo: \"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\" RECONOCIMIENTO SKIP-LEVEL (opcional): También puedo reconocer a Supervisores de Calidad (N4). Condición: Coordinado con el Coordinador de Calidad correspondiente."
+            "t": "en el momento oportuno: \"[Nombre], te agradezco por [conducta], eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -578,7 +632,7 @@ Object.assign(window.PROFILES, {
             }
           ]
         },
-        "note": "RECONOCIMIENTO SKIP-LEVEL (opcional): También puedo reconocer a Supervisores de Calidad (N4). Condición: Coordinado con el Coordinador de Calidad correspondiente."
+        "note": "Reconocimiento opcional: También puedo reconocer al equipo de mis reportes (coordinado con jefe directo)"
       }
     ]
   },
@@ -596,7 +650,7 @@ Object.assign(window.PROFILES, {
         "id": "coaching-friccion",
         "kind": "full",
         "dimension": "lidera",
-        "icon": "compass",
+        "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "1 vez al mes por Supervisor",
         "purpose": "Desarrollar al Supervisor sobre cómo manejar la fricción con operaciones sin perder el estándar.",
@@ -687,7 +741,7 @@ Object.assign(window.PROFILES, {
         "freq": "Semanal",
         "purpose": "Recoger inquietudes antes de que se conviertan en problemas, fomentar la comunicación, cercanía y espacios seguros.",
         "context": {
-          "when": "en espacios ya programados o existentes con tus reportes directos"
+          "when": "En espacios ya programados o existentes con tus reportes directos"
         },
         "steps": [
           {
@@ -708,11 +762,11 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Registro",
-            "t": "vía app: escribo contexto +  establenzco Urgencia (Hoy / Esta semana)."
+            "t": "vía app: escribo contexto + establenzco Urgencia (Hoy / Esta semana)."
           },
           {
             "k": "Doy cierre",
-            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\" También puedes aplicarlo 1:1 — en privado la persona se abre más."
+            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\""
           }
         ],
         "phrases": [
@@ -731,7 +785,7 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "contexto",
-              "l": "Contexto del tema",
+              "l": "Contexto",
               "t": "area"
             },
             {
@@ -751,14 +805,10 @@ Object.assign(window.PROFILES, {
                 "Hoy",
                 "Esta semana"
               ]
-            },
-            {
-              "k": "mi",
-              "l": "Mi jefe recibe el tema con mi criterio ya agregado.",
-              "t": "area"
             }
           ]
-        }
+        },
+        "note": "También puedes aplicarlo 1:1. En privado el equipo se abre más."
       },
       {
         "id": "revisar-escaladas-diarias",
@@ -899,7 +949,7 @@ Object.assign(window.PROFILES, {
         "id": "coaching-en-terreno",
         "kind": "full",
         "dimension": "lidera",
-        "icon": "compass",
+        "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "2 veces por semana",
         "purpose": "Desarrollar al TAC sobre cómo llegar al área como aliado — no como inspector.",
@@ -1007,11 +1057,11 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Registro",
-            "t": "vía app: escribo contexto +  establenzco Urgencia (Hoy / Esta semana)."
+            "t": "vía app: escribo contexto + establenzco Urgencia (Hoy / Esta semana)."
           },
           {
             "k": "Doy cierre",
-            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\" También puedes aplicarlo 1:1 — en privado la persona se abre más."
+            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\""
           }
         ],
         "phrases": [
@@ -1029,8 +1079,8 @@ Object.assign(window.PROFILES, {
           "soporte": "Escalada vía app",
           "fields": [
             {
-              "k": "2",
-              "l": "2 líneas de contexto",
+              "k": "contexto",
+              "l": "Contexto",
               "t": "area"
             },
             {
@@ -1052,7 +1102,8 @@ Object.assign(window.PROFILES, {
               ]
             }
           ]
-        }
+        },
+        "note": "También puedes aplicarlo 1:1. En privado el equipo se abre más."
       },
       {
         "id": "revisar-escaladas-diarias",
@@ -1278,20 +1329,32 @@ Object.assign(window.PROFILES, {
         "registro": {
           "soporte": "Registro de calidad en campo",
           "autoBroadcast": {
-            "temaFijo": "Calidad en campo",
-            "detalle": "problematica"
+            "temaFijo": "Espacio de confianza",
+            "detalle": "contexto"
           },
           "fields": [
             {
-              "k": "problematica",
-              "l": "Problemática identificada",
-              "t": "area",
-              "req": true
+              "k": "contexto",
+              "l": "Contexto",
+              "t": "area"
             },
             {
-              "k": "accion",
-              "l": "Acción correctiva",
-              "t": "area"
+              "k": "tipo",
+              "l": "Tipo",
+              "t": "sel",
+              "o": [
+                "Operativo",
+                "Cultural"
+              ]
+            },
+            {
+              "k": "urgencia",
+              "l": "Urgencia",
+              "t": "sel",
+              "o": [
+                "Hoy",
+                "Esta semana"
+              ]
             }
           ]
         }
@@ -1302,10 +1365,10 @@ Object.assign(window.PROFILES, {
         "dimension": "valora",
         "icon": "thumbs-up",
         "title": "Reconocimiento Sincero",
-        "freq": "Según lo amerite · mín. 1 vez/semana · Opción diferida al día siguiente",
+        "freq": "Semanal",
         "purpose": "Reconocer las mejoras del equipo para reforzar buenas prácticas — lo que se nombra se repite.",
         "context": {
-          "freq": "Según lo amerite · mín. 1 vez/semana · Opción diferida al día siguiente",
+          "freq": "Semanal",
           "when": "En grupo o 1:1",
           "place": "Al inicio o al cierre"
         },
