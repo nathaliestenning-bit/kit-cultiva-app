@@ -26,8 +26,15 @@ const DEFER_KEYS = ["acuerdo", "acuerdos", "comentarios", "comentario", "coment"
 
 function emptyValues(fields) {
   const v = {};
-  fields.forEach((f) => { v[f.k] = (f.t === "bool") ? false : ""; });
+  fields.forEach((f) => { v[f.k] = (f.t === "bool") ? (f.def === true) : ""; });
   return v;
+}
+
+/* Campo "¿Lo resuelvo yo?" que se inyecta en el ritual "Espacio de confianza"
+   (todos los perfiles). Default "Sí": no escala salvo que el líder marque "No". */
+const RESUELVO_FIELD = { k: "resuelvoYo", l: "¿Lo resuelvo yo?", t: "bool", def: true };
+function isEspacioConfianza(ritual) {
+  return /espacio de confianza/i.test((ritual && ritual.title) || "");
 }
 
 /* devuelve {label, alerta} del tema elegido */
@@ -43,7 +50,12 @@ function temaInfo(val) {
 
 function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
   const reg = ritual.registro;
-  const fields = reg.fields || [];
+  const espacioConfianza = isEspacioConfianza(ritual);
+  const baseFields = reg.fields || [];
+  // "Espacio de confianza": añadimos el toggle "¿Lo resuelvo yo?" si no existe ya
+  const fields = (espacioConfianza && !baseFields.some((f) => f.k === "resuelvoYo"))
+    ? baseFields.concat([RESUELVO_FIELD])
+    : baseFields;
   const storeKey = "cultiva3:" + profileId + ":" + ritual.id;
 
   // ¿este ritual usa campos diferidos? (feedback / coaching, o defer explícito)
@@ -109,19 +121,27 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
     if (!validate()) return;
     const stored = Object.assign(emptyValues(fields), vals); // incluye los diferidos (vacíos)
     if (stored.tema === "__otro") stored.tema = "otro:" + temaOtro.trim();
+    // "Espacio de confianza": si el líder marcó "No lo resuelvo yo", sube al jefe directo.
+    const escalaAlJefe = espacioConfianza && stored.resuelvoYo === false;
     const entry = { ts: Date.now(), escalado: false, vals: stored };
     setHistory((h) => [entry].concat(h).slice(0, 30));
     setDrafts((p) => { const row = {}; deferFields.forEach((f) => { row[f.k] = ""; }); return Object.assign({}, p, { [entry.ts]: row }); });
     setVals(emptyValues(formFields)); setTemaOtro(""); setErrs({});
-    setJustSent({ ts: entry.ts });
+    setJustSent({ ts: entry.ts, escalado: escalaAlJefe });
     setOpen(true);
     // persiste (demo localStorage ↔ Supabase) y reconcilia el id real
     window.CultivaData.saveRegistro(profileId, ritual.id, entry).then((persisted) => {
       const id = persisted && persisted.id;
       if (id) setHistory((h) => h.map((e) => e.ts === entry.ts ? Object.assign({}, e, { id: id }) : e));
-      // Subida AUTOMÁTICA al jefe directo (rituales de escucha del front-line)
-      if (reg.autoBroadcast && window.CultivaData.mode() === "supabase") {
-        const p = broadcastPayload(reg.autoBroadcast, stored);
+      if (window.CultivaData.mode() !== "supabase") return;
+      // Escalada al jefe directo:
+      //  - "Espacio de confianza": solo cuando se marca "No lo resuelvo yo".
+      //  - Otros rituales con autoBroadcast: comportamiento previo (sube siempre).
+      if (espacioConfianza ? escalaAlJefe : !!reg.autoBroadcast) {
+        const p = reg.autoBroadcast
+          ? broadcastPayload(reg.autoBroadcast, stored)
+          : { tema: String(ritual.title || "Espacio de confianza").slice(0, 120),
+              detalle: String(stored.contexto || stored.detalle || "").trim() || "(sin detalle)" };
         p.registro_id = id || null;
         window.CultivaData.crearEscalada(p).catch((err) => console.warn("auto-escalada:", err));
       }
@@ -290,9 +310,11 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
       rh("div", null,
         rh("b", null, "Registro guardado"), " · ", fmt(justSent.ts),
         rh("div", { className: "sent-sub" },
-          deferFields.length
-            ? "Completa el acuerdo y los comentarios abajo, en el registro guardado."
-            : (escalateTo ? "Puedes escalarlo desde el historial si te excede." : "Disponible para tu líder.")),
+          justSent.escalado
+            ? "Marcaste «No lo resuelvo yo»: lo escalamos a tu jefe directo."
+            : deferFields.length
+              ? "Completa el acuerdo y los comentarios abajo, en el registro guardado."
+              : (escalateTo ? "Puedes escalarlo desde el historial si te excede." : "Disponible para tu líder.")),
       ),
     ),
 
@@ -331,8 +353,9 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
             rh("div", { className: "hist-detail" },
               formFields.map((f) => {
                 let v = e.vals[f.k];
-                if (v === "" || v == null || v === false) return null;
-                let disp = (f.t === "bool") ? "Sí" : (f.t === "tema" ? temaLabel(v) : String(v));
+                if (v === "" || v == null) return null;
+                if (f.t === "bool" && v === false && f.k !== "resuelvoYo") return null;
+                let disp = (f.t === "bool") ? (v ? "Sí" : "No") : (f.t === "tema" ? temaLabel(v) : String(v));
                 return rh("div", { key: f.k, className: "hist-kv" },
                   rh("span", { className: "hist-k" }, f.l), rh("span", { className: "hist-v" }, disp));
               }),

@@ -500,7 +500,7 @@ Object.assign(window.PROFILES, {
         "freq": "Diario",
         "from": "Jefes de Producción de área",
         "reminder": "Al cierre del día, sentarse a revisar los temas escalados por los Jefes de Producción de área.",
-        "purpose": "Detectar lo que se repite — dar destino institucional a lo que el Jefe no puede resolver.",
+        "purpose": "Detectar lo que se repite — dar destino institucional a lo que el Supervisor no puede resolver.",
         "steps": [
           {
             "k": "Reviso",
