@@ -807,7 +807,8 @@ Object.assign(window.PROFILES, {
               ]
             }
           ]
-        }
+        },
+        "note": "También puedes aplicarlo 1:1. En privado el equipo se abre más."
       },
       {
         "id": "revisar-escaladas-diarias",
@@ -1101,7 +1102,8 @@ Object.assign(window.PROFILES, {
               ]
             }
           ]
-        }
+        },
+        "note": "También puedes aplicarlo 1:1. En privado el equipo se abre más."
       },
       {
         "id": "revisar-escaladas-diarias",

@@ -955,7 +955,8 @@ window.PROFILES = {
               ]
             }
           ]
-        }
+        },
+        "note": "También puedes aplicarlo 1:1. En privado el equipo se abre más."
       },
       {
         "id": "reconocimiento",
@@ -1133,7 +1134,7 @@ window.PROFILES = {
             "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\""
           }
         ],
-        "note": "Este ritual también puedes aplicarlo en conversaciones individuales, en ese espacio privado tu equipo puede sentirse más cómodo para abrirse contigo.  También puedes aplicarlo 1:1 — en privado el equipo se abre más.",
+        "note": "También puedes aplicarlo 1:1. En privado el equipo se abre más.",
         "phrases": [
           "\"¿Algo que necesiten que sepa o que tenga que escalar?\"",
           "\"Ese tema lo resuelvo yo hoy. Te aviso al almuerzo.\"",
