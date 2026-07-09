@@ -145,8 +145,6 @@ const PUNTOS_INFO = [
     t: "Reconocen a los líderes que aplican sus rituales en campo. Cada ritual que registras —liderar, valorar y escuchar a tu equipo— suma puntos. Son la forma de hacer visible y tangible lo que haces cada día para fortalecer a tu equipo." },
   { icon: "plus-circle", h: "¿Cómo se suman?",
     t: "Cada ejecución de un ritual suma 10 puntos, y cada registro extra en un mismo ritual suma 3 puntos." },
-  { icon: "gift", h: "Beneficios",
-    t: "Al llegar a 100 puntos podrás canjearlos por recompensas sorpresa en Hortifrut." },
   { icon: "shield-check", h: "Validación de puntos",
     t: "Los registros que hagas serán revisados para asegurar que la información sea veraz y esté debidamente sustentada." },
 ];
