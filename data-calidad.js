@@ -541,7 +541,7 @@ Object.assign(window.PROFILES, {
         "freq": "Diario",
         "from": "Coordinador de Calidad",
         "reminder": "Al cierre del día, sentarse a revisar los temas escalados por el Coordinador.",
-        "purpose": "Primer nivel de visión consolidada — detectar patrones e intervenir lo que N3 no puede resolver.",
+        "purpose": "Primer nivel de visión consolidada — detectar patrones e intervenir lo que el Coordinador no puede resolver.",
         "steps": [
           {
             "k": "Reviso",
