@@ -300,7 +300,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo:\n\"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno: \"[Nombre], te agradezco por [conducta], eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -313,7 +313,7 @@ Object.assign(window.PROFILES, {
           "Hacerlo en privado cuando merece ser público (o viceversa).",
           "Hacerlo con excesiva frecuencia — pierde sinceridad."
         ],
-        "note": "RECONOCIMIENTO SKIP-LEVEL (opcional): También puedo reconocer a Coordinadores de Calidad (N3). Condición: Coordinado con el Jefe de Calidad antes de nombrar.",
+        "note": "Reconocimiento opcional: También puedo reconocer al equipo de mis reportes (coordinado con jefe directo)",
         "context": {
           "freq": "1 vez al mes",
           "when": "3 min",
@@ -576,7 +576,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo:\n\"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno: \"[Nombre], te agradezco por [conducta], eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -609,7 +609,7 @@ Object.assign(window.PROFILES, {
             }
           ]
         },
-        "note": "RECONOCIMIENTO SKIP-LEVEL (opcional): También puedo reconocer a Supervisores de Calidad (N4). Condición: Coordinado con el Coordinador de Calidad correspondiente."
+        "note": "Reconocimiento opcional: También puedo reconocer al equipo de mis reportes (coordinado con jefe directo)"
       }
     ]
   },

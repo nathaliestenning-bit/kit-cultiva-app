@@ -358,7 +358,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo:\n\"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno: \"[Nombre], te agradezco por [conducta], eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -400,7 +400,7 @@ Object.assign(window.PROFILES, {
             }
           ]
         },
-        "note": "RECONOCIMIENTO SKIP-LEVEL (opcional): También puedo reconocer a Jefes de Producción (N3). Condición: Coordinado con el Jefe de Planta. El reconocimiento al turno noche ocurre durante la caminata nocturna — nunca postergado al día."
+        "note": "Reconocimiento opcional: También puedo reconocer al equipo de mis reportes (coordinado con jefe directo)"
       }
     ]
   },
@@ -679,7 +679,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo:\n\"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno: \"[Nombre], te agradezco por [conducta], eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -721,7 +721,7 @@ Object.assign(window.PROFILES, {
             }
           ]
         },
-        "note": "RECONOCIMIENTO SKIP-LEVEL (opcional): También puedo reconocer a Supervisores de Producción (N4). Condición: Coordinado con el Jefe de Producción correspondiente. Cubrir ambos turnos en el período."
+        "note": "Reconocimiento opcional: También puedo reconocer al equipo de mis reportes (coordinado con jefe directo)"
       }
     ]
   },

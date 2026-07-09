@@ -341,7 +341,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo:\n\"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno: \"[Nombre], te agradezco por [conducta], eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -374,7 +374,7 @@ Object.assign(window.PROFILES, {
             }
           ]
         },
-        "note": "RECONOCIMIENTO SKIP-LEVEL (opcional): También puedo reconocer a Jefes de Producción / Coordinadores (N3). Condición: Siempre coordinado con la Jefatura correspondiente antes de nombrar."
+        "note": "Reconocimiento opcional: También puedo reconocer al equipo de mis reportes (coordinado con jefe directo)"
       }
     ]
   },
@@ -640,7 +640,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo:\n\"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno: \"[Nombre], te agradezco por [conducta], eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -673,7 +673,7 @@ Object.assign(window.PROFILES, {
             }
           ]
         },
-        "note": "RECONOCIMIENTO SKIP-LEVEL (opcional): También puedo reconocer a Supervisores de Producción (N4). Condición: Siempre coordinado con el Jefe de Producción / Coordinador correspondiente."
+        "note": "Reconocimiento opcional: También puedo reconocer al equipo de mis reportes (coordinado con jefe directo)"
       }
     ]
   },

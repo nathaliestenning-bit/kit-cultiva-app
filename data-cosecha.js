@@ -378,7 +378,7 @@ window.PROFILES = {
         "steps": [
           {
             "k": "Observo",
-            "t": "conscientemente a los Jefes de Cosecha que destaquen en conducta o rendimiento durante el período."
+            "t": "conscientemente a la persona del equipo que destaquen en conducta o rendimiento durante el período."
           },
           {
             "k": "Anoto",
@@ -386,7 +386,7 @@ window.PROFILES = {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo:\n\"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno: \"[Nombre], te agradezco por [conducta], eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -419,7 +419,7 @@ window.PROFILES = {
             }
           ]
         },
-        "note": "RECONOCIMIENTO SKIP-LEVEL (opcional): También puedo reconocer a Supervisores de Fundo (N3). Condición: Siempre coordinado con el Jefe de Cosecha — él aporta el contexto de qué hizo el SF y por qué merece ser nombrado."
+        "note": "Reconocimiento opcional: También puedo reconocer al equipo de mis reportes (coordinado con jefe directo)"
       }
     ]
   },
@@ -675,7 +675,7 @@ window.PROFILES = {
         "steps": [
           {
             "k": "Observo",
-            "t": "conscientemente a los Supervisores de Fundo que destaquen en conducta o rendimiento durante el período."
+            "t": "conscientemente a la persona del equipo que destaquen en conducta o rendimiento durante el período."
           },
           {
             "k": "Anoto",
@@ -683,7 +683,7 @@ window.PROFILES = {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo:\n\"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno: \"[Nombre], te agradezco por [conducta], eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -716,7 +716,7 @@ window.PROFILES = {
             }
           ]
         },
-        "note": "RECONOCIMIENTO SKIP-LEVEL (opcional): También puedo reconocer a Líderes de Cosecha (N4). Condición: Siempre coordinado con el Supervisor de Fundo correspondiente."
+        "note": "Reconocimiento opcional: También puedo reconocer al equipo de mis reportes (coordinado con jefe directo)"
       }
     ]
   },
