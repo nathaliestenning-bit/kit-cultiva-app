@@ -136,21 +136,17 @@ window.PROFILES = {
             {
               "k": "persona",
               "l": "Persona",
-              "t": "person",
-              "req": true
+              "t": "person"
             },
             {
               "k": "situacion",
-              "l": "Situación",
-              "t": "area",
-              "req": true,
-              "ph": "¿Qué pasó? (hecho concreto observado)"
+              "l": "Situación observada",
+              "t": "area"
             },
             {
               "k": "conducta",
-              "l": "Conducta observada",
-              "t": "area",
-              "req": true
+              "l": "Conducta",
+              "t": "area"
             },
             {
               "k": "impacto",
@@ -158,15 +154,19 @@ window.PROFILES = {
               "t": "area"
             },
             {
-              "k": "acuerdo",
-              "l": "Acuerdo",
-              "t": "area",
-              "req": true
+              "k": "pregunta",
+              "l": "Pregunta clave",
+              "t": "area"
             },
             {
-              "k": "coment",
-              "l": "Comentarios",
+              "k": "acuerdo",
+              "l": "Acuerdo",
               "t": "area"
+            },
+            {
+              "k": "fecha",
+              "l": "Fecha de seguimiento",
+              "t": "date"
             }
           ]
         }
@@ -220,16 +220,14 @@ window.PROFILES = {
           "soporte": "Registro de visita en terreno",
           "fields": [
             {
-              "k": "jefe",
-              "l": "Persona / equipo visitado",
-              "t": "person",
-              "req": true
+              "k": "zona",
+              "l": "Zona visitada",
+              "t": "text"
             },
             {
               "k": "temas",
               "l": "Temas levantados",
-              "t": "area",
-              "req": true
+              "t": "area"
             },
             {
               "k": "acuerdos",
@@ -238,7 +236,7 @@ window.PROFILES = {
             },
             {
               "k": "proxima",
-              "l": "Próxima reunión",
+              "l": "Próxima visita",
               "t": "date"
             }
           ]
@@ -334,7 +332,35 @@ window.PROFILES = {
           "Escuchar sin dejar rastro — si no lo registras, se pierde el patrón.",
           "Prometer respuesta sin fecha.",
           "No cerrar el loop la siguiente semana con quien lo trajo."
-        ]
+        ],
+        "registro": {
+          "soporte": "Registro vía app",
+          "fields": [
+            {
+              "k": "contexto",
+              "l": "Contexto del tema",
+              "t": "area"
+            },
+            {
+              "k": "tipo",
+              "l": "Tipo",
+              "t": "sel",
+              "o": [
+                "Operativo",
+                "Cultural"
+              ]
+            },
+            {
+              "k": "urgencia",
+              "l": "Urgencia",
+              "t": "sel",
+              "o": [
+                "Hoy",
+                "Esta semana"
+              ]
+            }
+          ]
+        }
       },
       {
         "id": "reconocimiento",
@@ -378,15 +404,13 @@ window.PROFILES = {
           "fields": [
             {
               "k": "persona",
-              "l": "Jefe a reconocer",
-              "t": "person",
-              "req": true
+              "l": "Persona reconocida",
+              "t": "person"
             },
             {
               "k": "conducta",
-              "l": "Conducta destacada",
-              "t": "area",
-              "req": true
+              "l": "Conducta",
+              "t": "area"
             },
             {
               "k": "impacto",
@@ -507,21 +531,17 @@ window.PROFILES = {
             {
               "k": "persona",
               "l": "Persona",
-              "t": "person",
-              "req": true
+              "t": "person"
             },
             {
               "k": "situacion",
-              "l": "Situación",
-              "t": "area",
-              "req": true,
-              "ph": "¿Qué pasó? (hecho concreto observado)"
+              "l": "Situación observada",
+              "t": "area"
             },
             {
               "k": "conducta",
-              "l": "Conducta observada",
-              "t": "area",
-              "req": true
+              "l": "Conducta",
+              "t": "area"
             },
             {
               "k": "impacto",
@@ -529,15 +549,19 @@ window.PROFILES = {
               "t": "area"
             },
             {
-              "k": "acuerdo",
-              "l": "Acuerdo",
-              "t": "area",
-              "req": true
+              "k": "pregunta",
+              "l": "Pregunta clave",
+              "t": "area"
             },
             {
-              "k": "coment",
-              "l": "Comentarios",
+              "k": "acuerdo",
+              "l": "Acuerdo",
               "t": "area"
+            },
+            {
+              "k": "fecha",
+              "l": "Fecha de seguimiento",
+              "t": "date"
             }
           ]
         }
@@ -632,7 +656,40 @@ window.PROFILES = {
           "Convertir el espacio en un reporte operativo del día.",
           "Escalar a mi jefe sin haber intentado resolverlo primero.",
           "No devolver la respuesta a quien lo trajo."
-        ]
+        ],
+        "registro": {
+          "soporte": "Registro vía app",
+          "fields": [
+            {
+              "k": "contexto",
+              "l": "Contexto del tema",
+              "t": "area"
+            },
+            {
+              "k": "tipo",
+              "l": "Tipo",
+              "t": "sel",
+              "o": [
+                "Operativo",
+                "Cultural"
+              ]
+            },
+            {
+              "k": "urgencia",
+              "l": "Urgencia",
+              "t": "sel",
+              "o": [
+                "Hoy",
+                "Esta semana"
+              ]
+            },
+            {
+              "k": "mi",
+              "l": "Mi jefe recibe el tema con mi contexto — no tiene que pedirlo.",
+              "t": "area"
+            }
+          ]
+        }
       },
       {
         "id": "reconocimiento",
@@ -676,15 +733,13 @@ window.PROFILES = {
           "fields": [
             {
               "k": "persona",
-              "l": "Supervisor a reconocer",
-              "t": "person",
-              "req": true
+              "l": "Persona reconocida",
+              "t": "person"
             },
             {
               "k": "conducta",
-              "l": "Conducta destacada",
-              "t": "area",
-              "req": true
+              "l": "Conducta",
+              "t": "area"
             },
             {
               "k": "impacto",
@@ -788,32 +843,29 @@ window.PROFILES = {
           "soporte": "Tarjeta Acompañamiento 1 a 1",
           "fields": [
             {
-              "k": "lider",
-              "l": "Persona acompañada",
-              "t": "person",
-              "req": true
+              "k": "persona",
+              "l": "Persona",
+              "t": "person"
             },
             {
-              "k": "observo",
-              "l": "Observo",
-              "t": "area",
-              "req": true
-            },
-            {
-              "k": "pregunto",
-              "l": "Pregunto",
+              "k": "conducta",
+              "l": "Conducta observada en terreno",
               "t": "area"
             },
             {
-              "k": "ajusto",
-              "l": "Ajuste acordado",
-              "t": "area",
-              "req": true
+              "k": "pregunta",
+              "l": "Pregunta",
+              "t": "area"
             },
             {
-              "k": "reconozco",
-              "l": "Reconocimiento",
+              "k": "acuerdo",
+              "l": "Acuerdo",
               "t": "area"
+            },
+            {
+              "k": "fecha",
+              "l": "Fecha de seguimiento",
+              "t": "date"
             }
           ]
         }
@@ -912,7 +964,40 @@ window.PROFILES = {
           "Prometer a tu equipo lo que no puedes cumplir.",
           "Escalar a mi jefe sin contexto — no puede actuar sobre algo que no entiende.",
           "No cerrar el loop con quien lo trajo."
-        ]
+        ],
+        "registro": {
+          "soporte": "Registro vía app",
+          "fields": [
+            {
+              "k": "contexto",
+              "l": "Contexto del tema",
+              "t": "area"
+            },
+            {
+              "k": "tipo",
+              "l": "Tipo",
+              "t": "sel",
+              "o": [
+                "Operativo",
+                "Cultural"
+              ]
+            },
+            {
+              "k": "urgencia",
+              "l": "Urgencia",
+              "t": "sel",
+              "o": [
+                "Hoy",
+                "Esta semana"
+              ]
+            },
+            {
+              "k": "mi",
+              "l": "Mi jefe recibe el tema con mi criterio ya agregado.",
+              "t": "area"
+            }
+          ]
+        }
       },
       {
         "id": "reconocimiento",
@@ -956,15 +1041,13 @@ window.PROFILES = {
           "fields": [
             {
               "k": "persona",
-              "l": "Líder a reconocer",
-              "t": "person",
-              "req": true
+              "l": "Líder reconocido",
+              "t": "person"
             },
             {
               "k": "conducta",
-              "l": "Conducta destacada",
-              "t": "area",
-              "req": true
+              "l": "Conducta",
+              "t": "area"
             },
             {
               "k": "impacto",
@@ -1050,9 +1133,7 @@ window.PROFILES = {
           "Esperar al cierre para dar feedback positivo — dilo en el momento."
         ],
         "registro": {
-          "hidden": true,
-          "soporte": "Registro de calidad en campo",
-          "fields": []
+          "hidden": true
         }
       },
       {
@@ -1179,15 +1260,13 @@ window.PROFILES = {
           "fields": [
             {
               "k": "persona",
-              "l": "Trabajador a reconocer",
-              "t": "person",
-              "req": true
+              "l": "Trabajador reconocido",
+              "t": "person"
             },
             {
               "k": "conducta",
-              "l": "Conducta destacada",
-              "t": "area",
-              "req": true
+              "l": "Conducta",
+              "t": "area"
             },
             {
               "k": "impacto",

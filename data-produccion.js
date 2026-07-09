@@ -86,15 +86,13 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Jefe",
-              "t": "person",
-              "req": true
+              "l": "Persona",
+              "t": "person"
             },
             {
               "k": "situacion",
-              "l": "Situación",
-              "t": "area",
-              "req": true
+              "l": "Situación observada",
+              "t": "area"
             },
             {
               "k": "conducta",
@@ -107,14 +105,19 @@ Object.assign(window.PROFILES, {
               "t": "area"
             },
             {
+              "k": "pregunta",
+              "l": "Pregunta clave",
+              "t": "area"
+            },
+            {
               "k": "acuerdo",
               "l": "Acuerdo",
               "t": "area"
             },
             {
-              "k": "comentarios",
-              "l": "Comentarios adicionales",
-              "t": "area"
+              "k": "fecha",
+              "l": "Fecha de seguimiento",
+              "t": "date"
             }
           ]
         }
@@ -169,19 +172,17 @@ Object.assign(window.PROFILES, {
             {
               "k": "area",
               "l": "Área visitada",
-              "t": "text",
-              "req": true
+              "t": "text"
             },
             {
-              "k": "jefe",
+              "k": "persona",
               "l": "Jefe visitado",
               "t": "person"
             },
             {
               "k": "temas",
               "l": "Temas levantados",
-              "t": "area",
-              "req": true
+              "t": "area"
             },
             {
               "k": "acuerdos",
@@ -190,7 +191,7 @@ Object.assign(window.PROFILES, {
             },
             {
               "k": "proxima",
-              "l": "Próxima reunión",
+              "l": "Próxima visita",
               "t": "date"
             }
           ]
@@ -286,7 +287,35 @@ Object.assign(window.PROFILES, {
           "Escuchar sin dejar rastro — si no lo registras, se pierde el patrón.",
           "Prometer respuesta sin fecha.",
           "No cerrar el loop la siguiente semana con quien lo trajo."
-        ]
+        ],
+        "registro": {
+          "soporte": "Registro vía app",
+          "fields": [
+            {
+              "k": "contexto",
+              "l": "Contexto del tema",
+              "t": "area"
+            },
+            {
+              "k": "tipo",
+              "l": "Tipo",
+              "t": "sel",
+              "o": [
+                "Operativo",
+                "Cultural"
+              ]
+            },
+            {
+              "k": "urgencia",
+              "l": "Urgencia",
+              "t": "sel",
+              "o": [
+                "Hoy",
+                "Esta semana"
+              ]
+            }
+          ]
+        }
       },
       {
         "id": "reconocimiento",
@@ -330,15 +359,13 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Jefe a reconocer",
-              "t": "person",
-              "req": true
+              "l": "Persona reconocida",
+              "t": "person"
             },
             {
               "k": "conducta",
-              "l": "Conducta destacada",
-              "t": "area",
-              "req": true
+              "l": "Conducta",
+              "t": "area"
             },
             {
               "k": "impacto",
@@ -428,15 +455,13 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Supervisor / Coordinador",
-              "t": "person",
-              "req": true
+              "l": "Persona",
+              "t": "person"
             },
             {
               "k": "situacion",
-              "l": "Situación",
-              "t": "area",
-              "req": true
+              "l": "Situación observada",
+              "t": "area"
             },
             {
               "k": "conducta",
@@ -449,14 +474,19 @@ Object.assign(window.PROFILES, {
               "t": "area"
             },
             {
+              "k": "pregunta",
+              "l": "Pregunta clave",
+              "t": "area"
+            },
+            {
               "k": "acuerdo",
               "l": "Acuerdo",
               "t": "area"
             },
             {
-              "k": "comentarios",
-              "l": "Comentarios adicionales",
-              "t": "area"
+              "k": "fecha",
+              "l": "Fecha de seguimiento",
+              "t": "date"
             }
           ]
         }
@@ -551,7 +581,40 @@ Object.assign(window.PROFILES, {
           "Convertir el espacio en un reporte operativo del día.",
           "Escalar a mi jefe sin haber intentado resolverlo primero.",
           "No devolver la respuesta a quien lo trajo."
-        ]
+        ],
+        "registro": {
+          "soporte": "Registro vía app",
+          "fields": [
+            {
+              "k": "contexto",
+              "l": "Contexto del tema",
+              "t": "area"
+            },
+            {
+              "k": "tipo",
+              "l": "Tipo",
+              "t": "sel",
+              "o": [
+                "Operativo",
+                "Cultural"
+              ]
+            },
+            {
+              "k": "urgencia",
+              "l": "Urgencia",
+              "t": "sel",
+              "o": [
+                "Hoy",
+                "Esta semana"
+              ]
+            },
+            {
+              "k": "mi",
+              "l": "Mi jefe recibe el tema con mi contexto — no tiene que pedirlo.",
+              "t": "area"
+            }
+          ]
+        }
       },
       {
         "id": "reconocimiento",
@@ -595,20 +658,18 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Persona a reconocer",
-              "t": "person",
-              "req": true
+              "l": "Persona reconocida",
+              "t": "person"
             },
             {
               "k": "conducta",
-              "l": "Conducta reconocida",
-              "t": "area",
-              "req": true
+              "l": "Conducta",
+              "t": "area"
             },
             {
-              "k": "espacio",
-              "l": "Espacio",
-              "t": "text"
+              "k": "impacto",
+              "l": "Impacto",
+              "t": "area"
             }
           ]
         },
@@ -711,30 +772,28 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Supervisor",
-              "t": "person",
-              "req": true
+              "l": "Persona",
+              "t": "person"
             },
             {
-              "k": "observo",
-              "l": "Observo",
-              "t": "area",
-              "req": true
-            },
-            {
-              "k": "pregunto",
-              "l": "Pregunto",
+              "k": "conducta",
+              "l": "Conducta observada en terreno",
               "t": "area"
             },
             {
-              "k": "acordamos",
-              "l": "Acordamos",
+              "k": "pregunta",
+              "l": "Pregunta",
               "t": "area"
             },
             {
-              "k": "reconocimiento",
-              "l": "Reconocimiento",
+              "k": "acuerdo",
+              "l": "Acuerdo",
               "t": "area"
+            },
+            {
+              "k": "fecha",
+              "l": "Fecha de seguimiento",
+              "t": "date"
             }
           ]
         }
@@ -829,7 +888,40 @@ Object.assign(window.PROFILES, {
           "Prometer a tu equipo lo que no puedes cumplir.",
           "Escalar a mi jefe sin contexto — no puede actuar sobre algo que no entiende.",
           "No cerrar el loop con quien lo trajo."
-        ]
+        ],
+        "registro": {
+          "soporte": "Registro vía app",
+          "fields": [
+            {
+              "k": "contexto",
+              "l": "Contexto del tema",
+              "t": "area"
+            },
+            {
+              "k": "tipo",
+              "l": "Tipo",
+              "t": "sel",
+              "o": [
+                "Operativo",
+                "Cultural"
+              ]
+            },
+            {
+              "k": "urgencia",
+              "l": "Urgencia",
+              "t": "sel",
+              "o": [
+                "Hoy",
+                "Esta semana"
+              ]
+            },
+            {
+              "k": "mi",
+              "l": "Mi jefe recibe el tema con mi criterio ya agregado.",
+              "t": "area"
+            }
+          ]
+        }
       },
       {
         "id": "reconocimiento",
@@ -873,15 +965,13 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Líder a reconocer",
-              "t": "person",
-              "req": true
+              "l": "Supervisor reconocido",
+              "t": "person"
             },
             {
               "k": "conducta",
-              "l": "Conducta destacada",
-              "t": "area",
-              "req": true
+              "l": "Conducta",
+              "t": "area"
             },
             {
               "k": "impacto",
@@ -1092,15 +1182,13 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Trabajador a reconocer",
-              "t": "person",
-              "req": true
+              "l": "Trabajador reconocido",
+              "t": "person"
             },
             {
               "k": "conducta",
-              "l": "Conducta destacada",
-              "t": "area",
-              "req": true
+              "l": "Conducta",
+              "t": "area"
             },
             {
               "k": "impacto",

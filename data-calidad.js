@@ -82,7 +82,44 @@ Object.assign(window.PROFILES, {
           "place": "Momento no operativo con el Jefe de Calidad"
         },
         "registro": {
-          "soporte": "Tarjeta Acompañamiento 1 a 1"
+          "soporte": "Tarjeta Acompañamiento 1 a 1",
+          "fields": [
+            {
+              "k": "persona",
+              "l": "Persona",
+              "t": "person"
+            },
+            {
+              "k": "situacion",
+              "l": "Situación observada",
+              "t": "area"
+            },
+            {
+              "k": "conducta",
+              "l": "Conducta",
+              "t": "area"
+            },
+            {
+              "k": "impacto",
+              "l": "Impacto",
+              "t": "area"
+            },
+            {
+              "k": "pregunta",
+              "l": "Pregunta clave",
+              "t": "area"
+            },
+            {
+              "k": "acuerdo",
+              "l": "Acuerdo",
+              "t": "area"
+            },
+            {
+              "k": "fecha",
+              "l": "Fecha de seguimiento",
+              "t": "date"
+            }
+          ]
         }
       },
       {
@@ -134,26 +171,24 @@ Object.assign(window.PROFILES, {
           "soporte": "Registro de visita en terreno",
           "fields": [
             {
-              "k": "jefe",
-              "l": "Persona / equipo visitado",
-              "t": "person",
-              "req": true
+              "k": "lugar",
+              "l": "Lugar",
+              "t": "text"
+            },
+            {
+              "k": "conductas",
+              "l": "Conductas observadas",
+              "t": "area"
             },
             {
               "k": "temas",
               "l": "Temas levantados",
-              "t": "area",
-              "req": true
-            },
-            {
-              "k": "acuerdos",
-              "l": "Acuerdos",
               "t": "area"
             },
             {
-              "k": "proxima",
-              "l": "Próxima reunión",
-              "t": "date"
+              "k": "responsables",
+              "l": "Responsables",
+              "t": "area"
             }
           ]
         }
@@ -252,6 +287,26 @@ Object.assign(window.PROFILES, {
           "freq": "1 vez al mes",
           "when": "3 min",
           "place": "Reunión de equipo o mensaje grupal"
+        },
+        "registro": {
+          "soporte": "Registro",
+          "fields": [
+            {
+              "k": "persona",
+              "l": "Persona reconocida",
+              "t": "person"
+            },
+            {
+              "k": "conducta",
+              "l": "Conducta",
+              "t": "area"
+            },
+            {
+              "k": "impacto",
+              "l": "Impacto",
+              "t": "area"
+            }
+          ]
         }
       }
     ]
@@ -325,33 +380,21 @@ Object.assign(window.PROFILES, {
             {
               "k": "persona",
               "l": "Persona",
-              "t": "person",
-              "req": true
+              "t": "person"
             },
             {
               "k": "situacion",
-              "l": "Hecho de fricción (situación)",
-              "t": "area",
-              "req": true
-            },
-            {
-              "k": "conducta",
-              "l": "Conducta",
-              "t": "area"
-            },
-            {
-              "k": "impacto",
-              "l": "Impacto",
+              "l": "Situación de fricción",
               "t": "area"
             },
             {
               "k": "acuerdo",
-              "l": "Acuerdo a 30 días",
+              "l": "Acuerdo",
               "t": "area"
             },
             {
               "k": "fecha",
-              "l": "Fecha",
+              "l": "Fecha de seguimiento",
               "t": "date"
             }
           ]
@@ -400,7 +443,40 @@ Object.assign(window.PROFILES, {
           "Convertir el espacio en un reporte técnico del día.",
           "Escalar a mi jefe sin haber intentado resolverlo primero.",
           "No devolver la respuesta a quien lo trajo."
-        ]
+        ],
+        "registro": {
+          "soporte": "Registro vía app",
+          "fields": [
+            {
+              "k": "contexto",
+              "l": "Contexto del tema",
+              "t": "area"
+            },
+            {
+              "k": "tipo",
+              "l": "Tipo",
+              "t": "sel",
+              "o": [
+                "Operativo",
+                "Cultural"
+              ]
+            },
+            {
+              "k": "urgencia",
+              "l": "Urgencia",
+              "t": "sel",
+              "o": [
+                "Hoy",
+                "Esta semana"
+              ]
+            },
+            {
+              "k": "mi",
+              "l": "Mi jefe recibe el tema con mi contexto — no tiene que pedirlo.",
+              "t": "area"
+            }
+          ]
+        }
       },
       {
         "id": "revisar-escaladas-diarias",
@@ -487,20 +563,18 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Persona a reconocer",
-              "t": "person",
-              "req": true
+              "l": "Persona reconocida",
+              "t": "person"
             },
             {
               "k": "conducta",
-              "l": "Conducta reconocida",
-              "t": "area",
-              "req": true
+              "l": "Conducta",
+              "t": "area"
             },
             {
-              "k": "espacio",
-              "l": "Espacio",
-              "t": "text"
+              "k": "impacto",
+              "l": "Impacto",
+              "t": "area"
             }
           ]
         },
@@ -583,15 +657,13 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Supervisor",
-              "t": "person",
-              "req": true
+              "l": "Persona",
+              "t": "person"
             },
             {
               "k": "situacion",
-              "l": "Situación (fricción)",
-              "t": "area",
-              "req": true
+              "l": "Situación de fricción",
+              "t": "area"
             },
             {
               "k": "acuerdo",
@@ -653,7 +725,40 @@ Object.assign(window.PROFILES, {
           "Prometer a tu equipo lo que no puedes cumplir.",
           "Escalar a mi jefe sin contexto — no puede actuar sobre algo que no entiende.",
           "No cerrar el loop con quien lo trajo."
-        ]
+        ],
+        "registro": {
+          "soporte": "Registro vía app",
+          "fields": [
+            {
+              "k": "contexto",
+              "l": "Contexto del tema",
+              "t": "area"
+            },
+            {
+              "k": "tipo",
+              "l": "Tipo",
+              "t": "sel",
+              "o": [
+                "Operativo",
+                "Cultural"
+              ]
+            },
+            {
+              "k": "urgencia",
+              "l": "Urgencia",
+              "t": "sel",
+              "o": [
+                "Hoy",
+                "Esta semana"
+              ]
+            },
+            {
+              "k": "mi",
+              "l": "Mi jefe recibe el tema con mi criterio ya agregado.",
+              "t": "area"
+            }
+          ]
+        }
       },
       {
         "id": "revisar-escaladas-diarias",
@@ -744,15 +849,18 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Persona a reconocer",
-              "t": "person",
-              "req": true
+              "l": "Supervisor reconocido",
+              "t": "person"
             },
             {
               "k": "conducta",
-              "l": "Conducta reconocida",
-              "t": "area",
-              "req": true
+              "l": "Conducta",
+              "t": "area"
+            },
+            {
+              "k": "impacto",
+              "l": "Impacto",
+              "t": "area"
             }
           ]
         }
@@ -847,15 +955,13 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Persona (TAC)",
-              "t": "person",
-              "req": true
+              "l": "Persona",
+              "t": "person"
             },
             {
               "k": "situacion",
-              "l": "Situación (fricción)",
-              "t": "area",
-              "req": true
+              "l": "Situación de fricción",
+              "t": "area"
             },
             {
               "k": "acuerdo",
@@ -918,7 +1024,35 @@ Object.assign(window.PROFILES, {
           "Prometer lo que no puedes cumplir.",
           "Escalar sin escribir contexto suficiente — el superior no puede actuar sobre algo que no entiende.",
           "No cerrar el loop al día siguiente con quien habló."
-        ]
+        ],
+        "registro": {
+          "soporte": "Escalada vía app",
+          "fields": [
+            {
+              "k": "2",
+              "l": "2 líneas de contexto",
+              "t": "area"
+            },
+            {
+              "k": "tipo",
+              "l": "Tipo",
+              "t": "sel",
+              "o": [
+                "Operativo",
+                "Cultural"
+              ]
+            },
+            {
+              "k": "urgencia",
+              "l": "Urgencia",
+              "t": "sel",
+              "o": [
+                "Hoy",
+                "Esta semana"
+              ]
+            }
+          ]
+        }
       },
       {
         "id": "revisar-escaladas-diarias",
@@ -1008,20 +1142,18 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Persona a reconocer",
-              "t": "person",
-              "req": true
+              "l": "TAC reconocido",
+              "t": "person"
             },
             {
               "k": "conducta",
-              "l": "Conducta reconocida",
-              "t": "area",
-              "req": true
+              "l": "Conducta en relación con operaciones",
+              "t": "area"
             },
             {
-              "k": "espacio",
-              "l": "Espacio",
-              "t": "text"
+              "k": "impacto",
+              "l": "Impacto",
+              "t": "area"
             }
           ]
         }
@@ -1066,8 +1198,7 @@ Object.assign(window.PROFILES, {
         "purpose": "Llegar al área como aliado — compartir los criterios del día antes de fiscalizar.",
         "context": {
           "freq": "Diario",
-          "when": "Al llegar al área a evaluar",
-          "place": "Al llegar al área a evaluar"
+          "when": "Al llegar al área a evaluar"
         },
         "steps": [
           {
@@ -1088,9 +1219,9 @@ Object.assign(window.PROFILES, {
           }
         ],
         "phrases": [
-          "Buenos días equipo, permítanme unos minutos para compartir los puntos clave de hoy.",
-          "¿Hay algo del área que deba saber antes de empezar?",
-          "No vengo a buscar errores, vengo a que salgamos bien juntos."
+          "\"Buenos días equipo, permítanme unos minutos para compartir los puntos clave de hoy.\"",
+          "\"¿Hay algo del área que deba saber antes de empezar?\"",
+          "\"No vengo a buscar errores, vengo a que salgamos bien juntos.\""
         ],
         "no": [
           "Empezar a evaluar sin presentarse — genera emboscada.",
@@ -1099,9 +1230,7 @@ Object.assign(window.PROFILES, {
           "Dar más de 3 criterios de golpe."
         ],
         "registro": {
-          "hidden": true,
-          "soporte": "App Cultiva — bitácora",
-          "fields": []
+          "hidden": true
         }
       },
       {
@@ -1114,8 +1243,7 @@ Object.assign(window.PROFILES, {
         "purpose": "Escuchar al equipo para entender y apoyar — no para reportar.",
         "context": {
           "freq": "Diario",
-          "when": "Durante la jornada",
-          "place": "Durante la jornada"
+          "when": "Durante la jornada"
         },
         "steps": [
           {
@@ -1136,10 +1264,10 @@ Object.assign(window.PROFILES, {
           }
         ],
         "phrases": [
-          "Te comparto el resultado para que estemos alineados.",
-          "Quiero apoyarte para que mejoremos esto juntos.",
-          "¿Qué crees que está afectando este resultado?",
-          "¿Qué necesitas de mí para mejorar?"
+          "\"Te comparto el resultado para que estemos alineados.\"",
+          "\"Quiero apoyarte para que mejoremos esto juntos.\"",
+          "\"¿Qué crees que está afectando este resultado?\"",
+          "\"¿Qué necesitas de mí para mejorar?\""
         ],
         "no": [
           "Comunicar los resultados de forma acusatoria.",
@@ -1174,11 +1302,11 @@ Object.assign(window.PROFILES, {
         "dimension": "valora",
         "icon": "thumbs-up",
         "title": "Reconocimiento Sincero",
-        "freq": "Semanal",
+        "freq": "Según lo amerite · mín. 1 vez/semana · Opción diferida al día siguiente",
         "purpose": "Reconocer las mejoras del equipo para reforzar buenas prácticas — lo que se nombra se repite.",
         "context": {
           "freq": "Según lo amerite · mín. 1 vez/semana · Opción diferida al día siguiente",
-          "when": "Al inicio o al cierre de la jornada",
+          "when": "En grupo o 1:1",
           "place": "Al inicio o al cierre"
         },
         "steps": [
@@ -1196,8 +1324,8 @@ Object.assign(window.PROFILES, {
           }
         ],
         "phrases": [
-          "Hoy [nombre] [conducta específica]. Gracias. Mañana lo cuento al equipo.",
-          "Buenos días. Antes de empezar, ayer [nombre] [conducta]. Eso es lo que necesitamos."
+          "\"Hoy [nombre] [conducta específica]. Gracias. Mañana lo cuento al equipo.\"",
+          "\"Buenos días. Antes de empezar, ayer [nombre] [conducta]. Eso es lo que necesitamos.\""
         ],
         "no": [
           "Reconocimiento vago: \"buen trabajo\".",
@@ -1208,20 +1336,18 @@ Object.assign(window.PROFILES, {
           "soporte": "Agenda Cultiva — Reconocimiento diario",
           "fields": [
             {
-              "k": "cosechador",
-              "l": "Cosechador",
-              "t": "person",
-              "req": true
+              "k": "persona",
+              "l": "Trabajador",
+              "t": "person"
             },
             {
               "k": "conducta",
               "l": "Conducta observable",
-              "t": "area",
-              "req": true
+              "t": "area"
             },
             {
-              "k": "colilla",
-              "l": "¿Colilla entregada?",
+              "k": "flag",
+              "l": "Colilla entregada",
               "t": "bool"
             }
           ]
