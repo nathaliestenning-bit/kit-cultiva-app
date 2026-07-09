@@ -117,7 +117,7 @@ function EscaladaCard({ item, escState, superiorRole, canEscalateUp, onStatus, o
   );
 }
 
-function EscaladasInbox({ profile, onBack }) {
+function EscaladasInbox({ profile, onBack, onEquipo }) {
   const D = window.CultivaData;
   const [list, setList] = eUse([]);           // [{item, state}]
   const [loaded, setLoaded] = eUse(false);    // evita swap vacío→lista (conflicto Lucide/React)
@@ -176,6 +176,12 @@ function EscaladasInbox({ profile, onBack }) {
         eh("h1", { className: "escbox-title" }, "Temas escalados a ti"),
         eh("p", { className: "escbox-sub" },
           "Lo que tu equipo te subió hoy. Dale destino a cada tema: resuélvelo, ponlo en proceso, derívalo o escálalo."),
+        (onEquipo && ["N1", "N2", "N3"].indexOf(profile.level) >= 0) ? eh("button", {
+          type: "button", onClick: onEquipo,
+          style: { marginTop: "12px", display: "inline-flex", alignItems: "center", gap: "7px",
+            fontSize: "13px", padding: "10px 16px", borderRadius: "999px", cursor: "pointer",
+            border: "1px solid #cdd7d9", background: "#eef4f5", color: "#2F6E7A" },
+        }, EI("users", "ico-xs"), "Mi equipo") : null,
       ),
       loaded ? eh("div", { className: "escbox-filters" },
         [["todos", "Todos", list.length], ["pendientes", "Pendientes", pendientes.length],

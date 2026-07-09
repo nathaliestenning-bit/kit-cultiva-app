@@ -162,6 +162,22 @@
       ]);
       return client().rpc("equipo_escaladas").then(function (q) { if (q.error) throw q.error; return q.data || []; });
     },
+    /* escaladas que RECIBE el equipo (to_legajo) y cómo las gestiona (estado).
+       Vista supervisora: por cada miembro del equipo, los temas que le llegaron. */
+    equipoGestionEscaladas: function (perfil) {
+      if (!isSb()) return Promise.resolve([
+        { id: "m1", to_legajo: "demo-a", gestor_nombre: "Luis Ramos", gestor_nivel: "N3",
+          from_nombre: "Ana Torres", tema: "Falta de agua",
+          detalle: "Sin agua para consumo en el sector.", status: "resuelvo", created_at: new Date().toISOString() },
+        { id: "m2", to_legajo: "demo-a", gestor_nombre: "Luis Ramos", gestor_nivel: "N3",
+          from_nombre: "Pedro Ruiz", tema: "Turno nocturno",
+          detalle: "Confusión con el rol del turno.", status: "proceso", created_at: new Date().toISOString() },
+        { id: "m3", to_legajo: "demo-b", gestor_nombre: "Marta Ríos", gestor_nivel: "N3",
+          from_nombre: "Sara Díaz", tema: "Reconocimiento al esfuerzo",
+          detalle: "El equipo siente que su esfuerzo no se ve.", status: "pendiente", created_at: new Date().toISOString() },
+      ]);
+      return client().rpc("equipo_gestion_escaladas").then(function (q) { if (q.error) throw q.error; return q.data || []; });
+    },
 
     /* ---- SEGUIMIENTOS DE HOY (fecha propia + escaladas por vencer) ---- */
     /* {propios: [{ritual_id, vals}], porResolver: n, enviadasPendientes: n} */

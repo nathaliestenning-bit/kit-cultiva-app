@@ -448,6 +448,71 @@ function MiEquipo({ profile, onBack }) {
   );
 }
 
+/* ---------- Gestión de escaladas del equipo (solo lectura) --- */
+const GEST_EST = {
+  pendiente: { l: "Pendiente", c: "#8a7a68" },
+  proceso:   { l: "En proceso", c: "#A8631A" },
+  resuelvo:  { l: "Resuelto",   c: "#18571F" },
+  derivo:    { l: "Derivado",   c: "#4156A2" },
+  escalo:    { l: "Escaló",     c: "#A81519" },
+};
+function EquipoEscaladas({ profile, onBack }) {
+  const D = window.CultivaData;
+  const [rows, setRows] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    let alive = true; setLoaded(false);
+    (D && D.equipoGestionEscaladas ? D.equipoGestionEscaladas(profile.id) : Promise.resolve([]))
+      .then((r) => { if (alive) { setRows(r || []); setLoaded(true); } })
+      .catch(() => { if (alive) setLoaded(true); });
+    return () => { alive = false; };
+  }, [profile.id]);
+  useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
+
+  const estOf = (s) => GEST_EST[s || "pendiente"] || GEST_EST.pendiente;
+
+  // agrupar por gestor (miembro del equipo que recibió la escalada)
+  const groups = []; const idx = {};
+  rows.forEach((r) => {
+    const k = r.to_legajo || r.gestor_nombre || "—";
+    if (idx[k] == null) { idx[k] = groups.length; groups.push({ key: k, nombre: r.gestor_nombre, nivel: r.gestor_nivel, items: [] }); }
+    groups[idx[k]].items.push(r);
+  });
+
+  return h("div", { className: "screen" },
+    h("div", { className: "topbar" },
+      h("button", { className: "icon-btn", type: "button", onClick: onBack, "aria-label": "Volver" }, I("arrow-left")),
+      h("div", { className: "topbar-id" },
+        h("span", { className: "topbar-role" }, "Gestión de tu equipo"),
+        h("span", { className: "topbar-area" }, I("inbox", "ico-xs"), "Cómo gestionan las escaladas que reciben")),
+    ),
+    !loaded ? null : h("div", { style: { padding: "16px 18px" } },
+      groups.length === 0
+        ? h("p", { style: { color: "#8a7a68", fontSize: "14px" } }, "Tu equipo aún no ha recibido escaladas para gestionar.")
+        : groups.map((g, gi) => {
+            const total = g.items.length;
+            const byStatus = {}; g.items.forEach((it) => { const s = it.status || "pendiente"; byStatus[s] = (byStatus[s] || 0) + 1; });
+            return h("div", { key: g.key || gi, style: { border: "1px solid #e6ddcf", borderRadius: "12px", padding: "12px 14px", margin: "12px 0", background: "#fff" } },
+              h("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" } },
+                h("span", { style: { fontSize: "14px", fontWeight: 700, color: "#3a2f22" } }, g.nombre || "—",
+                  g.nivel ? h("span", { style: { color: "#9a8a78", fontWeight: 400 } }, " · " + g.nivel) : null),
+                h("span", { style: { fontSize: "12px", color: "#8a7a68" } }, total + (total === 1 ? " escalada" : " escaladas"))),
+              h("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", margin: "8px 0 2px" } },
+                Object.keys(byStatus).map((s) => { const e = estOf(s); return h("span", { key: s,
+                  style: { fontSize: "11px", fontWeight: 600, color: e.c, background: e.c + "14", borderRadius: "999px", padding: "3px 8px" } }, e.l + " · " + byStatus[s]); })),
+              h("div", null,
+                g.items.map((it, ii) => { const e = estOf(it.status); return h("div", { key: it.id || ii,
+                  style: { display: "flex", justifyContent: "space-between", gap: "8px", padding: "8px 0", borderTop: "1px solid #f0e7da" } },
+                  h("div", null,
+                    h("div", { style: { fontSize: "13px", fontWeight: 500, color: "#3a2f22" } }, it.tema || "—"),
+                    it.from_nombre ? h("div", { style: { fontSize: "11.5px", color: "#8a7a68" } }, "de " + it.from_nombre) : null),
+                  h("span", { style: { fontSize: "11px", fontWeight: 700, color: e.c, whiteSpace: "nowrap" } }, e.l)); })),
+            );
+          }),
+    ),
+  );
+}
+
 /* ---------- contenedor principal --------------------------- */
 function CosechaApp() {
   const [view, setView] = useState("login");        // login | start | gallery | detail | escaladas
@@ -507,6 +572,10 @@ function CosechaApp() {
     }) : null,
     view === "escaladas" && profile ? h(window.EscaladasInbox, {
       profile: profile, onBack: () => setView("gallery"),
+      onEquipo: () => setView("equipo-escaladas"),
+    }) : null,
+    view === "equipo-escaladas" && profile ? h(EquipoEscaladas, {
+      profile: profile, onBack: () => setView("escaladas"),
     }) : null,
   );
 }
