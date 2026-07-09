@@ -139,6 +139,48 @@ function DimHeader({ dim }) {
   );
 }
 
+/* ---------- tarjeta de puntos (expandible con explicativo) ---------- */
+const PUNTOS_INFO = [
+  { icon: "star", h: "¿Qué son los puntos Cultiva?",
+    t: "Reconocen a los líderes que aplican sus rituales en campo. Cada ritual que registras —liderar, valorar y escuchar a tu equipo— suma puntos. Son la forma de hacer visible y tangible lo que haces cada día para fortalecer a tu equipo." },
+  { icon: "plus-circle", h: "¿Cómo se suman?",
+    t: "Cada ejecución de un ritual suma 10 puntos, y cada registro extra en un mismo ritual suma 3 puntos." },
+  { icon: "gift", h: "Beneficios",
+    t: "Al llegar a 100 puntos podrás canjearlos por recompensas sorpresa en Hortifrut." },
+  { icon: "shield-check", h: "Validación de puntos",
+    t: "Los registros que hagas serán revisados para asegurar que la información sea veraz y esté debidamente sustentada." },
+];
+function PuntosCard({ pts, level, onEquipo }) {
+  const [open, setOpen] = useState(false);
+  useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
+  const ptsCap = Math.min(pts || 0, 100);
+  const canEquipo = ["N1", "N2", "N3"].indexOf(level) >= 0;
+  return h("div", { className: "puntos-card", style: { margin: "14px 18px 0", background: "#fff", border: "1px solid #eadfd0", borderRadius: "12px", padding: "12px 14px" } },
+    h("button", { type: "button", onClick: () => setOpen(!open),
+      style: { all: "unset", cursor: "pointer", display: "block", width: "100%", boxSizing: "border-box" } },
+      h("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "13px", marginBottom: "8px", color: "#5a4a38" } },
+        h("span", null, I("star", "ico-xs"), " Tus puntos · esta semana"),
+        h("span", { style: { display: "flex", alignItems: "center", gap: "6px" } },
+          h("b", null, (pts == null ? "…" : pts) + " / 100"),
+          I(open ? "chevron-up" : "chevron-down", "ico-xs"))),
+      h("div", { style: { height: "10px", background: "#f0e7da", borderRadius: "999px", overflow: "hidden" } },
+        h("div", { style: { height: "100%", width: ptsCap + "%", background: "#C9651C", borderRadius: "999px", transition: "width .3s" } }))),
+    open ? h("div", { style: { marginTop: "12px", borderTop: "1px solid #f0e7da", paddingTop: "6px" } },
+      PUNTOS_INFO.map((s, i) =>
+        h("div", { key: i, style: { display: "flex", gap: "9px", margin: "10px 0" } },
+          h("span", { style: { color: "#C9651C", flexShrink: 0, marginTop: "1px" } }, I(s.icon, "ico-sm")),
+          h("div", null,
+            h("div", { style: { fontSize: "13px", fontWeight: 700, color: "#3a2f22" } }, s.h),
+            h("div", { style: { fontSize: "12.5px", color: "#5a4a38", lineHeight: 1.45, marginTop: "2px" } }, s.t)))),
+      canEquipo ? h("button", { type: "button", onClick: onEquipo,
+        style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "7px",
+          marginTop: "6px", width: "100%", padding: "11px", borderRadius: "12px",
+          border: "1px solid #cdd7d9", background: "#eef4f5", color: "#2F6E7A", fontSize: "14px", cursor: "pointer" } },
+        I("users", "ico-sm"), "Ver a mi equipo") : null,
+    ) : null,
+  );
+}
+
 /* ---------- gallery ---------------------------------------- */
 function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
   useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
@@ -164,7 +206,6 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
     }
     return () => { alive = false; };
   }, [profile.id]);
-  const ptsCap = Math.min(pts || 0, 100);
 
   // seguimientos de hoy (fecha propia + escaladas por vencer)
   const [segs, setSegs] = useState(null);
@@ -188,25 +229,12 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
       ),
     ),
 
-    h("div", { style: { margin: "14px 18px 0", background: "#fff", border: "1px solid #eadfd0", borderRadius: "12px", padding: "12px 14px" } },
-      h("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "13px", marginBottom: "8px", color: "#5a4a38" } },
-        h("span", null, I("star", "ico-xs"), " Tus puntos · esta semana"),
-        h("b", null, (pts == null ? "…" : pts) + " / 100")),
-      h("div", { style: { height: "10px", background: "#f0e7da", borderRadius: "999px", overflow: "hidden" } },
-        h("div", { style: { height: "100%", width: ptsCap + "%", background: "#C9651C", borderRadius: "999px", transition: "width .3s" } })),
-    ),
+    h(PuntosCard, { pts: pts, level: profile.level, onEquipo: onEquipo }),
 
     h(SeguimientosBanner, {
       segs: segs, open: segsOpen, onToggle: () => setSegsOpen(!segsOpen),
       onOpenRitual: onOpen, onEscaladas: onEscaladas, ritualsById: ritualsById,
     }),
-
-    (["N1", "N2", "N3"].indexOf(profile.level) >= 0) ? h("button", {
-      type: "button", onClick: onEquipo,
-      style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "7px",
-        margin: "10px 18px 0", width: "calc(100% - 36px)", padding: "11px", borderRadius: "12px",
-        border: "1px solid #cdd7d9", background: "#eef4f5", color: "#2F6E7A", fontSize: "14px", cursor: "pointer" },
-    }, I("users", "ico-sm"), "Ver a mi equipo") : null,
 
     inicio.length ? h(DimHeader, { key: "ih", dim: inicio[0].dimension }) : null,
     inicio.map((r) => h(DayStrip, { key: r.id, ritual: r })),
@@ -371,8 +399,10 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
                 escalateTo: canEscalate ? ESCALATE_TO[profile.id] : null,
               })) : null,
 
-            // rituales "full" SIN formulario de registro: botón para marcar "se realizó"
-            (!ritual.registro || ritual.registro.hidden) ? h("button", { className: "done-btn" + (done ? " on" : ""), type: "button", onClick: toggleDone },
+            // rituales "full" SIN formulario de registro: botón para marcar "se realizó".
+            // Excepción: los de escaladas NO lo llevan — sus puntos se ganan al
+            // gestionar los temas en la bandeja (ver EscaladasInbox).
+            (ritual.kind !== "escaladas" && (!ritual.registro || ritual.registro.hidden)) ? h("button", { className: "done-btn" + (done ? " on" : ""), type: "button", onClick: toggleDone },
               I(done ? "check-circle-2" : "circle", "ico-sm"),
               done ? "Se realizó" : "Marcar como realizado") : null,
           ),
@@ -384,27 +414,22 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
 function MiEquipo({ profile, onBack }) {
   const D = window.CultivaData;
   const [team, setTeam] = useState([]);
-  const [escs, setEscs] = useState([]);
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     let alive = true; setLoaded(false);
-    Promise.all([
-      D && D.equipoPuntos ? D.equipoPuntos(profile.id) : Promise.resolve([]),
-      D && D.equipoEscaladas ? D.equipoEscaladas(profile.id) : Promise.resolve([]),
-    ]).then((res) => { if (!alive) return; setTeam(res[0] || []); setEscs(res[1] || []); setLoaded(true); })
+    (D && D.equipoPuntos ? D.equipoPuntos(profile.id) : Promise.resolve([]))
+      .then((res) => { if (!alive) return; setTeam(res || []); setLoaded(true); })
       .catch(() => { if (alive) setLoaded(true); });
     return () => { alive = false; };
   }, [profile.id]);
   useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
-
-  function fmt(ts) { try { return new Date(ts).toLocaleDateString("es-PE", { day: "2-digit", month: "short" }); } catch (e) { return ""; } }
 
   return h("div", { className: "screen" },
     h("div", { className: "topbar" },
       h("button", { className: "icon-btn", type: "button", onClick: onBack, "aria-label": "Volver" }, I("arrow-left")),
       h("div", { className: "topbar-id" },
         h("span", { className: "topbar-role" }, "Mi equipo"),
-        h("span", { className: "topbar-area" }, I("users", "ico-xs"), "Puntos y escaladas de tu equipo")),
+        h("span", { className: "topbar-area" }, I("users", "ico-xs"), "Puntos de tu equipo")),
     ),
     !loaded ? null : h("div", { style: { padding: "16px 18px" } },
       h("h2", { style: { fontSize: "18px", margin: "6px 0 8px" } }, "Puntos de la semana"),
@@ -419,17 +444,8 @@ function MiEquipo({ profile, onBack }) {
               h("div", { style: { height: "9px", background: "#f0e7da", borderRadius: "999px", overflow: "hidden" } },
                 h("div", { style: { height: "100%", width: cap + "%", background: "#C9651C", borderRadius: "999px" } })));
           }),
-      h("h2", { style: { fontSize: "18px", margin: "24px 0 8px" } }, "Escaladas del equipo"),
-      escs.length === 0
-        ? h("p", { style: { color: "#8a7a68", fontSize: "14px" } }, "Sin escaladas de tu equipo.")
-        : escs.map((e, i) =>
-            h("div", { key: e.id || i, style: { border: "1px solid #e6ddcf", borderRadius: "10px", padding: "10px 12px", margin: "8px 0" } },
-              h("div", { style: { display: "flex", justifyContent: "space-between", fontSize: "12px", color: "#8a7a68" } },
-                h("span", null, (e.from_nombre || "—") + (e.nivel ? " · " + e.nivel : "")),
-                h("span", null, fmt(e.created_at))),
-              h("div", { style: { fontSize: "14px", fontWeight: 500, margin: "3px 0" } }, e.tema),
-              h("div", { style: { fontSize: "13px", color: "#5a4a38" } }, e.detalle),
-              (e.status && e.status !== "pendiente") ? h("div", { style: { fontSize: "11px", color: "#18571F", marginTop: "4px" } }, "Estado: " + e.status) : null)),
+      h("p", { style: { color: "#8a7a68", fontSize: "12.5px", marginTop: "18px", lineHeight: 1.45 } },
+        I("inbox", "ico-xs"), " Las escaladas de tu equipo las ves en el ritual de escaladas."),
     ),
   );
 }
