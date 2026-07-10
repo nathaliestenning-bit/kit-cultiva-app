@@ -442,8 +442,6 @@ function MiEquipo({ profile, onBack }) {
               h("div", { style: { height: "9px", background: "#f0e7da", borderRadius: "999px", overflow: "hidden" } },
                 h("div", { style: { height: "100%", width: cap + "%", background: "#C9651C", borderRadius: "999px" } })));
           }),
-      h("p", { style: { color: "#8a7a68", fontSize: "12.5px", marginTop: "18px", lineHeight: 1.45 } },
-        I("inbox", "ico-xs"), " Las escaladas de tu equipo las ves en el ritual de escaladas."),
     ),
   );
 }

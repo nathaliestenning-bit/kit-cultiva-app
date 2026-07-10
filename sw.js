@@ -2,7 +2,10 @@
    Service Worker · App Cultiva (PWA)
    Precache del app-shell completo en install → abre OFFLINE.
    - navegaciones: network-first con fallback a index.html (SPA).
-   - resto: cache-first con relleno en segundo plano.
+   - CÓDIGO de la app (.js/config/data/manifest en la raíz): network-first
+     → al reabrir el link SIEMPRE se ve lo último (sin borrar caché); solo
+     cae al caché si no hay conexión.
+   - estáticos inmutables (assets/, vendor/): cache-first (rápido, casi no cambian).
    Nota: las llamadas a Supabase (auth/rest) NO se cachean (otro origen);
    en offline la app abre pero el login real requiere conexión.
    La versión (CACHE) la inyecta SOLA la Action de deploy en cada push
@@ -96,16 +99,29 @@ self.addEventListener("fetch", (e) => {
     return;
   }
 
-  e.respondWith(
-    caches.match(req).then((cached) => {
-      if (cached) return cached;
-      return fetch(req).then((res) => {
+  // Estáticos inmutables (fuentes, vendor, imágenes, css): cache-first (rápido).
+  if (/\/(assets|vendor)\//.test(url.pathname)) {
+    e.respondWith(
+      caches.match(req).then((cached) => cached || fetch(req).then((res) => {
         if (res && res.status === 200 && res.type === "basic") {
           const copy = res.clone();
           caches.open(CACHE).then((c) => c.put(req, copy));
         }
         return res;
-      }).catch(() => cached);
-    })
+      }))
+    );
+    return;
+  }
+
+  // Código de la app (.js, config.js, data-*.js, manifest…): NETWORK-FIRST.
+  // Siempre trae lo último si hay conexión; el caché queda como respaldo offline.
+  e.respondWith(
+    fetch(req).then((res) => {
+      if (res && res.status === 200 && res.type === "basic") {
+        const copy = res.clone();
+        caches.open(CACHE).then((c) => c.put(req, copy));
+      }
+      return res;
+    }).catch(() => caches.match(req))
   );
 });
