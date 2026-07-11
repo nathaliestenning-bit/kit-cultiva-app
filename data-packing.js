@@ -24,7 +24,7 @@ Object.assign(window.PROFILES, {
         "dimension": "lidera",
         "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
-        "freq": "1 vez al mes por persona (día y noche)",
+        "freq": "Mensual",
         "purpose": "Desarrollar al nivel de abajo mediante observación, pregunta y acuerdo concreto — SCI integrado.",
         "context": {
           "freq": "1 vez al mes por persona (día y noche)",
@@ -131,7 +131,7 @@ Object.assign(window.PROFILES, {
         "dimension": "lidera",
         "icon": "footprints",
         "title": "Caminata de Liderazgo",
-        "freq": "1 recorrido de día + 1 de noche por planta (bimensual)",
+        "freq": "Bimensual",
         "purpose": "Hacer presencia ejecutiva visible en AMBOS turnos — la noche tiene autoridad equivalente al día.",
         "context": {
           "freq": "1 recorrido de día + 1 de noche por planta (bimensual)",
@@ -420,7 +420,7 @@ Object.assign(window.PROFILES, {
         "dimension": "lidera",
         "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
-        "freq": "1 vez al mes por persona (día y noche)",
+        "freq": "Mensual",
         "purpose": "Desarrollar al nivel de abajo mediante observación, pregunta y acuerdo concreto — SCI integrado.",
         "context": {
           "freq": "1 vez al mes por persona (día y noche)",

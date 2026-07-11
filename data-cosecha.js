@@ -177,10 +177,10 @@ window.PROFILES = {
         "dimension": "lidera",
         "icon": "footprints",
         "title": "Caminata de Liderazgo",
-        "freq": "5 veces al año",
+        "freq": "6 veces al año",
         "purpose": "Hacer visible que la gerencia llega al campo — el nivel más alto escucha directamente al frontline.",
         "context": {
-          "freq": "5 veces al año",
+          "freq": "6 veces al año",
           "when": "En terreno",
           "place": "Visitar Supervisores de Fundo, Líderes de Cosecha y/o Cosechadores"
         },
@@ -747,7 +747,7 @@ window.PROFILES = {
         "dimension": "lidera",
         "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
-        "freq": "2 Líderes de Cosecha por semana",
+        "freq": "Semanal",
         "purpose": "Desarrollar al líder en terreno, en tiempo real, mediante observación, pregunta y acuerdo — SCI integrado. Recomendación: Desarrollar al líder en terreno mediante la observación, la reflexión y acuerdos concretos para potenciar sus fortalezas y mejorar su desempeño\"",
         "context": {
           "freq": "2 Líderes de Cosecha por semana",
