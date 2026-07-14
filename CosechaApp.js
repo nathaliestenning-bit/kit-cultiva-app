@@ -306,6 +306,33 @@ function TemasHelp() {
   );
 }
 
+/* ---------- videos por ritual (front-line N4/TAC) ----------
+   Mismo video por título en todas las áreas. Alojados en Supabase Storage
+   (bucket público "videos"). Sube cada archivo con EXACTAMENTE el nombre de
+   abajo y el reproductor lo toma solo; si un archivo aún no está subido, el
+   reproductor no se muestra (no rompe la pantalla). */
+const VIDEO_BASE = "https://qytcqopoqlqogctxnbwk.supabase.co/storage/v1/object/public/videos/";
+const N4_VIDEOS = {
+  "Acompañamiento 1 a 1":   VIDEO_BASE + "acompanamiento-1a1.mp4",
+  "Espacio de confianza":   VIDEO_BASE + "espacio-de-confianza.mp4",
+  "Reconocimiento Sincero": VIDEO_BASE + "reconocimiento-sincero.mp4",
+  // Solo TAC (Calidad). Pendiente de grabar: hasta subir el archivo, el
+  // reproductor se mantiene oculto y aparece solo cuando exista.
+  "Acercamiento cálido":    VIDEO_BASE + "acercamiento-calido.mp4",
+};
+function esFrontLine(profile) { return !!profile && (profile.level === "N4" || profile.id === "cal-tac"); }
+function RitualVideo({ url }) {
+  const [err, setErr] = useState(false);
+  if (err || !url) return null;
+  return h("div", { className: "ritual-video" },
+    h("div", { className: "ritual-video-h" }, I("play-circle", "ico-xs"), "Míralo en video"),
+    h("video", {
+      className: "ritual-video-el", src: url, controls: true, playsInline: true, preload: "metadata",
+      onError: () => setErr(true),
+    }),
+  );
+}
+
 /* ---------- detalle de un ritual --------------------------- */
 function Detail({ profile, ritual, onBack, onEscaladas }) {
   const dim = window.DIMS[ritual.dimension];
@@ -328,6 +355,8 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
   const isEscucha = ritual.registro && ritual.registro.escuchaTemas;
   // autoBroadcast: la subida a la cadena es automática al guardar → sin botón "Escalar" manual
   const canEscalate = ritual.registro && (ritual.registro.escuchaTemas || ritual.registro.escalates) && !ritual.registro.autoBroadcast;
+  // video del ritual (solo front-line N4/TAC, mismo por título) — se ubica bajo el "Paso a paso"
+  const videoUrl = esFrontLine(profile) ? N4_VIDEOS[ritual.title] : null;
 
   return h("div", { className: "screen detail", style: { "--dc": dim.color } },
     h("div", { className: "topbar" },
@@ -352,6 +381,8 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
             h("button", { className: "done-btn" + (done ? " on" : ""), type: "button", onClick: toggleDone },
               I(done ? "check-circle-2" : "circle", "ico-sm"),
               done ? "Hecho hoy" : "Marcar como hecho hoy"),
+            // rituales light no tienen "Paso a paso": el video va al final
+            videoUrl ? h(RitualVideo, { url: videoUrl }) : null,
           )
         : h("div", { className: "full-wrap" },
             ritual.purpose ? h("p", { className: "purpose" }, ritual.purpose) : null,
@@ -377,6 +408,9 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
                   )),
               ),
             ) : null,
+
+            // video del ritual — debajo del Paso a paso
+            videoUrl ? h(RitualVideo, { url: videoUrl }) : null,
 
             ritual.note ? h("div", { className: "note" }, I("lightbulb", "ico-xs"), h("span", null, ritual.note)) : null,
 
