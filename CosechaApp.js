@@ -670,6 +670,7 @@ function MaestroRitual({ ritual, color, regs, total }) {
 function MaestroColab({ legajo, onBack }) {
   const [data, setData] = useState(null);
   const [fav, setFav] = useState(() => maestroFavs().some((f) => f.legajo === legajo));
+  const [segOpen, setSegOpen] = useState(false);
   useEffect(() => {
     let alive = true; setData(null);
     window.CultivaData.maestroColaborador(legajo).then((r) => { if (alive) setData(r || { found: false }); }).catch(() => { if (alive) setData({ found: false }); });
@@ -700,6 +701,12 @@ function MaestroColab({ legajo, onBack }) {
   const pts = D.puntosDe(data.registros.map((r) => ({ ritual_id: r.ritual_id, ts: r.ts })), D.weekStartTs());
   const byRitual = {}; data.registros.forEach((r) => { (byRitual[r.ritual_id] = byRitual[r.ritual_id] || []).push(r); });
   const rituals = prof ? prof.rituals : [];
+  const groups = window.DIM_ORDER
+    .map((d) => ({ dim: d, def: window.DIMS[d], items: rituals.filter((r) => r.dimension === d && (r.kind === "full" || r.kind === "escaladas")) }))
+    .filter((g) => g.items.length);
+  const conReg = rituals.map((r) => ({ r: r, regs: (byRitual[r.id] || []).filter((x) => x.vals && Object.keys(x.vals).length), total: (byRitual[r.id] || []).length })).filter((x) => x.total > 0);
+  const totalReg = data.registros.length;
+  const fmt = (ts) => { try { return new Date(ts).toLocaleDateString("es-PE", { day: "2-digit", month: "short" }); } catch (e) { return ""; } };
 
   return h("div", { className: "screen" }, topbar,
     h("div", { style: { padding: "16px 18px", overflowY: "auto" } },
@@ -707,14 +714,40 @@ function MaestroColab({ legajo, onBack }) {
       h("p", { style: { fontSize: "13px", color: "#8a7a68", margin: 0 } }, role + (data.area ? " · " + data.area : "") + (data.nivel ? " · " + data.nivel : "")),
       h("div", { style: { display: "inline-flex", alignItems: "center", gap: "6px", marginTop: "10px", background: "#faf6ef", borderRadius: "999px", padding: "6px 12px", fontSize: "13px" } },
         I("star", "ico-xs"), h("b", null, pts + " pts"), h("span", { style: { color: "#8a7a68" } }, "esta semana")),
-      h("h2", { style: { fontSize: "15px", fontWeight: 800, margin: "20px 0 4px", color: "#3a2f22" } }, "Sus rituales y seguimiento"),
+
+      // rituales del colaborador (galería compacta, solo lectura)
+      h("h2", { style: { fontSize: "15px", fontWeight: 800, margin: "18px 0 6px", color: "#3a2f22" } }, "Sus rituales"),
       !prof ? h("p", { style: { color: "#8a7a68" } }, "Perfil no disponible en la app.")
-        : rituals.map((r) => {
-            const dim = window.DIMS[r.dimension] || {};
-            const all = byRitual[r.id] || [];
-            const regs = all.filter((x) => x.vals && Object.keys(x.vals).length);
-            return h(MaestroRitual, { key: r.id, ritual: r, color: dim.color, regs: regs, total: all.length });
-          }),
+        : h("div", { className: "mtr-rit" }, groups.map((g) =>
+            h("section", { key: g.dim, className: "dim-group" },
+              h("div", { className: "dim-head", style: { "--dc": g.def.color } },
+                h("span", { className: "dim-dot" }), h("span", { className: "dim-label" }, g.def.label)),
+              h("div", { className: "thumb-grid" },
+                g.items.map((r) => h("div", { key: r.id, className: "thumb", style: { "--dc": g.def.color } },
+                  h("span", { className: "thumb-top" }, h("span", { className: "thumb-ico" }, I(r.icon))),
+                  h("span", { className: "thumb-name" }, r.title),
+                  h("span", { className: "thumb-freq" }, I("repeat", "ico-xs"), r.freq))))))),
+
+      // seguimiento: barra única desplegable
+      h("div", { style: { marginTop: "18px", border: "1px solid #eadfd0", borderRadius: "12px", background: "#fff", overflow: "hidden" } },
+        h("button", { type: "button", onClick: () => setSegOpen(!segOpen),
+          style: { all: "unset", cursor: "pointer", display: "flex", width: "100%", alignItems: "center", gap: "8px", boxSizing: "border-box", padding: "13px 14px" } },
+          I("clipboard-list", "ico-sm"),
+          h("span", { style: { flex: 1, fontSize: "14px", fontWeight: 800, color: "#3a2f22" } }, "Seguimiento"),
+          h("span", { style: { fontSize: "12px", fontWeight: 700, color: totalReg ? "#18571F" : "#b8a894" } }, totalReg + (totalReg === 1 ? " registro" : " registros")),
+          I(segOpen ? "chevron-up" : "chevron-down", "ico-xs")),
+        segOpen ? h("div", { style: { padding: "0 14px 12px" } },
+          conReg.length ? conReg.map((x) => {
+            const flabels = {}; ((x.r.registro && x.r.registro.fields) || []).forEach((f) => { flabels[f.k] = f.l; });
+            return h("div", { key: x.r.id, style: { borderTop: "1px solid #f0e7da", paddingTop: "8px", marginTop: "8px" } },
+              h("div", { style: { fontSize: "13px", fontWeight: 700, color: "#3a2f22", marginBottom: "4px" } }, x.r.title),
+              x.regs.length ? x.regs.map((rg, i) => h("div", { key: i, style: { padding: "5px 0", borderTop: i ? "1px solid #f5efe6" : "none" } },
+                h("div", { style: { fontSize: "11px", color: "#8a7a68", marginBottom: "2px" } }, fmt(rg.ts)),
+                Object.keys(rg.vals).filter((k) => rg.vals[k] && k.charAt(0) !== "_").map((k) =>
+                  h("div", { key: k, style: { fontSize: "12.5px", color: "#3a2f22", lineHeight: 1.4 } }, h("b", null, (flabels[k] || k) + ": "), String(rg.vals[k])))))
+                : h("div", { style: { fontSize: "12px", color: "#8a7a68" } }, x.total + " registrado(s) sin detalle."));
+          }) : h("div", { style: { fontSize: "13px", color: "#8a7a68", paddingTop: "8px" } }, "Aún sin registros.")) : null,
+      ),
     ),
   );
 }
