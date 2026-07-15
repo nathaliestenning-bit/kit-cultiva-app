@@ -336,8 +336,9 @@ const N4_VIDEOS = {
   "Reconocimiento Sincero": VIDEO_BASE + "reconocimiento-sincero.mp4",
 };
 // Videos exclusivos de la posición Técnico TAC, por id de ritual.
+// (el archivo subido quedó con doble extensión ".mp4.mp4"; se apunta al nombre real)
 const TAC_VIDEOS = {
-  "reconocimiento": VIDEO_BASE + "tac-reconocimiento.mp4",
+  "reconocimiento": VIDEO_BASE + "tac-reconocimiento.mp4.mp4",
 };
 // URL del video que corresponde a este perfil+ritual (o null si no hay).
 function videoDeRitual(profile, ritual) {
