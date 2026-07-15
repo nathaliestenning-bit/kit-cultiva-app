@@ -762,7 +762,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Registro",
-            "t": "vía app: escribo contexto + establenzco Urgencia (Hoy / Esta semana)."
+            "t": "vía app: escribo la situación + establezco Urgencia (Hoy / Esta semana)."
           },
           {
             "k": "Doy cierre",
@@ -1057,7 +1057,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Registro",
-            "t": "vía app: escribo contexto + establenzco Urgencia (Hoy / Esta semana)."
+            "t": "vía app: escribo la situación + establezco Urgencia (Hoy / Esta semana)."
           },
           {
             "k": "Doy cierre",
