@@ -322,7 +322,7 @@ function TemasHelp() {
   );
 }
 
-/* ---------- videos por ritual (front-line N4/TAC) ----------
+/* ---------- videos por ritual (front-line N4) ----------
    Mismo video por título en todas las áreas. Alojados en Supabase Storage
    (bucket público "videos"). Sube cada archivo con EXACTAMENTE el nombre de
    abajo y el reproductor lo toma solo; si un archivo aún no está subido, el
@@ -332,11 +332,8 @@ const N4_VIDEOS = {
   "Acompañamiento 1 a 1":   VIDEO_BASE + "acompanamiento-1a1.mp4",
   "Espacio de confianza":   VIDEO_BASE + "espacio-de-confianza.mp4",
   "Reconocimiento Sincero": VIDEO_BASE + "reconocimiento-sincero.mp4",
-  // Solo TAC (Calidad). Pendiente de grabar: hasta subir el archivo, el
-  // reproductor se mantiene oculto y aparece solo cuando exista.
-  "Acercamiento cálido":    VIDEO_BASE + "acercamiento-calido.mp4",
 };
-function esFrontLine(profile) { return !!profile && (profile.level === "N4" || profile.id === "cal-tac"); }
+function esFrontLine(profile) { return !!profile && profile.level === "N4"; }
 function RitualVideo({ url }) {
   const [err, setErr] = useState(false);
   const [open, setOpen] = useState(true);   // abierto al entrar al ritual
@@ -376,7 +373,7 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
   const isEscucha = ritual.registro && ritual.registro.escuchaTemas;
   // autoBroadcast: la subida a la cadena es automática al guardar → sin botón "Escalar" manual
   const canEscalate = ritual.registro && (ritual.registro.escuchaTemas || ritual.registro.escalates) && !ritual.registro.autoBroadcast;
-  // video del ritual (solo front-line N4/TAC, mismo por título) — se ubica bajo el "Paso a paso"
+  // video del ritual (solo front-line N4, mismo por título) — se ubica bajo el "Paso a paso"
   const videoUrl = esFrontLine(profile) ? N4_VIDEOS[ritual.title] : null;
 
   return h("div", { className: "screen detail", style: { "--dc": dim.color } },
@@ -688,7 +685,7 @@ function MaestroColab({ legajo, onBack }) {
   const topbar = h("div", { className: "topbar" },
     h("button", { className: "icon-btn icon-btn-sm", type: "button", onClick: onBack, "aria-label": "Volver" }, I("arrow-left")),
     h("div", { className: "topbar-id" }, h("span", { className: "topbar-role topbar-role-sm" }, "Seguimiento")),
-    (data && data.found) ? h("button", { className: "icon-btn icon-btn-sm", type: "button", onClick: toggleFav, "aria-label": "Favorito",
+    (data && data.found) ? h("button", { className: "icon-btn icon-btn-sm" + (fav ? " mtr-fav-on" : ""), type: "button", onClick: toggleFav, "aria-label": "Favorito",
       style: { marginLeft: "auto", color: fav ? "#C9651C" : "#8a7a68" } }, I("star")) : null,
   );
 
