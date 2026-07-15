@@ -10,7 +10,7 @@ const I = (name, cls) => h("i", { "data-lucide": name, className: cls || "" });
 const ESCALATE_TO = { "cos-n4": "Supervisor de Fundo", "prod-n4": "Jefe de Producción de Área", "pack-n4": "Jefe de Producción de Planta", "cal-tac": "Supervisor de Calidad" };
 
 /* ---------- pantalla inicial: área → perfil ---------------- */
-function Start({ onEnter, onBackToLogin }) {
+function Start({ onEnter, onBackToLogin, backLabel }) {
   const [step, setStep] = useState(1);
   const [area, setArea] = useState(null);
   useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
@@ -37,7 +37,7 @@ function Start({ onEnter, onBackToLogin }) {
           h("div", { className: "review-banner" },
             I("key-round", "ico-xs"),
             h("span", null, h("b", null, "Acceso de revisión*"), " — sin restricciones a todas las áreas y perfiles."),
-            onBackToLogin ? h("button", { className: "review-exit", type: "button", onClick: onBackToLogin }, "Salir") : null,
+            onBackToLogin ? h("button", { className: "review-exit", type: "button", onClick: onBackToLogin }, backLabel || "Salir") : null,
           ),
           h("h1", { className: "start-q" }, "¿A qué área perteneces?"),
           h("p", { className: "start-hint" }, "Selecciona un área para revisar sus rituales."),
@@ -708,6 +708,7 @@ function CosechaApp() {
   const [profileId, setProfileId] = useState(null);
   const [activeId, setActiveId] = useState(null);
   const [maestroColab, setMaestroColab] = useState(null);
+  const [exploreMaestro, setExploreMaestro] = useState(false);
   const scrollRef = useRef(null);
 
   useEffect(() => { if (scrollRef.current) scrollRef.current.scrollTop = 0; }, [view, activeId]);
@@ -742,7 +743,7 @@ function CosechaApp() {
     }) : null,
     view === "maestro" ? h(MaestroHome, {
       onColab: (lg) => { setMaestroColab(lg); setView("maestro-colab"); },
-      onExplore: () => { setAccessMode("review"); setProfileId(null); setView("start"); },
+      onExplore: () => { setExploreMaestro(true); setAccessMode("review"); setProfileId(null); setView("start"); },
       onLogout: () => { setAccessMode(null); setView("login"); },
     }) : null,
     view === "maestro-colab" ? h(MaestroColab, {
@@ -750,7 +751,11 @@ function CosechaApp() {
     }) : null,
     view === "start" ? h(Start, {
       onEnter: (pid) => { setProfileId(pid); setView("gallery"); },
-      onBackToLogin: () => { setProfileId(null); setView("login"); },
+      backLabel: exploreMaestro ? "Volver" : undefined,
+      onBackToLogin: () => {
+        if (exploreMaestro) { setExploreMaestro(false); setAccessMode("maestro"); setProfileId(null); setView("maestro"); }
+        else { setProfileId(null); setView("login"); }
+      },
     }) : null,
     view === "gallery" && profile ? h(Gallery, {
       profile: profile,
