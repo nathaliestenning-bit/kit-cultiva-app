@@ -19,7 +19,8 @@
 
   function profileFromRow(row) {
     return {
-      legajo: row.legajo, nombre: row.nombre, cargo: row.cargo, perfil: row.perfil,
+      legajo: row.legajo, nombre: row.nombre, nombre_corto: row.nombre_corto,
+      cargo: row.cargo, perfil: row.perfil,
       gerencia: row.gerencia, nivel: row.nivel, area: row.area, sede: row.sede,
       legajo_jefe: row.legajo_jefe,
     };

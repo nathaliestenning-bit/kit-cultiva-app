@@ -607,7 +607,7 @@ window.PROFILES = {
           },
           {
             "k": "Registro",
-            "t": "vía app: escribo contexto + establenzco Urgencia (Hoy / Esta semana)."
+            "t": "vía app: escribo la situación + establezco Urgencia (Hoy / Esta semana)."
           },
           {
             "k": "Doy cierre",
@@ -910,7 +910,7 @@ window.PROFILES = {
           },
           {
             "k": "Registro",
-            "t": "vía app: escribo contexto + establenzco Urgencia (Hoy / Esta semana)."
+            "t": "vía app: escribo la situación + establezco Urgencia (Hoy / Esta semana)."
           },
           {
             "k": "Doy cierre",
@@ -1051,7 +1051,7 @@ window.PROFILES = {
         "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "Diario",
-        "purpose": "Construir autoridad desde la relación — presencia visible que observa, conversa y da feedback en el momento.",
+        "purpose": "Construir autoridad desde la relación — presencia visible que observa, conversa y da acompañamiento en el momento.",
         "context": {
           "freq": "Diario",
           "place": "En el campo"
@@ -1088,7 +1088,7 @@ window.PROFILES = {
           "Aparecer solo cuando hay un problema (eso lo convierte en ronda de control).",
           "Corregir en público frente al grupo.",
           "Recorrer siempre el mismo sector o las mismas personas.",
-          "Esperar al cierre para dar feedback positivo — dilo en el momento."
+          "Esperar al cierre para dar acompañamiento positivo — dilo en el momento."
         ],
         "registro": {
           "hidden": true
@@ -1126,7 +1126,7 @@ window.PROFILES = {
           },
           {
             "k": "Registro",
-            "t": "vía app: escribo contexto + establenzco Urgencia (Hoy / Esta semana)."
+            "t": "vía app: escribo la situación + establezco Urgencia (Hoy / Esta semana)."
           },
           {
             "k": "Doy cierre",

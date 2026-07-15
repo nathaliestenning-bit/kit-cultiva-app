@@ -171,6 +171,25 @@
     display: flex; align-items: center; justify-content: center; transition: background .15s; }
   .icon-btn:hover { background: var(--paper-off); }
   .icon-btn i { width: 19px; height: 19px; }
+  .icon-btn-sm { width: 30px; height: 30px; border-radius: 9px; }
+  .icon-btn-sm i { width: 15px; height: 15px; }
+  .topbar-role-sm { font-size: 12.5px; }
+  .topbar-pts { margin-left: auto; flex: none; display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12px; color: var(--ink-600, #4a544e); background: var(--paper-sunken);
+    border: 1px solid var(--ink-200); border-radius: 999px; padding: 5px 11px; white-space: nowrap;
+    cursor: pointer; font-family: inherit; }
+  .topbar-pts:hover { background: var(--paper-off); }
+  .topbar-pts b { color: var(--navy); }
+  /* panel de puntos (overlay desde el chip) */
+  .pts-overlay { position: fixed; inset: 0; z-index: 60; background: rgba(15,30,45,0.45);
+    display: flex; align-items: flex-start; justify-content: center; padding: 20px 16px;
+    animation: fade .15s ease; }
+  .pts-modal { background: #fff; width: 100%; max-width: 400px; max-height: 88%; overflow-y: auto;
+    border-radius: 16px; padding: 16px 18px; box-shadow: 0 20px 60px rgba(0,0,0,0.35); margin-top: 8vh; }
+  .pts-modal-h { display: flex; align-items: center; justify-content: space-between;
+    font-size: 13px; color: #5a4a38; }
+  .pts-close { background: none; border: none; cursor: pointer; color: var(--ink-500,#8a7a68);
+    display: flex; padding: 4px; margin: -4px; }
   .topbar-id { display: flex; flex-direction: column; gap: 2px; line-height: 1.1; min-width: 0; }
   .topbar-role { font-family: var(--font-display); font-weight: 800; font-size: 15px;
     text-transform: uppercase; letter-spacing: 0.005em; color: var(--navy); white-space: nowrap;
@@ -555,9 +574,11 @@
 
   /* ---------------- video del ritual (N4/TAC) ---------------- */
   .ritual-video { margin: 2px 0 16px; }
-  .ritual-video-h { display: flex; align-items: center; gap: 6px; font-size: 12px;
-    font-weight: 700; text-transform: uppercase; letter-spacing: .03em;
-    color: var(--ink-500, #8a7a68); margin-bottom: 7px; }
+  .ritual-video-h { display: flex; align-items: center; gap: 6px; width: 100%;
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em;
+    color: var(--ink-500, #8a7a68); margin-bottom: 7px;
+    background: none; border: none; padding: 0; cursor: pointer; text-align: left; }
+  .ritual-video-h .rv-chev { margin-left: auto; }
   .ritual-video-el { width: 100%; aspect-ratio: 16 / 9; background: #000;
     border-radius: 14px; display: block; border: 1px solid #e6ddcf; }
 </style>

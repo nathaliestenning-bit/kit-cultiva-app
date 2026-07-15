@@ -148,35 +148,49 @@ const PUNTOS_INFO = [
   { icon: "shield-check", h: "Validación de puntos",
     t: "Los registros que hagas serán revisados para asegurar que la información sea veraz y esté debidamente sustentada." },
 ];
-function PuntosCard({ pts, level, onEquipo }) {
-  const [open, setOpen] = useState(false);
+/* Panel de puntos: se abre desde el chip del encabezado (esquina sup. derecha).
+   Muestra el progreso semanal + explicativo + "Ver a mi equipo". */
+function PuntosModal({ pts, level, onEquipo, onClose }) {
   useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
   const ptsCap = Math.min(pts || 0, 100);
   const canEquipo = ["N1", "N2", "N3"].indexOf(level) >= 0;
-  return h("div", { className: "puntos-card", style: { margin: "14px 18px 0", background: "#fff", border: "1px solid #eadfd0", borderRadius: "12px", padding: "12px 14px" } },
-    h("button", { type: "button", onClick: () => setOpen(!open),
-      style: { all: "unset", cursor: "pointer", display: "block", width: "100%", boxSizing: "border-box" } },
-      h("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "13px", marginBottom: "8px", color: "#5a4a38" } },
+  return h("div", { className: "pts-overlay", onClick: onClose },
+    h("div", { className: "pts-modal", onClick: (e) => e.stopPropagation() },
+      h("div", { className: "pts-modal-h" },
         h("span", null, I("star", "ico-xs"), " Tus puntos · esta semana"),
-        h("span", { style: { display: "flex", alignItems: "center", gap: "6px" } },
-          h("b", null, (pts == null ? "…" : pts) + " / 100"),
-          I(open ? "chevron-up" : "chevron-down", "ico-xs"))),
+        h("button", { className: "pts-close", type: "button", onClick: onClose, "aria-label": "Cerrar" }, I("x")),
+      ),
+      h("div", { style: { fontSize: "30px", fontWeight: 800, color: "#C9651C", margin: "2px 0 8px" } }, (pts == null ? "…" : pts) + " / 100"),
       h("div", { style: { height: "10px", background: "#f0e7da", borderRadius: "999px", overflow: "hidden" } },
-        h("div", { style: { height: "100%", width: ptsCap + "%", background: "#C9651C", borderRadius: "999px", transition: "width .3s" } }))),
-    open ? h("div", { style: { marginTop: "12px", borderTop: "1px solid #f0e7da", paddingTop: "6px" } },
-      PUNTOS_INFO.map((s, i) =>
-        h("div", { key: i, style: { display: "flex", gap: "9px", margin: "10px 0" } },
-          h("span", { style: { color: "#C9651C", flexShrink: 0, marginTop: "1px" } }, I(s.icon, "ico-sm")),
-          h("div", null,
-            h("div", { style: { fontSize: "13px", fontWeight: 700, color: "#3a2f22" } }, s.h),
-            h("div", { style: { fontSize: "12.5px", color: "#5a4a38", lineHeight: 1.45, marginTop: "2px" } }, s.t)))),
+        h("div", { style: { height: "100%", width: ptsCap + "%", background: "#C9651C", borderRadius: "999px", transition: "width .3s" } })),
+      h("div", { style: { marginTop: "12px", borderTop: "1px solid #f0e7da", paddingTop: "6px" } },
+        PUNTOS_INFO.map((s, i) =>
+          h("div", { key: i, style: { display: "flex", gap: "9px", margin: "10px 0" } },
+            h("span", { style: { color: "#C9651C", flexShrink: 0, marginTop: "1px" } }, I(s.icon, "ico-sm")),
+            h("div", null,
+              h("div", { style: { fontSize: "13px", fontWeight: 700, color: "#3a2f22" } }, s.h),
+              h("div", { style: { fontSize: "12.5px", color: "#5a4a38", lineHeight: 1.45, marginTop: "2px" } }, s.t))))),
       canEquipo ? h("button", { type: "button", onClick: onEquipo,
         style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "7px",
-          marginTop: "6px", width: "100%", padding: "11px", borderRadius: "12px",
+          marginTop: "4px", width: "100%", padding: "11px", borderRadius: "12px",
           border: "1px solid #cdd7d9", background: "#eef4f5", color: "#2F6E7A", fontSize: "14px", cursor: "pointer" } },
         I("users", "ico-sm"), "Ver a mi equipo") : null,
-    ) : null,
+    ),
   );
+}
+
+/* nombre corto para el saludo. Padrón real: "APELLIDO_P APELLIDO_M NOMBRE1
+   NOMBRE2" → "Nombre1 ApellidoP". Si viene "Nombre Apellido" (2 palabras, demo)
+   lo respeta. */
+function nombreCorto(full) {
+  if (!full) return "";
+  const t = String(full).trim().split(/\s+/);
+  const cap = (w) => (w ? w.charAt(0).toUpperCase() + w.slice(1).toLowerCase() : "");
+  let nombre, apellido;
+  if (t.length >= 3) { nombre = t[2]; apellido = t[0]; }
+  else if (t.length === 2) { nombre = t[0]; apellido = t[1]; }
+  else return cap(t[0] || "");
+  return cap(nombre) + " " + cap(apellido);
 }
 
 /* ---------- gallery ---------------------------------------- */
@@ -205,6 +219,8 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
     return () => { alive = false; };
   }, [profile.id]);
 
+  const [ptsOpen, setPtsOpen] = useState(false);   // panel de puntos (desde el chip)
+
   // seguimientos de hoy (fecha propia + escaladas por vencer)
   const [segs, setSegs] = useState(null);
   const [segsOpen, setSegsOpen] = useState(false);
@@ -219,15 +235,15 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
 
   return h("div", { className: "screen gallery" },
     h("div", { className: "topbar" },
-      h("button", { className: "icon-btn", type: "button", onClick: onBack, "aria-label": userName ? "Cerrar sesión" : "Cambiar puesto" }, I(userName ? "log-out" : "chevron-left")),
+      h("button", { className: "icon-btn icon-btn-sm", type: "button", onClick: onBack, "aria-label": userName ? "Cerrar sesión" : "Cambiar puesto" }, I(userName ? "log-out" : "chevron-left")),
       h("div", { className: "topbar-id" },
-        h("span", { className: "topbar-role" }, profile.role),
-        h("span", { className: "topbar-area" }, I(areaDef.icon, "ico-xs"), areaDef.label,
-          h("span", { className: "topbar-lvl" }, profile.level)),
+        h("span", { className: "topbar-role topbar-role-sm" }, profile.role),
       ),
+      h("button", { className: "topbar-pts", type: "button", onClick: () => setPtsOpen(true), "aria-label": "Ver tus puntos" },
+        I("star", "ico-xs"), h("b", null, (pts == null ? "…" : pts) + "/100")),
     ),
 
-    h(PuntosCard, { pts: pts, level: profile.level, onEquipo: onEquipo }),
+    ptsOpen ? h(PuntosModal, { pts: pts, level: profile.level, onEquipo: onEquipo, onClose: () => setPtsOpen(false) }) : null,
 
     h(SeguimientosBanner, {
       segs: segs, open: segsOpen, onToggle: () => setSegsOpen(!segsOpen),
@@ -323,13 +339,18 @@ const N4_VIDEOS = {
 function esFrontLine(profile) { return !!profile && (profile.level === "N4" || profile.id === "cal-tac"); }
 function RitualVideo({ url }) {
   const [err, setErr] = useState(false);
+  const [open, setOpen] = useState(true);   // abierto al entrar al ritual
+  useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
   if (err || !url) return null;
-  return h("div", { className: "ritual-video" },
-    h("div", { className: "ritual-video-h" }, I("play-circle", "ico-xs"), "Míralo en video"),
-    h("video", {
+  return h("div", { className: "ritual-video" + (open ? " open" : "") },
+    h("button", { className: "ritual-video-h", type: "button", onClick: () => setOpen(!open), "aria-expanded": open },
+      I("play-circle", "ico-xs"),
+      h("span", null, "Míralo en video"),
+      I(open ? "chevron-up" : "chevron-down", "ico-xs rv-chev")),
+    open ? h("video", {
       className: "ritual-video-el", src: url, controls: true, playsInline: true, preload: "metadata",
       onError: () => setErr(true),
-    }),
+    }) : null,
   );
 }
 
@@ -589,7 +610,7 @@ function CosechaApp() {
     }) : null,
     view === "gallery" && profile ? h(Gallery, {
       profile: profile,
-      userName: accessMode === "user" && user ? user.nombre : null,
+      userName: accessMode === "user" && user ? (user.nombre_corto || nombreCorto(user.nombre)) : null,
       onOpen: (id) => { setActiveId(id); setView("detail"); },
       onEscaladas: () => setView("escaladas"),
       onEquipo: () => setView("equipo"),
