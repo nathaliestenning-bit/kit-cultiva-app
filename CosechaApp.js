@@ -629,6 +629,7 @@ function MaestroHome({ onColab, onExplore, onLogout }) {
 
 function MaestroRitual({ ritual, color, regs, total }) {
   const [open, setOpen] = useState(false);
+  const [segOpen, setSegOpen] = useState(false);
   useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
   const fmt = (ts) => { try { return new Date(ts).toLocaleDateString("es-PE", { day: "2-digit", month: "short" }); } catch (e) { return ""; } };
   const flabels = {}; ((ritual.registro && ritual.registro.fields) || []).forEach((f) => { flabels[f.k] = f.l; });
@@ -639,12 +640,30 @@ function MaestroRitual({ ritual, color, regs, total }) {
         h("span", { style: { display: "block", fontSize: "11.5px", color: "#8a7a68" } }, ritual.freq)),
       h("span", { style: { fontSize: "12px", fontWeight: 700, color: total ? "#18571F" : "#b8a894", whiteSpace: "nowrap" } }, total + (total === 1 ? " registro" : " registros")),
       I(open ? "chevron-up" : "chevron-down", "ico-xs")),
-    open ? (regs.length ? h("div", { style: { marginTop: "8px", borderTop: "1px solid #f0e7da", paddingTop: "8px" } },
-      regs.map((rg, i) => h("div", { key: i, style: { padding: "6px 0", borderTop: i ? "1px solid #f5efe6" : "none" } },
-        h("div", { style: { fontSize: "11px", color: "#8a7a68", marginBottom: "3px" } }, fmt(rg.ts)),
-        Object.keys(rg.vals).filter((k) => rg.vals[k] && k.charAt(0) !== "_").map((k) =>
-          h("div", { key: k, style: { fontSize: "12.5px", color: "#3a2f22", lineHeight: 1.4 } }, h("b", null, (flabels[k] || k) + ": "), String(rg.vals[k]))))))
-      : h("div", { style: { marginTop: "8px", fontSize: "12.5px", color: "#8a7a68" } }, total ? "Registrado (sin detalle)." : "Aún sin registros.")) : null,
+
+    open ? h("div", { style: { marginTop: "8px", borderTop: "1px solid #f0e7da", paddingTop: "8px" } },
+      // contenido del ritual
+      ritual.purpose ? h("p", { style: { fontSize: "12.5px", color: "#5a4a38", lineHeight: 1.45, margin: "0 0 8px" } }, ritual.purpose) : null,
+      (ritual.steps && ritual.steps.length) ? h("div", null,
+        h("div", { style: { fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".03em", color: "#8a7a68", marginBottom: "5px" } }, "Paso a paso"),
+        h("ol", { style: { margin: 0, paddingLeft: "18px" } },
+          ritual.steps.map((s, i) => h("li", { key: i, style: { fontSize: "12.5px", color: "#3a2f22", lineHeight: 1.45, marginBottom: "4px" } },
+            s.k ? h("b", null, s.k + " — ") : null, s.t)))) : null,
+
+      // seguimiento desplegable
+      h("button", { type: "button", onClick: () => setSegOpen(!segOpen),
+        style: { all: "unset", cursor: "pointer", display: "flex", width: "100%", alignItems: "center", gap: "6px", boxSizing: "border-box", marginTop: "10px", paddingTop: "8px", borderTop: "1px solid #f0e7da" } },
+        I("clipboard-list", "ico-xs"),
+        h("span", { style: { flex: 1, fontSize: "12.5px", fontWeight: 700, color: "#2F6E7A" } }, "Seguimiento"),
+        h("span", { style: { fontSize: "12px", fontWeight: 700, color: total ? "#18571F" : "#b8a894" } }, total),
+        I(segOpen ? "chevron-up" : "chevron-down", "ico-xs")),
+      segOpen ? (regs.length ? h("div", { style: { marginTop: "6px" } },
+          regs.map((rg, i) => h("div", { key: i, style: { padding: "6px 0", borderTop: i ? "1px solid #f5efe6" : "none" } },
+            h("div", { style: { fontSize: "11px", color: "#8a7a68", marginBottom: "3px" } }, fmt(rg.ts)),
+            Object.keys(rg.vals).filter((k) => rg.vals[k] && k.charAt(0) !== "_").map((k) =>
+              h("div", { key: k, style: { fontSize: "12.5px", color: "#3a2f22", lineHeight: 1.4 } }, h("b", null, (flabels[k] || k) + ": "), String(rg.vals[k]))))))
+        : h("div", { style: { marginTop: "6px", fontSize: "12.5px", color: "#8a7a68" } }, total ? "Registrado (sin detalle)." : "Aún sin registros.")) : null,
+    ) : null,
   );
 }
 
