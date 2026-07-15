@@ -13,8 +13,9 @@
 #           perfil, legajo_jefe)
 #
 #  Uso:
-#    python3 scripts/cultiva_admin.py provision         # crea/actualiza las 51 cuentas
+#    python3 scripts/cultiva_admin.py provision         # crea/actualiza TODAS las cuentas
 #    python3 scripts/cultiva_admin.py provision --dry-run
+#    python3 scripts/cultiva_admin.py provision 1044995392   # solo ese legajo (no re-marca a los demás)
 #    python3 scripts/cultiva_admin.py reset 1070110044  # "mostrador de reseteos"
 #    python3 scripts/cultiva_admin.py list              # diagnóstico
 #
@@ -112,10 +113,17 @@ def upsert_usuario(u, auth_id):
     return st, body
 
 # ---------------------------------------------------------------- provision
-def cmd_provision(dry=False):
+def cmd_provision(dry=False, only=None):
     need_env()
     padron = load_padron()
-    print(f"Aprovisionando {len(padron)} usuarios (dry-run={dry})…")
+    if only:
+        # provisionar UN solo legajo (no re-escribe las filas de los demás,
+        # así no se les vuelve a activar must_change_password). El jefe debe
+        # existir ya en la tabla `usuarios` para satisfacer el FK legajo_jefe.
+        padron = [u for u in padron if u["legajo"] == only]
+        if not padron:
+            die(f"El legajo {only} no está en {PADRON}.")
+    print(f"Aprovisionando {len(padron)} usuario(s) (dry-run={dry})…")
     creds = []
     created = updated = errors = 0
     for u in padron:
@@ -233,12 +241,14 @@ def cmd_list():
 if __name__ == "__main__":
     args = sys.argv[1:]
     cmd = args[0] if args else ""
-    if cmd == "provision": cmd_provision(dry="--dry-run" in args)
+    if cmd == "provision":
+        only = next((a for a in args[1:] if not a.startswith("--")), None)
+        cmd_provision(dry="--dry-run" in args, only=only)
     elif cmd == "sync": cmd_sync(dry="--dry-run" in args)
     elif cmd == "init-pwd": cmd_init_passwords(dry="--dry-run" in args)
     elif cmd == "reset" and len(args) >= 2: cmd_reset(args[1])
     elif cmd == "list": cmd_list()
     else:
         print(__doc__ or "")
-        print("Comandos: provision [--dry-run] | sync [--dry-run] | init-pwd [--dry-run] | reset <legajo> | list")
+        print("Comandos: provision [<legajo>] [--dry-run] | sync [--dry-run] | init-pwd [--dry-run] | reset <legajo> | list")
         sys.exit(1)
