@@ -245,6 +245,18 @@
     color: var(--ink-500); }
   .thumb-freq i { color: var(--dc); }
 
+  /* maestro: galería compacta y solo-lectura (no clickable) */
+  .mtr-rit .dim-group { padding: 12px 0 0; }
+  .mtr-rit .dim-head { margin-bottom: 8px; }
+  .mtr-rit .thumb-grid { gap: 9px; }
+  .mtr-rit .thumb { padding: 11px; min-height: 90px; gap: 7px; border-radius: 14px;
+    border-top-width: 3px; cursor: default; }
+  .mtr-rit .thumb:hover { transform: none; box-shadow: 0 4px 16px rgba(11,37,64,0.06); }
+  .mtr-rit .thumb-ico { width: 34px; height: 34px; border-radius: 10px; }
+  .mtr-rit .thumb-ico i { width: 18px; height: 18px; }
+  .mtr-rit .thumb-name { font-size: 13px; }
+  .mtr-rit .thumb-freq { font-size: 10px; }
+
   /* day strips (light rituals — informational, not clickable) */
   .day-strip { display: flex; align-items: center; gap: 13px; margin: 0 18px; padding: 15px 16px;
     border-radius: 15px; background: color-mix(in srgb, var(--dc) 10%, var(--paper));
