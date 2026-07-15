@@ -322,18 +322,30 @@ function TemasHelp() {
   );
 }
 
-/* ---------- videos por ritual (front-line N4) ----------
-   Mismo video por título en todas las áreas. Alojados en Supabase Storage
-   (bucket público "videos"). Sube cada archivo con EXACTAMENTE el nombre de
-   abajo y el reproductor lo toma solo; si un archivo aún no está subido, el
-   reproductor no se muestra (no rompe la pantalla). */
+/* ---------- videos por ritual ----------
+   Alojados en Supabase Storage (bucket público "videos"). Sube cada archivo
+   con EXACTAMENTE el nombre de abajo y el reproductor lo toma solo; si un
+   archivo aún no está subido, el reproductor no se muestra (no rompe la
+   pantalla).
+   - N4 (todas las áreas): video por TÍTULO de ritual (mismo en todas las áreas).
+   - Técnico TAC (cal-tac): video SOLO en los rituales mapeados abajo por id. */
 const VIDEO_BASE = "https://qytcqopoqlqogctxnbwk.supabase.co/storage/v1/object/public/videos/";
 const N4_VIDEOS = {
   "Acompañamiento 1 a 1":   VIDEO_BASE + "acompanamiento-1a1.mp4",
   "Espacio de confianza":   VIDEO_BASE + "espacio-de-confianza.mp4",
   "Reconocimiento Sincero": VIDEO_BASE + "reconocimiento-sincero.mp4",
 };
-function esFrontLine(profile) { return !!profile && profile.level === "N4"; }
+// Videos exclusivos de la posición Técnico TAC, por id de ritual.
+const TAC_VIDEOS = {
+  "reconocimiento": VIDEO_BASE + "tac-reconocimiento.mp4",
+};
+// URL del video que corresponde a este perfil+ritual (o null si no hay).
+function videoDeRitual(profile, ritual) {
+  if (!profile || !ritual) return null;
+  if (profile.level === "N4") return N4_VIDEOS[ritual.title] || null;
+  if (profile.id === "cal-tac") return TAC_VIDEOS[ritual.id] || null;
+  return null;
+}
 function RitualVideo({ url }) {
   const [err, setErr] = useState(false);
   const [open, setOpen] = useState(true);   // abierto al entrar al ritual
@@ -373,8 +385,8 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
   const isEscucha = ritual.registro && ritual.registro.escuchaTemas;
   // autoBroadcast: la subida a la cadena es automática al guardar → sin botón "Escalar" manual
   const canEscalate = ritual.registro && (ritual.registro.escuchaTemas || ritual.registro.escalates) && !ritual.registro.autoBroadcast;
-  // video del ritual (solo front-line N4, mismo por título) — se ubica bajo el "Paso a paso"
-  const videoUrl = esFrontLine(profile) ? N4_VIDEOS[ritual.title] : null;
+  // video del ritual (N4 por título; TAC solo en rituales mapeados) — se ubica bajo el "Paso a paso"
+  const videoUrl = videoDeRitual(profile, ritual);
 
   return h("div", { className: "screen detail", style: { "--dc": dim.color } },
     h("div", { className: "topbar" },
