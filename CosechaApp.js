@@ -566,6 +566,140 @@ function EquipoEscaladas({ profile, onBack }) {
   );
 }
 
+/* ================= MODO MAESTRO ================= */
+function maestroGet() { try { return JSON.parse(localStorage.getItem("cultiva:maestro") || "null"); } catch (e) { return null; } }
+function maestroSet(m) { try { localStorage.setItem("cultiva:maestro", JSON.stringify(m)); } catch (e) {} }
+function maestroFavs() { try { return JSON.parse(localStorage.getItem("cultiva:maestro:favs") || "[]"); } catch (e) { return []; } }
+function maestroFavsSet(a) { try { localStorage.setItem("cultiva:maestro:favs", JSON.stringify(a)); } catch (e) {} }
+const MTR_LABEL = { display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".04em", color: "#8a7a68", margin: "12px 0 5px" };
+
+function MaestroHome({ onColab, onExplore, onLogout }) {
+  const [m, setM] = useState(() => maestroGet());
+  const [regNombre, setRegNombre] = useState("");
+  const [regLegajo, setRegLegajo] = useState("");
+  const [buscar, setBuscar] = useState("");
+  useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
+
+  if (!m) {
+    return h("div", { className: "screen", style: { padding: "22px 20px", overflowY: "auto" } },
+      h("h1", { style: { fontSize: "22px", fontWeight: 800, color: "#1E2761", margin: "6px 0 4px" } }, "Modo maestro"),
+      h("p", { style: { fontSize: "13.5px", color: "#5a4a38", marginBottom: "6px" } }, "Regístrate una vez — queda guardado en este equipo y la próxima vez entras directo."),
+      h("label", { style: MTR_LABEL }, "Nombre y apellido"),
+      h("input", { className: "login-input", value: regNombre, placeholder: "Tu nombre", onChange: (e) => setRegNombre(e.target.value) }),
+      h("label", { style: MTR_LABEL }, "Legajo (opcional)"),
+      h("input", { className: "login-input", value: regLegajo, placeholder: "10XXXXXXXX", inputMode: "numeric", onChange: (e) => setRegLegajo(e.target.value) }),
+      h("button", { className: "login-btn", type: "button", disabled: !regNombre.trim(),
+        onClick: () => { const mm = { nombre: regNombre.trim(), legajo: regLegajo.trim() }; maestroSet(mm); setM(mm); } },
+        "Entrar", I("arrow-right", "ico-sm")),
+      h("button", { type: "button", onClick: onLogout, style: { all: "unset", cursor: "pointer", display: "block", textAlign: "center", width: "100%", marginTop: "14px", color: "#8a7a68", fontSize: "13px" } }, "Volver"),
+    );
+  }
+
+  const favs = maestroFavs();
+  return h("div", { className: "screen" },
+    h("div", { className: "topbar" },
+      h("button", { className: "icon-btn icon-btn-sm", type: "button", onClick: onLogout, "aria-label": "Salir" }, I("log-out")),
+      h("div", { className: "topbar-id" }, h("span", { className: "topbar-role topbar-role-sm" }, "Modo maestro")),
+    ),
+    h("div", { style: { padding: "16px 18px", overflowY: "auto" } },
+      h("p", { style: { fontSize: "14px", color: "#5a4a38", margin: 0 } }, "Hola, ", h("b", null, m.nombre)),
+      h("h1", { style: { fontSize: "20px", fontWeight: 800, margin: "6px 0 12px", color: "#1E2761" } }, "¿A quién vas a acompañar?"),
+      h("label", { style: MTR_LABEL }, "Legajo del colaborador"),
+      h("div", { style: { display: "flex", gap: "8px" } },
+        h("input", { className: "login-input", style: { flex: 1, margin: 0 }, value: buscar, placeholder: "10XXXXXXXX", inputMode: "numeric",
+          onChange: (e) => setBuscar(e.target.value), onKeyDown: (e) => { if (e.key === "Enter" && buscar.trim()) onColab(buscar.trim()); } }),
+        h("button", { className: "login-btn", style: { width: "auto", padding: "0 18px", margin: 0 }, type: "button", disabled: !buscar.trim(), onClick: () => onColab(buscar.trim()) }, "Ver")),
+
+      favs.length ? h("div", { style: { marginTop: "22px" } },
+        h("div", { style: { fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".04em", color: "#8a7a68", marginBottom: "8px" } }, I("star", "ico-xs"), " Favoritos"),
+        favs.map((f) => h("button", { key: f.legajo, type: "button", onClick: () => onColab(f.legajo),
+          style: { display: "flex", alignItems: "center", gap: "10px", width: "100%", textAlign: "left", background: "#fff", border: "1px solid #eadfd0", borderRadius: "12px", padding: "11px 14px", margin: "6px 0", cursor: "pointer" } },
+          I("user-round", "ico-sm"),
+          h("span", { style: { flex: 1, minWidth: 0 } },
+            h("span", { style: { display: "block", fontSize: "14px", fontWeight: 600, color: "#3a2f22" } }, f.nombre || ("Legajo " + f.legajo)),
+            h("span", { style: { display: "block", fontSize: "11.5px", color: "#8a7a68" } }, "Legajo " + f.legajo)),
+          I("chevron-right", "ico-sm")))) : null,
+
+      h("button", { type: "button", onClick: onExplore,
+        style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "7px", marginTop: "22px", width: "100%", padding: "11px", borderRadius: "12px", border: "1px solid #cdd7d9", background: "#eef4f5", color: "#2F6E7A", fontSize: "14px", cursor: "pointer" } },
+        I("layout-grid", "ico-sm"), "Explorar rituales (todas las áreas)"),
+    ),
+  );
+}
+
+function MaestroRitual({ ritual, color, regs, total }) {
+  const [open, setOpen] = useState(false);
+  useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
+  const fmt = (ts) => { try { return new Date(ts).toLocaleDateString("es-PE", { day: "2-digit", month: "short" }); } catch (e) { return ""; } };
+  const flabels = {}; ((ritual.registro && ritual.registro.fields) || []).forEach((f) => { flabels[f.k] = f.l; });
+  return h("div", { style: { border: "1px solid #eadfd0", borderLeft: "4px solid " + (color || "#ccc"), borderRadius: "10px", padding: "10px 12px", margin: "8px 0", background: "#fff" } },
+    h("button", { type: "button", onClick: () => setOpen(!open), style: { all: "unset", cursor: "pointer", display: "flex", width: "100%", alignItems: "center", gap: "8px", boxSizing: "border-box" } },
+      h("span", { style: { flex: 1, minWidth: 0 } },
+        h("span", { style: { display: "block", fontSize: "14px", fontWeight: 700, color: "#3a2f22" } }, ritual.title),
+        h("span", { style: { display: "block", fontSize: "11.5px", color: "#8a7a68" } }, ritual.freq)),
+      h("span", { style: { fontSize: "12px", fontWeight: 700, color: total ? "#18571F" : "#b8a894", whiteSpace: "nowrap" } }, total + (total === 1 ? " registro" : " registros")),
+      I(open ? "chevron-up" : "chevron-down", "ico-xs")),
+    open ? (regs.length ? h("div", { style: { marginTop: "8px", borderTop: "1px solid #f0e7da", paddingTop: "8px" } },
+      regs.map((rg, i) => h("div", { key: i, style: { padding: "6px 0", borderTop: i ? "1px solid #f5efe6" : "none" } },
+        h("div", { style: { fontSize: "11px", color: "#8a7a68", marginBottom: "3px" } }, fmt(rg.ts)),
+        Object.keys(rg.vals).filter((k) => rg.vals[k] && k.charAt(0) !== "_").map((k) =>
+          h("div", { key: k, style: { fontSize: "12.5px", color: "#3a2f22", lineHeight: 1.4 } }, h("b", null, (flabels[k] || k) + ": "), String(rg.vals[k]))))))
+      : h("div", { style: { marginTop: "8px", fontSize: "12.5px", color: "#8a7a68" } }, total ? "Registrado (sin detalle)." : "Aún sin registros.")) : null,
+  );
+}
+
+function MaestroColab({ legajo, onBack }) {
+  const [data, setData] = useState(null);
+  const [fav, setFav] = useState(() => maestroFavs().some((f) => f.legajo === legajo));
+  useEffect(() => {
+    let alive = true; setData(null);
+    window.CultivaData.maestroColaborador(legajo).then((r) => { if (alive) setData(r || { found: false }); }).catch(() => { if (alive) setData({ found: false }); });
+    return () => { alive = false; };
+  }, [legajo]);
+  useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
+
+  function toggleFav() {
+    const cur = maestroFavs(); const exists = cur.some((f) => f.legajo === legajo);
+    const next = exists ? cur.filter((f) => f.legajo !== legajo)
+      : cur.concat([{ legajo: legajo, nombre: (data && data.nombre) || "", perfil: (data && data.perfil) || "" }]);
+    maestroFavsSet(next); setFav(!exists);
+  }
+
+  const topbar = h("div", { className: "topbar" },
+    h("button", { className: "icon-btn icon-btn-sm", type: "button", onClick: onBack, "aria-label": "Volver" }, I("arrow-left")),
+    h("div", { className: "topbar-id" }, h("span", { className: "topbar-role topbar-role-sm" }, "Seguimiento")),
+    (data && data.found) ? h("button", { className: "icon-btn icon-btn-sm", type: "button", onClick: toggleFav, "aria-label": "Favorito",
+      style: { marginLeft: "auto", color: fav ? "#C9651C" : "#8a7a68" } }, I("star")) : null,
+  );
+
+  if (data === null) return h("div", { className: "screen" }, topbar, h("p", { style: { padding: "18px", color: "#8a7a68" } }, "Cargando…"));
+  if (!data.found) return h("div", { className: "screen" }, topbar, h("p", { style: { padding: "18px", color: "#8a7a68" } }, "No encontramos el legajo ", h("b", null, legajo), " en el padrón."));
+
+  const prof = window.PROFILES[data.perfil];
+  const role = prof ? prof.role : data.perfil;
+  const D = window.CultivaData;
+  const pts = D.puntosDe(data.registros.map((r) => ({ ritual_id: r.ritual_id, ts: r.ts })), D.weekStartTs());
+  const byRitual = {}; data.registros.forEach((r) => { (byRitual[r.ritual_id] = byRitual[r.ritual_id] || []).push(r); });
+  const rituals = prof ? prof.rituals : [];
+
+  return h("div", { className: "screen" }, topbar,
+    h("div", { style: { padding: "16px 18px", overflowY: "auto" } },
+      h("h1", { style: { fontSize: "20px", fontWeight: 800, color: "#1E2761", margin: "0 0 2px" } }, data.nombre || ("Legajo " + legajo)),
+      h("p", { style: { fontSize: "13px", color: "#8a7a68", margin: 0 } }, role + (data.area ? " · " + data.area : "") + (data.nivel ? " · " + data.nivel : "")),
+      h("div", { style: { display: "inline-flex", alignItems: "center", gap: "6px", marginTop: "10px", background: "#faf6ef", borderRadius: "999px", padding: "6px 12px", fontSize: "13px" } },
+        I("star", "ico-xs"), h("b", null, pts + " pts"), h("span", { style: { color: "#8a7a68" } }, "esta semana")),
+      h("h2", { style: { fontSize: "15px", fontWeight: 800, margin: "20px 0 4px", color: "#3a2f22" } }, "Sus rituales y seguimiento"),
+      !prof ? h("p", { style: { color: "#8a7a68" } }, "Perfil no disponible en la app.")
+        : rituals.map((r) => {
+            const dim = window.DIMS[r.dimension] || {};
+            const all = byRitual[r.id] || [];
+            const regs = all.filter((x) => x.vals && Object.keys(x.vals).length);
+            return h(MaestroRitual, { key: r.id, ritual: r, color: dim.color, regs: regs, total: all.length });
+          }),
+    ),
+  );
+}
+
 /* ---------- contenedor principal --------------------------- */
 function CosechaApp() {
   const [view, setView] = useState("login");        // login | start | gallery | detail | escaladas
@@ -573,6 +707,7 @@ function CosechaApp() {
   const [user, setUser] = useState(null);
   const [profileId, setProfileId] = useState(null);
   const [activeId, setActiveId] = useState(null);
+  const [maestroColab, setMaestroColab] = useState(null);
   const scrollRef = useRef(null);
 
   useEffect(() => { if (scrollRef.current) scrollRef.current.scrollTop = 0; }, [view, activeId]);
@@ -603,6 +738,15 @@ function CosechaApp() {
     view === "login" ? h(window.LoginScreen, {
       onLogin: (u) => { setUser(u); setProfileId(u.perfil); setAccessMode("user"); setView("gallery"); },
       onReview: () => { setUser(null); setProfileId(null); setAccessMode("review"); setView("start"); },
+      onMaestro: () => { setUser(null); setProfileId(null); setAccessMode("maestro"); setView("maestro"); },
+    }) : null,
+    view === "maestro" ? h(MaestroHome, {
+      onColab: (lg) => { setMaestroColab(lg); setView("maestro-colab"); },
+      onExplore: () => { setAccessMode("review"); setProfileId(null); setView("start"); },
+      onLogout: () => { setAccessMode(null); setView("login"); },
+    }) : null,
+    view === "maestro-colab" ? h(MaestroColab, {
+      legajo: maestroColab, onBack: () => setView("maestro"),
     }) : null,
     view === "start" ? h(Start, {
       onEnter: (pid) => { setProfileId(pid); setView("gallery"); },

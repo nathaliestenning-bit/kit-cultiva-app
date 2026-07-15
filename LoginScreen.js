@@ -9,7 +9,7 @@
 const { createElement: gh, useState: gUse, useEffect: gEff, useRef: gRef } = React;
 const GI = (n, c) => gh("i", { "data-lucide": n, className: c || "" });
 
-function LoginScreen({ onLogin, onReview }) {
+function LoginScreen({ onLogin, onReview, onMaestro }) {
   const [idv, setIdv] = gUse("");
   const [err, setErr] = gUse("");
   const [busy, setBusy] = gUse(false);
@@ -61,6 +61,8 @@ function LoginScreen({ onLogin, onReview }) {
   return gh("div", { className: "screen start login" },
     brand,
     gh("div", { className: "login-body" }, body),
+    onMaestro ? gh("button", { className: "login-maestro-btn", type: "button", onClick: onMaestro },
+      GI("graduation-cap", "ico-sm"), "Soy maestro") : null,
     gh("div", { className: "login-review" },
       gh("span", { className: "login-review-star" }, "*"),
       gh("button", { className: "login-review-btn", type: "button", onClick: onReview },

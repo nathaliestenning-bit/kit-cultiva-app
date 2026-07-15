@@ -179,6 +179,38 @@
       return client().rpc("equipo_gestion_escaladas").then(function (q) { if (q.error) throw q.error; return q.data || []; });
     },
 
+    /* ---- MODO MAESTRO ---- */
+    /* Resuelve un legajo → { found, nombre, perfil, area, nivel, registros[] }.
+       El maestro no inicia sesión: en Supabase usa la RPC maestro_colaborador
+       (SECURITY DEFINER). En demo, el padrón local + registros de localStorage. */
+    maestroColaborador: function (legajo) {
+      legajo = String(legajo || "").trim();
+      if (!legajo) return Promise.resolve({ found: false });
+      if (!isSb()) {
+        var u = window.findUsuario ? window.findUsuario(legajo) : null;
+        if (!u || !u.perfil) return Promise.resolve({ found: false });
+        var regs = []; var pref = "cultiva3:" + u.perfil + ":";
+        try {
+          for (var i = 0; i < localStorage.length; i++) {
+            var k = localStorage.key(i);
+            if (k && k.indexOf(pref) === 0) {
+              var rid = k.slice(pref.length);
+              (JSON.parse(localStorage.getItem(k) || "[]") || []).forEach(function (e) {
+                if (!e.hecho || (e.vals && Object.keys(e.vals).length)) regs.push({ ritual_id: rid, ts: e.ts, vals: e.vals || {} });
+              });
+            }
+          }
+        } catch (e) {}
+        return Promise.resolve({ found: true, legajo: u.legajo, nombre: u.nombre, perfil: u.perfil, area: u.area || "", nivel: u.nivel || "", registros: regs });
+      }
+      return client().rpc("maestro_colaborador", { p_legajo: legajo }).then(function (q) {
+        if (q.error) throw q.error;
+        var d = q.data; if (!d) return { found: false };
+        var regs = (d.registros || []).map(function (r) { return { ritual_id: r.ritual_id, ts: Date.parse(r.created_at), vals: r.vals || {} }; });
+        return { found: true, legajo: d.legajo || legajo, nombre: d.nombre, perfil: d.perfil, area: d.area || "", nivel: d.nivel || "", registros: regs };
+      });
+    },
+
     /* ---- SEGUIMIENTOS DE HOY (fecha propia + escaladas por vencer) ---- */
     /* {propios: [{ritual_id, vals}], porResolver: n, enviadasPendientes: n} */
     seguimientosHoy: function (perfil) {
