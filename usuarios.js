@@ -50,6 +50,9 @@ window.USUARIOS = [
   { legajo: "1070140033", nombre: "Carlos Leyva",       correo: "carlos.leyva@hortifrut.com",     gerencia: "GERENCIA DE CALIDAD",  nivel: "N3", cargo: "Coordinador de Calidad" },
   { legajo: "1070140044", nombre: "Marta Ríos",         correo: "marta.rios@hortifrut.com",       gerencia: "GERENCIA DE CALIDAD",  nivel: "N4", cargo: "Supervisora de Calidad" },
   { legajo: "1070140055", nombre: "Pedro Saldaña",      correo: "pedro.saldana@hortifrut.com",    gerencia: "GERENCIA DE CALIDAD",  nivel: "N4", cargo: "Técnico TAC" },
+
+  // ---- Admin (consultores) · solo para el DASHBOARD (demo) ----
+  { legajo: "admin", nombre: "Consultor (demo)", correo: "admin@cultiva.interno", gerencia: "", nivel: "", cargo: "Administrador", es_admin: true },
 ];
 
 /* completa el perfil resuelto en cada usuario (scoping) */

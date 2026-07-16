@@ -762,6 +762,104 @@ function MaestroColab({ legajo, onBack }) {
   );
 }
 
+/* ---------- DASHBOARD (admin · vista de gerencia) ---------- */
+const DASH_AREA = { cosecha: "Cosecha", produccion: "Producción", packing: "Packing", calidad: "Calidad" };
+/* id de ritual → título legible (Supabase agrega por ritual_id; aquí lo traducimos) */
+const RITUAL_TITLES = (function () {
+  const m = {};
+  try { Object.keys(window.PROFILES || {}).forEach((pid) => (window.PROFILES[pid].rituals || []).forEach((r) => { if (r.id && r.title && !m[r.id]) m[r.id] = r.title; })); } catch (e) {}
+  return m;
+})();
+function DashStat({ label, value, sub, color }) {
+  return h("div", { className: "dash-stat" },
+    h("div", { className: "dash-stat-l" }, label),
+    h("div", { className: "dash-stat-v", style: { color: color || "#3a2f22" } }, value),
+    sub ? h("div", { className: "dash-stat-s" }, sub) : null,
+  );
+}
+function DashBar({ label, value, max, color, right }) {
+  const pct = max > 0 ? Math.round((value / max) * 100) : 0;
+  return h("div", { style: { margin: "9px 0" } },
+    h("div", { style: { display: "flex", justifyContent: "space-between", fontSize: "13px", color: "#5a4a38", marginBottom: "4px", gap: "10px" } },
+      h("span", { style: { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, label),
+      h("b", null, right != null ? right : value)),
+    h("div", { style: { height: "9px", background: "#f0e7da", borderRadius: "999px", overflow: "hidden" } },
+      h("div", { style: { height: "100%", width: pct + "%", background: color || "#C9651C", borderRadius: "999px" } })),
+  );
+}
+function Dashboard({ onBack, userName }) {
+  const D = window.CultivaData;
+  const [data, setData] = useState(null);
+  const [ts, setTs] = useState(null);
+  function load() {
+    if (!D || !D.dashResumen) return;
+    D.dashResumen().then((r) => { setData(r || {}); setTs(Date.now()); }).catch(() => setData({}));
+  }
+  useEffect(() => {
+    document.body.classList.add("dashboard-open");
+    load();
+    const iv = setInterval(load, 60000);   // auto-refresco cada minuto
+    return () => { clearInterval(iv); document.body.classList.remove("dashboard-open"); };
+  }, []);
+  useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
+
+  const d = data || {};
+  const part = d.participacion || [];
+  const totLid = part.reduce((a, p) => a + (p.lideres || 0), 0);
+  const totAct = part.reduce((a, p) => a + (p.activos || 0), 0);
+  const pctGlobal = totLid > 0 ? Math.round((totAct / totLid) * 100) : 0;
+  const maxPart = part.reduce((m, p) => Math.max(m, p.lideres || 0), 0);
+  const esc = d.escaladas || {};
+  const rit = (d.rituales || []).slice().sort((a, b) => (b.n || 0) - (a.n || 0));
+  const maxRit = rit.reduce((m, r) => Math.max(m, r.n || 0), 0);
+  const rank = (d.puntos || []).slice(0, 10);
+  const fmtTs = (t) => { try { return new Date(t).toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit" }); } catch (e) { return "…"; } };
+
+  return h("div", { className: "screen dashboard" },
+    h("div", { className: "topbar" },
+      h("button", { className: "icon-btn", type: "button", onClick: onBack, "aria-label": "Salir" }, I("log-out")),
+      h("div", { className: "topbar-id" },
+        h("span", { className: "topbar-role" }, "Dashboard · Piloto Cultiva"),
+        h("span", { className: "topbar-area" }, I("layout-dashboard", "ico-xs"), userName || "Vista de gerencia")),
+      h("button", { className: "icon-btn", type: "button", onClick: load, "aria-label": "Actualizar", style: { marginLeft: "auto" } }, I("refresh-cw")),
+    ),
+    h("div", { className: "dash-scroll" },
+      !data ? h("p", { className: "dash-empty" }, "Cargando…") : h("div", null,
+        h("div", { className: "dash-updated" }, "Actualizado " + fmtTs(ts) + " · se refresca solo cada minuto"),
+        h("div", { className: "dash-kpis" },
+          h(DashStat, { label: "Rituales esta semana", value: (d.total_registros_semana != null ? d.total_registros_semana : "—"), color: "#C9651C" }),
+          h(DashStat, { label: "Participación global", value: pctGlobal + "%", sub: totAct + " de " + totLid + " líderes activos", color: "#2F6E7A" }),
+          h(DashStat, { label: "Escaladas pendientes", value: (esc.pendientes != null ? esc.pendientes : "—"), sub: (esc.total || 0) + " en total", color: "#A8631A" }),
+          h(DashStat, { label: "Vencidas (SLA 48h)", value: (esc.vencidas != null ? esc.vencidas : "—"), color: (esc.vencidas > 0 ? "#A81519" : "#18571F") }),
+        ),
+        h("div", { className: "dash-grid" },
+          h("div", { className: "dash-panel" },
+            h("h3", { className: "dash-h" }, "Participación por área"),
+            part.length ? part.map((p) => h(DashBar, { key: p.area, label: DASH_AREA[p.area] || p.area, value: p.activos || 0, max: maxPart, color: "#2F6E7A", right: (p.activos || 0) + "/" + (p.lideres || 0) })) : h("p", { className: "dash-empty" }, "Sin datos.")),
+          h("div", { className: "dash-panel" },
+            h("h3", { className: "dash-h" }, "Rituales aplicados"),
+            rit.length ? rit.map((r) => h(DashBar, { key: r.ritual, label: RITUAL_TITLES[r.ritual] || r.ritual, value: r.n || 0, max: maxRit, color: "#C9651C" })) : h("p", { className: "dash-empty" }, "Sin datos.")),
+          h("div", { className: "dash-panel" },
+            h("h3", { className: "dash-h" }, "Ranking de puntos"),
+            rank.length ? rank.map((p, i) => h("div", { key: i, className: "dash-rank" },
+              h("span", { className: "dash-rank-n" }, "#" + (i + 1)),
+              h("div", { style: { flex: 1, minWidth: 0 } },
+                h("div", { className: "dash-rank-name" }, p.nombre),
+                h("div", { className: "dash-rank-sub" }, (DASH_AREA[p.area] || p.area) + (p.nivel ? " · " + p.nivel : ""))),
+              h("b", { style: { color: "#C9651C" } }, p.puntos))) : h("p", { className: "dash-empty" }, "Sin datos.")),
+          h("div", { className: "dash-panel" },
+            h("h3", { className: "dash-h" }, "Escaladas"),
+            h("div", { className: "dash-esc" },
+              [["Pendientes", esc.pendientes, "#A8631A"], ["En proceso", esc.proceso, "#4156A2"], ["Resueltas", esc.resueltas, "#18571F"], ["Vencidas", esc.vencidas, "#A81519"]].map((row) =>
+                h("div", { key: row[0], className: "dash-esc-item" },
+                  h("span", { className: "dash-esc-v", style: { color: row[2] } }, row[1] != null ? row[1] : "—"),
+                  h("span", { className: "dash-esc-l" }, row[0]))))),
+        ),
+      ),
+    ),
+  );
+}
+
 /* ---------- contenedor principal --------------------------- */
 function CosechaApp() {
   const [view, setView] = useState("login");        // login | start | gallery | detail | escaladas
@@ -779,7 +877,9 @@ function CosechaApp() {
   useEffect(() => {
     if (!window.CultivaAuth) return;
     window.CultivaAuth.restore().then((p) => {
-      if (p && p.user && window.PROFILES[p.user.perfil]) {
+      if (p && p.user && p.user.es_admin) {
+        setUser(p.user); setProfileId(null); setAccessMode("user"); setView("dashboard");
+      } else if (p && p.user && window.PROFILES[p.user.perfil]) {
         setUser(p.user); setProfileId(p.user.perfil); setAccessMode("user"); setView("gallery");
       }
     }).catch(() => {});
@@ -799,7 +899,7 @@ function CosechaApp() {
 
   return h("div", { className: "app", ref: scrollRef },
     view === "login" ? h(window.LoginScreen, {
-      onLogin: (u) => { setUser(u); setProfileId(u.perfil); setAccessMode("user"); setView("gallery"); },
+      onLogin: (u) => { setUser(u); setProfileId(u.perfil); setAccessMode("user"); setView(u.es_admin ? "dashboard" : "gallery"); },
       onReview: () => { setUser(null); setProfileId(null); setAccessMode("review"); setView("start"); },
       onMaestro: () => { setUser(null); setProfileId(null); setAccessMode("maestro"); setView("maestro"); },
     }) : null,
@@ -810,6 +910,9 @@ function CosechaApp() {
     }) : null,
     view === "maestro-colab" ? h(MaestroColab, {
       legajo: maestroColab, onBack: () => setView("maestro"),
+    }) : null,
+    view === "dashboard" ? h(Dashboard, {
+      onBack: logout, userName: accessMode === "user" && user ? user.nombre : null,
     }) : null,
     view === "start" ? h(Start, {
       onEnter: (pid) => { setProfileId(pid); setView("gallery"); },

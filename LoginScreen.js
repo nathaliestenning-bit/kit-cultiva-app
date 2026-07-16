@@ -28,7 +28,8 @@ function LoginScreen({ onLogin, onReview, onMaestro }) {
     A.signInByLegajo(legajo).then((res) => {
       if (res.error) { setErr(res.error); setBusy(false); return; }
       const u = res.user;
-      if (!u.perfil || !window.PROFILES[u.perfil]) {
+      // los admin (consultores / RRHH) no tienen perfil de ritual: van al dashboard
+      if (!u.es_admin && (!u.perfil || !window.PROFILES[u.perfil])) {
         setErr("Tu perfil (" + (u.perfil || "—") + ") aún no está disponible en la app."); setBusy(false); return;
       }
       onLogin(u);
