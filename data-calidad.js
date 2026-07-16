@@ -1244,41 +1244,52 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "lidera",
         "icon": "handshake",
-        "title": "Acercamiento cálido",
+        "title": "Charla de Impulso",
         "freq": "Diario",
-        "purpose": "Llegar al área como aliado — compartir los criterios del día antes de fiscalizar.",
+        "purpose": "Compartir recomendaciones concretas con el grupo de cosecha de menor puntuación para ayudarlos a mejorar. NO es una llamada de atención: es un impulso.",
         "context": {
           "freq": "Diario",
-          "when": "Al llegar al área a evaluar"
+          "when": "En la charla diaria del grupo con menor puntaje"
         },
         "steps": [
           {
-            "k": "Me presento",
-            "t": "saludando al equipo y pidiendo unos minutos de atención."
+            "k": "Revisa",
+            "t": "los resultados del día anterior e identifica al grupo con menor puntuación."
           },
           {
-            "k": "Comparto",
-            "t": "el objetivo del día y los criterios clave — máximo 2-3 puntos, en tono de apoyo."
+            "k": "Coordina",
+            "t": "con el Líder de Cosecha del grupo que visitarás y acércate a su punto de reunión a la hora de su charla diaria."
           },
           {
-            "k": "Pregunto",
-            "t": "si hay algo del área que deba saber antes de empezar."
+            "k": "Preséntate",
+            "t": "con un tono tranquilo y cercano; diles que vienes a compartir lo que se observó en la evaluación."
           },
           {
-            "k": "Inicio",
-            "t": "la fiscalización con presencia, no con distancia."
+            "k": "Da recomendaciones",
+            "t": "concretas y fáciles de aplicar (ej.: dónde va la fruta con defecto, cómo evitar desgarros)."
+          },
+          {
+            "k": "Recuérdales",
+            "t": "que la evaluación es grupal: el objetivo es mejorar como equipo, no señalar personas."
+          },
+          {
+            "k": "Ofrécete",
+            "t": "a estar disponible durante toda la jornada y abre espacio para preguntas."
+          },
+          {
+            "k": "Cierra",
+            "t": "con un mensaje motivador y despídete con energía."
           }
         ],
         "phrases": [
-          "\"Buenos días equipo, permítanme unos minutos para compartir los puntos clave de hoy.\"",
-          "\"¿Hay algo del área que deba saber antes de empezar?\"",
-          "\"No vengo a buscar errores, vengo a que salgamos bien juntos.\""
+          "\"Buenos días, equipo. Soy [nombre], de Calidad. Quiero compartirles lo que vimos ayer, para que hoy nos vaya mejor.\"",
+          "\"Recuerden, evaluamos al grupo completo. Esto es para que juntos saquemos adelante una buena cosecha.\"",
+          "\"Voy a estar por el campo todo el día. Cualquier duda de calidad, me llaman con confianza.\""
         ],
         "no": [
-          "Empezar a evaluar sin presentarse — genera emboscada.",
-          "Reportar al área antes de avisarle a la persona directamente.",
-          "Llegar con tono de inspector.",
-          "Dar más de 3 criterios de golpe."
+          "\"Ayer les fue pésimo, vengo a corregirlos.\"",
+          "\"Si no mejoran, vamos a tener problemas.\"",
+          "\"Ya les he dicho esto muchas veces, no sé por qué no aprenden.\""
         ],
         "registro": {
           "hidden": true
@@ -1289,47 +1300,54 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "escucha",
         "icon": "ear",
-        "title": "Espacio de confianza",
+        "title": "Diálogo con Evidencia",
         "freq": "Diario",
-        "purpose": "Escuchar al equipo para entender y apoyar — no para reportar.",
+        "purpose": "Entregar los resultados de la evaluación al Líder de Cosecha usando evidencia objetiva. Si hay desacuerdo, no se discuten opiniones: se muestra el dato.",
         "context": {
           "freq": "Diario",
           "when": "Durante la jornada"
         },
         "steps": [
           {
-            "k": "Monitoreo",
-            "t": "el proceso del grupo asignado."
+            "k": "Acércate",
+            "t": "al acopio del grupo que vas a evaluar, saluda al Líder de Cosecha y coméntale que vas a iniciar la evaluación rutinaria."
           },
           {
-            "k": "Comunico",
-            "t": "los resultados al líder en tono cercano, no confrontativo."
+            "k": "Comparte",
+            "t": "al terminar de evaluar: llama al Líder de Cosecha, cuéntale lo que encontraste e invítalo a validar los defectos juntos."
           },
           {
-            "k": "Escucho",
-            "t": "el descargo o comentarios sin interrumpir."
+            "k": "Muestra la evidencia",
+            "t": "ante el desacuerdo: usa el calibrador y/o el catálogo. No discutas opiniones."
           },
           {
-            "k": "Ofrezco",
-            "t": "recomendaciones — dejo que el líder decida."
+            "k": "Escucha",
+            "t": "al líder con respeto y reconoce las dificultades del campo, pero mantén tu posición con base en los datos y la evidencia de tus herramientas."
+          },
+          {
+            "k": "Cierra",
+            "t": "recordándole que tú mides lo que ya pasó, pero que él puede evitarlo con supervisión activa."
+          },
+          {
+            "k": "Ofrécete",
+            "t": "como apoyo: estás ahí para ayudar, no para desaprobar."
           }
         ],
         "phrases": [
-          "\"Te comparto el resultado para que estemos alineados.\"",
-          "\"Quiero apoyarte para que mejoremos esto juntos.\"",
-          "\"¿Qué crees que está afectando este resultado?\"",
-          "\"¿Qué necesitas de mí para mejorar?\""
+          "\"Líder, ya terminé la evaluación. ¿Validamos juntos los hallazgos?\"",
+          "\"Revisémoslo con el calibrador y el catálogo, así no queda en lo que yo diga o tú digas.\"",
+          "\"Mi trabajo es ayudarte, no desaprobarte. La evidencia está aquí.\"",
+          "\"Tómalo como impulso para la siguiente evaluación. Cuenta conmigo.\""
         ],
         "no": [
-          "Comunicar los resultados de forma acusatoria.",
-          "No escuchar el descargo del líder.",
-          "Enfocarse solo en el % sin pensar en cómo mejorar.",
-          "Registrar datos incompletos."
+          "\"Yo soy el que evalúa aquí, esto es lo que hay y punto.\"",
+          "\"Siempre es lo mismo con tu grupo.\"",
+          "\"No es mi problema si el campo está difícil.\""
         ],
         "registro": {
           "soporte": "Registro de calidad en campo",
           "autoBroadcast": {
-            "temaFijo": "Espacio de confianza",
+            "temaFijo": "Diálogo con Evidencia",
             "detalle": "contexto"
           },
           "fields": [
@@ -1366,7 +1384,7 @@ Object.assign(window.PROFILES, {
         "icon": "thumbs-up",
         "title": "Reconocimiento Sincero",
         "freq": "Semanal",
-        "purpose": "Reconocer las mejoras del equipo para reforzar buenas prácticas — lo que se nombra se repite.",
+        "purpose": "Reconocer de forma sincera al grupo de cosecha con mejores resultados, valorando su trabajo y destacando cómo su esfuerzo impacta en los resultados.",
         "context": {
           "freq": "Semanal",
           "when": "En grupo o 1:1",
@@ -1374,26 +1392,43 @@ Object.assign(window.PROFILES, {
         },
         "steps": [
           {
-            "k": "Observo",
-            "t": "durante la jornada 1-2 personas que destaquen."
+            "k": "Identifica",
+            "t": "al grupo con los mejores resultados de calidad sostenidos durante la semana."
           },
           {
-            "k": "Anoto",
-            "t": "la conducta específica (no 'rinde bien' sino 'mantuvo calidad en jaba 5 del lote')."
+            "k": "Visítalos",
+            "t": "en su parcela a la hora de su charla diaria."
           },
           {
-            "k": "Digo",
-            "t": "en el momento si es oportuno; si no, al día siguiente: \"Ayer [nombre] [conducta]. Eso es lo que necesitamos.\""
+            "k": "Cuéntales",
+            "t": "por qué estás ahí: \"Equipo, esta semana sus resultados fueron los mejores y eso hay que destacarlo\"."
+          },
+          {
+            "k": "Conecta",
+            "t": "su logro con el impacto real: \"Esto impactó positivamente en la calidad de la fruta\"."
+          },
+          {
+            "k": "Reconoce",
+            "t": "que el campo tiene días difíciles, pero como grupo se mantuvieron constantes."
+          },
+          {
+            "k": "Felicítalos",
+            "t": "con sinceridad: sé genuino, no exagerado."
+          },
+          {
+            "k": "Cierra",
+            "t": "con un mensaje de unidad: como campo, somos un solo equipo."
           }
         ],
         "phrases": [
-          "\"Hoy [nombre] [conducta específica]. Gracias. Mañana lo cuento al equipo.\"",
-          "\"Buenos días. Antes de empezar, ayer [nombre] [conducta]. Eso es lo que necesitamos.\""
+          "\"Quería tomarme un momento para reconocerlos. Lo que hicieron marca una diferencia.\"",
+          "\"Sé que hay días difíciles en el campo, pero ustedes como grupo se mantuvieron constantes. Eso tiene mérito.\"",
+          "\"¡Felicitaciones de verdad! Sigan así, como campo somos un solo equipo.\""
         ],
         "no": [
-          "Reconocimiento vago: \"buen trabajo\".",
-          "Reconocer solo cuando hay grandes resultados.",
-          "Olvidar el reconocimiento diferido — rompe la promesa."
+          "\"Solo vengo porque me pidieron que los felicite.\"",
+          "\"A ver si la próxima semana lo mantienen, siempre bajan.\"",
+          "\"Es lo que se espera de todos, no es para tanto.\""
         ],
         "registro": {
           "soporte": "Agenda Cultiva — Reconocimiento diario",
