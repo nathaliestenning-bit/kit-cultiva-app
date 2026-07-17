@@ -1345,36 +1345,7 @@ Object.assign(window.PROFILES, {
           "\"No es mi problema si el campo está difícil.\""
         ],
         "registro": {
-          "soporte": "Registro de calidad en campo",
-          "autoBroadcast": {
-            "temaFijo": "Diálogo con Evidencia",
-            "detalle": "contexto"
-          },
-          "fields": [
-            {
-              "k": "contexto",
-              "l": "Contexto",
-              "t": "area"
-            },
-            {
-              "k": "tipo",
-              "l": "Tipo",
-              "t": "sel",
-              "o": [
-                "Operativo",
-                "Cultural"
-              ]
-            },
-            {
-              "k": "urgencia",
-              "l": "Urgencia",
-              "t": "sel",
-              "o": [
-                "Hoy",
-                "Esta semana"
-              ]
-            }
-          ]
+          "hidden": true
         }
       },
       {

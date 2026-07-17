@@ -369,18 +369,43 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
   const dim = window.DIMS[ritual.dimension];
   useEffect(() => { if (window.lucide) window.lucide.createIcons(); }, [ritual.id]);
 
-  const doneKey = "cultiva3:done:" + profile.id + ":" + ritual.id;
-  const todayStr = new Date().toISOString().slice(0, 10);
-  const [done, setDone] = useState(() => {
-    try { return localStorage.getItem(doneKey) === todayStr; } catch (e) { return false; }
-  });
-  function toggleDone() {
-    const next = !done; setDone(next);
-    try { next ? localStorage.setItem(doneKey, todayStr) : localStorage.removeItem(doneKey); } catch (e) {}
-    // al marcarlo hecho, registra el ritual como aplicado (para puntos)
-    if (next && window.CultivaData && window.CultivaData.registrarHecho) {
-      window.CultivaData.registrarHecho(profile.id, ritual.id).catch(() => {});
+  // "Realizado" del día: se basa en el REGISTRO real (no en una marca aparte),
+  // usando el inicio del día en hora LOCAL → se reinicia solo cada día. Al marcar:
+  // guarda un registro con fecha/hora, suma el punto y el botón queda desactivado
+  // hasta el día siguiente. Debajo queda la marca "Registrado el …".
+  const D = window.CultivaData;
+  const [hechoHoy, setHechoHoy] = useState(null);   // ts del "realizado" de hoy, o null
+  const [marcando, setMarcando] = useState(false);
+  function _dayStart() { const d = new Date(); d.setHours(0, 0, 0, 0); return d.getTime(); }
+  useEffect(() => {
+    let alive = true; setHechoHoy(null);
+    if (D && D.listRegistros) {
+      D.listRegistros(profile.id, ritual.id).then((arr) => {
+        if (!alive) return;
+        const ds = _dayStart();
+        const hoy = (arr || []).find((e) => e.ts >= ds);
+        setHechoHoy(hoy ? hoy.ts : null);
+      }).catch(() => {});
     }
+    return () => { alive = false; };
+  }, [profile.id, ritual.id]);
+  function marcarRealizado() {
+    if (hechoHoy || marcando) return;
+    setMarcando(true); const now = Date.now();
+    (D && D.registrarHecho ? D.registrarHecho(profile.id, ritual.id) : Promise.resolve())
+      .then(() => { setHechoHoy(now); setMarcando(false); })
+      .catch(() => { setMarcando(false); });
+  }
+  const fmtRealizado = (ts) => { try { return new Date(ts).toLocaleString("es-PE", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } };
+  // bloque de botón "realizado" reutilizable (light + full sin formulario)
+  function doneBlock(idle, doneLabel) {
+    return h("div", { className: "done-wrap" },
+      h("button", { className: "done-btn" + (hechoHoy ? " on" : ""), type: "button", disabled: !!hechoHoy || marcando, onClick: marcarRealizado },
+        I(hechoHoy ? "check-circle-2" : "circle", "ico-sm"),
+        hechoHoy ? doneLabel : idle),
+      hechoHoy ? h("div", { className: "done-log" }, I("clock", "ico-xs"),
+        h("span", null, "Registrado el ", fmtRealizado(hechoHoy))) : null,
+    );
   }
 
   const isEscucha = ritual.registro && ritual.registro.escuchaTemas;
@@ -409,9 +434,7 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
               I("quote", "reminder-q"),
               h("p", null, ritual.reminder),
             ),
-            h("button", { className: "done-btn" + (done ? " on" : ""), type: "button", onClick: toggleDone },
-              I(done ? "check-circle-2" : "circle", "ico-sm"),
-              done ? "Hecho hoy" : "Marcar como hecho hoy"),
+            doneBlock("Marcar como hecho hoy", "Hecho hoy"),
             // rituales light no tienen "Paso a paso": el video va al final
             videoUrl ? h(RitualVideo, { url: videoUrl }) : null,
           )
@@ -465,9 +488,7 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
             // rituales "full" SIN formulario de registro: botón para marcar "se realizó".
             // Excepción: los de escaladas NO lo llevan — sus puntos se ganan al
             // gestionar los temas en la bandeja (ver EscaladasInbox).
-            (ritual.kind !== "escaladas" && (!ritual.registro || ritual.registro.hidden)) ? h("button", { className: "done-btn" + (done ? " on" : ""), type: "button", onClick: toggleDone },
-              I(done ? "check-circle-2" : "circle", "ico-sm"),
-              done ? "Se realizó" : "Marcar como realizado") : null,
+            (ritual.kind !== "escaladas" && (!ritual.registro || ritual.registro.hidden)) ? doneBlock("Marcar como realizado", "Realizado hoy") : null,
           ),
     ),
   );

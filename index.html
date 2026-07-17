@@ -336,6 +336,12 @@
     border: 1.5px solid var(--ink-200); background: #fff; color: var(--ink-500); transition: all .15s; }
   .done-btn:hover { background: var(--paper-off); }
   .done-btn.on { background: color-mix(in srgb, var(--hf-green) 10%, #fff); border-color: var(--hf-green); color: var(--hf-green); }
+  .done-btn:disabled { cursor: default; }
+  .done-btn:disabled:hover { background: color-mix(in srgb, var(--hf-green) 10%, #fff); }
+  .done-wrap { display: flex; flex-direction: column; }
+  .done-log { display: inline-flex; align-items: center; gap: 6px; margin-top: 9px;
+    font-size: 12.5px; font-weight: 700; color: var(--hf-green); }
+  .done-log i { color: var(--hf-green); width: 14px; height: 14px; }
 
   /* full ritual */
   .full-wrap { display: flex; flex-direction: column; gap: 16px; }
