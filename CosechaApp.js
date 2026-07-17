@@ -390,20 +390,29 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
     return () => { alive = false; };
   }, [profile.id, ritual.id]);
   function marcarRealizado() {
-    if (hechoHoy || marcando) return;
-    setMarcando(true); const now = Date.now();
-    (D && D.registrarHecho ? D.registrarHecho(profile.id, ritual.id) : Promise.resolve())
-      .then(() => { setHechoHoy(now); setMarcando(false); })
+    if (marcando) return;
+    setMarcando(true);
+    // registrarHecho es idempotente por día (no infla puntos por doble toque).
+    // Tras marcar, recargamos para mostrar la hora real del registro de hoy.
+    Promise.resolve(D && D.registrarHecho ? D.registrarHecho(profile.id, ritual.id) : null)
+      .then(() => (D && D.listRegistros ? D.listRegistros(profile.id, ritual.id) : []))
+      .then((arr) => {
+        const ds = _dayStart();
+        const hoy = (arr || []).find((e) => e.ts >= ds);
+        setHechoHoy(hoy ? hoy.ts : Date.now());
+        setMarcando(false);
+      })
       .catch(() => { setMarcando(false); });
   }
   const fmtRealizado = (ts) => { try { return new Date(ts).toLocaleString("es-PE", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } };
-  // bloque de botón "realizado" reutilizable (light + full sin formulario)
-  function doneBlock(idle, doneLabel) {
+  // bloque de botón "realizado" reutilizable (light + full sin formulario).
+  // El botón NO se queda "encendido": tras marcar, se reinicia (vuelve a estar
+  // activo) y debajo queda la marca de fecha/hora del registro de hoy.
+  function doneBlock(idle) {
     return h("div", { className: "done-wrap" },
-      h("button", { className: "done-btn" + (hechoHoy ? " on" : ""), type: "button", disabled: !!hechoHoy || marcando, onClick: marcarRealizado },
-        I(hechoHoy ? "check-circle-2" : "circle", "ico-sm"),
-        hechoHoy ? doneLabel : idle),
-      hechoHoy ? h("div", { className: "done-log" }, I("clock", "ico-xs"),
+      h("button", { className: "done-btn", type: "button", disabled: marcando, onClick: marcarRealizado },
+        I("circle", "ico-sm"), idle),
+      hechoHoy ? h("div", { className: "done-log" }, I("check-circle-2", "ico-xs"),
         h("span", null, "Registrado el ", fmtRealizado(hechoHoy))) : null,
     );
   }
@@ -434,7 +443,7 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
               I("quote", "reminder-q"),
               h("p", null, ritual.reminder),
             ),
-            doneBlock("Marcar como hecho hoy", "Hecho hoy"),
+            doneBlock("Marcar como hecho hoy"),
             // rituales light no tienen "Paso a paso": el video va al final
             videoUrl ? h(RitualVideo, { url: videoUrl }) : null,
           )
@@ -488,7 +497,7 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
             // rituales "full" SIN formulario de registro: botón para marcar "se realizó".
             // Excepción: los de escaladas NO lo llevan — sus puntos se ganan al
             // gestionar los temas en la bandeja (ver EscaladasInbox).
-            (ritual.kind !== "escaladas" && (!ritual.registro || ritual.registro.hidden)) ? doneBlock("Marcar como realizado", "Realizado hoy") : null,
+            (ritual.kind !== "escaladas" && (!ritual.registro || ritual.registro.hidden)) ? doneBlock("Marcar como realizado") : null,
           ),
     ),
   );
