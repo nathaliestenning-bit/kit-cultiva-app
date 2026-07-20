@@ -228,6 +228,34 @@ def cmd_reset(legajo):
     print(f"   nueva contraseña temporal: {pw}")
     print("   (se forzará cambio en el próximo ingreso)")
 
+# ---------------------------------------------------------------- admin
+def cmd_admin(legajo, nombre):
+    """Crea (o actualiza) una cuenta ADMIN del dashboard: usuario en Auth +
+       fila en `usuarios` con es_admin=true, perfil='admin'. Entra por legajo
+       (contraseña = legajo). Requiere que dashboard.sql ya se haya corrido
+       (columna es_admin). Para dar de baja un admin: cmd_admin no; usar
+       `update usuarios set es_admin=false where legajo='...'` en el SQL Editor."""
+    need_env()
+    legajo = str(legajo).strip()
+    email = email_for(legajo)
+    existing = find_auth_user_by_email(email)
+    if existing:
+        auth_id = existing["id"]
+        print(f"  ~ auth ya existe  {legajo}")
+    else:
+        st, body = api("POST", "/admin/users", {
+            "email": email, "password": legajo, "email_confirm": True,
+            "user_metadata": {"legajo": legajo, "nombre": nombre, "es_admin": True},
+        }, base="auth")
+        if st not in (200, 201): die(f"auth {legajo}: {st} {body}")
+        auth_id = body["id"]
+        print(f"  + auth creado    {legajo}")
+    row = {"legajo": legajo, "auth_id": auth_id, "nombre": nombre, "perfil": "admin",
+           "es_admin": True, "activo": True, "must_change_password": False}
+    st, body = api("POST", "/usuarios?on_conflict=legajo", row)
+    if st not in (200, 201): die(f"usuarios {legajo}: {st} {body}")
+    print(f"OK admin · {legajo} ({nombre}) — entra con legajo como usuario y contraseña; ve el dashboard.")
+
 # ---------------------------------------------------------------- list
 def cmd_list():
     need_env()
@@ -247,8 +275,9 @@ if __name__ == "__main__":
     elif cmd == "sync": cmd_sync(dry="--dry-run" in args)
     elif cmd == "init-pwd": cmd_init_passwords(dry="--dry-run" in args)
     elif cmd == "reset" and len(args) >= 2: cmd_reset(args[1])
+    elif cmd == "admin" and len(args) >= 3: cmd_admin(args[1], args[2])
     elif cmd == "list": cmd_list()
     else:
         print(__doc__ or "")
-        print("Comandos: provision [<legajo>] [--dry-run] | sync [--dry-run] | init-pwd [--dry-run] | reset <legajo> | list")
+        print("Comandos: provision [<legajo>] [--dry-run] | sync [--dry-run] | init-pwd [--dry-run] | reset <legajo> | admin <legajo> \"<nombre>\" | list")
         sys.exit(1)
