@@ -792,58 +792,91 @@ function MaestroColab({ legajo, onBack }) {
   );
 }
 
-/* ---------- DASHBOARD (admin · vista de gerencia) ---------- */
+/* ---------- DASHBOARD (admin · vista de gerencia, estilo panel) ---------- */
 const DASH_AREA = { cosecha: "Cosecha", produccion: "Producción", packing: "Packing", calidad: "Calidad" };
+/* color por área (orden categórico fijo; la etiqueta siempre acompaña al color) */
+const AREA_COLOR = { cosecha: "#2F6E7A", produccion: "#C9651C", packing: "#4156A2", calidad: "#D9A521" };
+const AREA_OPTS = [["", "Todas"], ["cosecha", "Cosecha"], ["produccion", "Producción"], ["packing", "Packing"], ["calidad", "Calidad"]];
+const NIVEL_OPTS = [["", "Todos"], ["N1", "N1"], ["N2", "N2"], ["N3", "N3"], ["N4", "N4"], ["TAC", "TAC"]];
+const PERIODO_OPTS = [["semana", "Esta semana"], ["mes", "Este mes"], ["acumulado", "Acumulado"]];
+const PERIODO_LBL = { semana: "esta semana", mes: "este mes", acumulado: "acumulado" };
 /* id de ritual → título legible (Supabase agrega por ritual_id; aquí lo traducimos) */
 const RITUAL_TITLES = (function () {
   const m = {};
   try { Object.keys(window.PROFILES || {}).forEach((pid) => (window.PROFILES[pid].rituals || []).forEach((r) => { if (r.id && r.title && !m[r.id]) m[r.id] = r.title; })); } catch (e) {}
   return m;
 })();
-function DashStat({ label, value, sub, color }) {
-  return h("div", { className: "dash-stat" },
-    h("div", { className: "dash-stat-l" }, label),
-    h("div", { className: "dash-stat-v", style: { color: color || "#3a2f22" } }, value),
-    sub ? h("div", { className: "dash-stat-s" }, sub) : null,
+
+function Kpi({ icon, label, value, sub, color }) {
+  return h("div", { className: "dash-kpi", style: { "--kc": color || "#3a2f22" } },
+    h("span", { className: "dash-kpi-ico" }, I(icon, "ico-sm")),
+    h("div", { className: "dash-kpi-v" }, value),
+    h("div", { className: "dash-kpi-l" }, label),
+    sub ? h("div", { className: "dash-kpi-s" }, sub) : null,
   );
 }
-function DashBar({ label, value, max, color, right }) {
+function HBar({ label, value, max, color, right }) {
   const pct = max > 0 ? Math.round((value / max) * 100) : 0;
-  return h("div", { style: { margin: "9px 0" } },
-    h("div", { style: { display: "flex", justifyContent: "space-between", fontSize: "13px", color: "#5a4a38", marginBottom: "4px", gap: "10px" } },
-      h("span", { style: { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, label),
-      h("b", null, right != null ? right : value)),
-    h("div", { style: { height: "9px", background: "#f0e7da", borderRadius: "999px", overflow: "hidden" } },
-      h("div", { style: { height: "100%", width: pct + "%", background: color || "#C9651C", borderRadius: "999px" } })),
+  return h("div", { className: "hbar", title: label + ": " + (right != null ? right : value) },
+    h("div", { className: "hbar-top" },
+      h("span", { className: "hbar-label" }, label),
+      h("b", { className: "hbar-val" }, right != null ? right : value)),
+    h("div", { className: "hbar-track" },
+      h("div", { className: "hbar-fill", style: { width: Math.max(pct, 2) + "%", background: color || "#C9651C" } })),
   );
 }
+function Donut({ pct }) {
+  const r = 54, c = 2 * Math.PI * r, dash = (Math.max(0, Math.min(100, pct)) / 100) * c;
+  return h("svg", { className: "dash-donut-svg", viewBox: "0 0 132 132", width: 132, height: 132, role: "img", "aria-label": "Participación " + pct + "%" },
+    h("circle", { cx: 66, cy: 66, r: r, fill: "none", stroke: "#eee7db", strokeWidth: 15 }),
+    h("circle", { cx: 66, cy: 66, r: r, fill: "none", stroke: "#18571F", strokeWidth: 15, strokeLinecap: "round",
+      strokeDasharray: dash + " " + c, transform: "rotate(-90 66 66)" }),
+    h("text", { x: 66, y: 63, textAnchor: "middle", fontSize: 30, fontWeight: 800, fill: "#18571F" }, pct + "%"),
+    h("text", { x: 66, y: 85, textAnchor: "middle", fontSize: 11, fill: "#8a7a68" }, "activos"),
+  );
+}
+function Chips({ opts, value, onPick }) {
+  return h("div", { className: "dash-chips" },
+    opts.map(([v, lbl]) => h("button", {
+      key: v || "all", type: "button",
+      className: "dash-chip" + (value === v ? " on" : ""),
+      onClick: () => onPick(v),
+    }, lbl)),
+  );
+}
+
 function Dashboard({ onBack, userName }) {
   const D = window.CultivaData;
   const [data, setData] = useState(null);
   const [ts, setTs] = useState(null);
+  const [area, setArea] = useState("");
+  const [nivel, setNivel] = useState("");
+  const [periodo, setPeriodo] = useState("semana");
+
   function load() {
     if (!D || !D.dashResumen) return;
-    D.dashResumen().then((r) => { setData(r || {}); setTs(Date.now()); }).catch(() => setData({}));
+    D.dashResumen({ area: area || null, nivel: nivel || null, periodo: periodo })
+      .then((r) => { setData(r || {}); setTs(Date.now()); }).catch(() => setData({}));
   }
-  useEffect(() => {
-    document.body.classList.add("dashboard-open");
-    load();
-    const iv = setInterval(load, 60000);   // auto-refresco cada minuto
-    return () => { clearInterval(iv); document.body.classList.remove("dashboard-open"); };
-  }, []);
+  useEffect(() => { document.body.classList.add("dashboard-open"); return () => document.body.classList.remove("dashboard-open"); }, []);
+  // recarga al montar y cada vez que cambia un filtro; auto-refresco cada minuto
+  useEffect(() => { load(); const iv = setInterval(load, 60000); return () => clearInterval(iv); }, [area, nivel, periodo]);
   useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
 
   const d = data || {};
-  const part = d.participacion || [];
+  const part = (d.participacion || []).slice().sort((a, b) => (a.area || "").localeCompare(b.area || ""));
   const totLid = part.reduce((a, p) => a + (p.lideres || 0), 0);
   const totAct = part.reduce((a, p) => a + (p.activos || 0), 0);
   const pctGlobal = totLid > 0 ? Math.round((totAct / totLid) * 100) : 0;
   const maxPart = part.reduce((m, p) => Math.max(m, p.lideres || 0), 0);
   const esc = d.escaladas || {};
-  const rit = (d.rituales || []).slice().sort((a, b) => (b.n || 0) - (a.n || 0));
+  const escSegs = [["Pendientes", esc.pendientes, "#A8631A"], ["En proceso", esc.proceso, "#4156A2"], ["Resueltas", esc.resueltas, "#18571F"], ["Vencidas", esc.vencidas, "#A81519"]];
+  const escTot = escSegs.reduce((a, s) => a + (s[1] || 0), 0);
+  const rit = (d.rituales || []).slice().sort((a, b) => (b.n || 0) - (a.n || 0)).slice(0, 8);
   const maxRit = rit.reduce((m, r) => Math.max(m, r.n || 0), 0);
   const rank = (d.puntos || []).slice(0, 10);
   const fmtTs = (t) => { try { return new Date(t).toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit" }); } catch (e) { return "…"; } };
+  const perLbl = PERIODO_LBL[periodo] || "";
 
   return h("div", { className: "screen dashboard" },
     h("div", { className: "topbar" },
@@ -854,36 +887,53 @@ function Dashboard({ onBack, userName }) {
       h("button", { className: "icon-btn", type: "button", onClick: load, "aria-label": "Actualizar", style: { marginLeft: "auto" } }, I("refresh-cw")),
     ),
     h("div", { className: "dash-scroll" },
+      // ---- filtros ----
+      h("div", { className: "dash-filters" },
+        h("div", { className: "dash-fgroup" }, h("span", { className: "dash-flabel" }, "Área"), h(Chips, { opts: AREA_OPTS, value: area, onPick: setArea })),
+        h("div", { className: "dash-fgroup" }, h("span", { className: "dash-flabel" }, "Nivel"), h(Chips, { opts: NIVEL_OPTS, value: nivel, onPick: setNivel })),
+        h("div", { className: "dash-fgroup" }, h("span", { className: "dash-flabel" }, "Periodo"), h(Chips, { opts: PERIODO_OPTS, value: periodo, onPick: setPeriodo })),
+      ),
+      h("div", { className: "dash-updated" }, "Actualizado " + fmtTs(ts) + " · se refresca solo cada minuto"),
+
       !data ? h("p", { className: "dash-empty" }, "Cargando…") : h("div", null,
-        h("div", { className: "dash-updated" }, "Actualizado " + fmtTs(ts) + " · se refresca solo cada minuto"),
+        // ---- KPIs ----
         h("div", { className: "dash-kpis" },
-          h(DashStat, { label: "Rituales esta semana", value: (d.total_registros_semana != null ? d.total_registros_semana : "—"), color: "#C9651C" }),
-          h(DashStat, { label: "Participación global", value: pctGlobal + "%", sub: totAct + " de " + totLid + " líderes activos", color: "#2F6E7A" }),
-          h(DashStat, { label: "Escaladas pendientes", value: (esc.pendientes != null ? esc.pendientes : "—"), sub: (esc.total || 0) + " en total", color: "#A8631A" }),
-          h(DashStat, { label: "Vencidas (SLA 48h)", value: (esc.vencidas != null ? esc.vencidas : "—"), color: (esc.vencidas > 0 ? "#A81519" : "#18571F") }),
+          h(Kpi, { icon: "activity", label: "Rituales aplicados (" + perLbl + ")", value: (d.total_registros != null ? d.total_registros : "—"), color: "#C9651C" }),
+          h(Kpi, { icon: "users", label: "Participación", value: pctGlobal + "%", sub: totAct + " de " + totLid + " líderes activos", color: "#2F6E7A" }),
+          h(Kpi, { icon: "inbox", label: "Escaladas pendientes", value: (esc.pendientes != null ? esc.pendientes : "—"), sub: (esc.total || 0) + " en total", color: "#A8631A" }),
+          h(Kpi, { icon: "alert-triangle", label: "Vencidas (SLA 48h)", value: (esc.vencidas != null ? esc.vencidas : "—"), color: (esc.vencidas > 0 ? "#A81519" : "#18571F") }),
         ),
+        // ---- gráficos ----
         h("div", { className: "dash-grid" },
           h("div", { className: "dash-panel" },
-            h("h3", { className: "dash-h" }, "Participación por área"),
-            part.length ? part.map((p) => h(DashBar, { key: p.area, label: DASH_AREA[p.area] || p.area, value: p.activos || 0, max: maxPart, color: "#2F6E7A", right: (p.activos || 0) + "/" + (p.lideres || 0) })) : h("p", { className: "dash-empty" }, "Sin datos.")),
+            h("h3", { className: "dash-h" }, I("pie-chart", "ico-xs"), "Participación por área"),
+            h("div", { className: "dash-part" },
+              h("div", { className: "dash-donut" }, h(Donut, { pct: pctGlobal }), h("span", { className: "dash-donut-sub" }, totAct + "/" + totLid + " líderes")),
+              h("div", { className: "dash-part-bars" },
+                part.length ? part.map((p) => h(HBar, { key: p.area, label: DASH_AREA[p.area] || p.area, value: p.activos || 0, max: maxPart || 1, color: AREA_COLOR[p.area] || "#2F6E7A", right: (p.activos || 0) + "/" + (p.lideres || 0) })) : h("p", { className: "dash-empty" }, "Sin datos.")),
+            ),
+          ),
           h("div", { className: "dash-panel" },
-            h("h3", { className: "dash-h" }, "Rituales aplicados"),
-            rit.length ? rit.map((r) => h(DashBar, { key: r.ritual, label: RITUAL_TITLES[r.ritual] || r.ritual, value: r.n || 0, max: maxRit, color: "#C9651C" })) : h("p", { className: "dash-empty" }, "Sin datos.")),
+            h("h3", { className: "dash-h" }, I("bar-chart-3", "ico-xs"), "Rituales más aplicados"),
+            rit.length ? rit.map((r) => h(HBar, { key: r.ritual, label: RITUAL_TITLES[r.ritual] || r.ritual, value: r.n || 0, max: maxRit || 1, color: "#C9651C" })) : h("p", { className: "dash-empty" }, "Sin datos.")),
           h("div", { className: "dash-panel" },
-            h("h3", { className: "dash-h" }, "Ranking de puntos"),
-            rank.length ? rank.map((p, i) => h("div", { key: i, className: "dash-rank" },
-              h("span", { className: "dash-rank-n" }, "#" + (i + 1)),
+            h("h3", { className: "dash-h" }, I("trophy", "ico-xs"), "Ranking de puntos"),
+            rank.length ? rank.map((p, i) => h("div", { key: i, className: "dash-rank" + (i < 3 ? " top" : "") },
+              h("span", { className: "dash-rank-n", style: { "--ac": AREA_COLOR[p.area] || "#8a7a68" } }, i + 1),
               h("div", { style: { flex: 1, minWidth: 0 } },
                 h("div", { className: "dash-rank-name" }, p.nombre),
                 h("div", { className: "dash-rank-sub" }, (DASH_AREA[p.area] || p.area) + (p.nivel ? " · " + p.nivel : ""))),
-              h("b", { style: { color: "#C9651C" } }, p.puntos))) : h("p", { className: "dash-empty" }, "Sin datos.")),
+              h("b", { className: "dash-rank-pts" }, p.puntos, h("span", null, " pts")))) : h("p", { className: "dash-empty" }, "Sin datos.")),
           h("div", { className: "dash-panel" },
-            h("h3", { className: "dash-h" }, "Escaladas"),
-            h("div", { className: "dash-esc" },
-              [["Pendientes", esc.pendientes, "#A8631A"], ["En proceso", esc.proceso, "#4156A2"], ["Resueltas", esc.resueltas, "#18571F"], ["Vencidas", esc.vencidas, "#A81519"]].map((row) =>
-                h("div", { key: row[0], className: "dash-esc-item" },
-                  h("span", { className: "dash-esc-v", style: { color: row[2] } }, row[1] != null ? row[1] : "—"),
-                  h("span", { className: "dash-esc-l" }, row[0]))))),
+            h("h3", { className: "dash-h" }, I("git-branch", "ico-xs"), "Escaladas"),
+            escTot > 0 ? h("div", { className: "esc-stack" }, escSegs.filter((s) => s[1] > 0).map((s) =>
+              h("span", { key: s[0], className: "esc-seg", title: s[0] + ": " + s[1], style: { flex: s[1], background: s[2] } }))) : null,
+            h("div", { className: "esc-legend" }, escSegs.map((s) =>
+              h("div", { key: s[0], className: "esc-leg-item" },
+                h("span", { className: "esc-dot", style: { background: s[2] } }),
+                h("span", { className: "esc-leg-l" }, s[0]),
+                h("b", null, s[1] != null ? s[1] : "—")))),
+          ),
         ),
       ),
     ),

@@ -211,36 +211,60 @@
       });
     },
 
-    /* ---- DASHBOARD (admin) · resumen de todo el piloto ----
-       Devuelve un objeto con las 4 secciones. En Supabase lo calcula la RPC
-       dash_resumen() (SECURITY DEFINER, solo para es_admin). En demo, muestra
-       datos de ejemplo para poder ver el layout. */
-    dashResumen: function () {
-      if (!isSb()) return Promise.resolve({
-        participacion: [
-          { area: "cosecha", lideres: 12, activos: 9 },
-          { area: "produccion", lideres: 18, activos: 11 },
-          { area: "packing", lideres: 9, activos: 7 },
-          { area: "calidad", lideres: 6, activos: 3 },
-        ],
-        rituales: [
-          { ritual: "Acompañamiento 1 a 1", n: 34 },
-          { ritual: "Espacio de confianza", n: 28 },
-          { ritual: "Reconocimiento Sincero", n: 19 },
-          { ritual: "Revisión de escaladas", n: 41 },
-          { ritual: "Caminata de Liderazgo", n: 8 },
-        ],
-        puntos: [
-          { nombre: "Marta Ríos", area: "packing", nivel: "N4", puntos: 92 },
-          { nombre: "Ana Torres", area: "cosecha", nivel: "N4", puntos: 78 },
-          { nombre: "Luis Ramos", area: "produccion", nivel: "N3", puntos: 64 },
-          { nombre: "Pedro Ruiz", area: "cosecha", nivel: "N3", puntos: 51 },
-          { nombre: "Sara Díaz", area: "calidad", nivel: "N4", puntos: 47 },
-        ],
-        escaladas: { total: 63, pendientes: 14, proceso: 9, resueltas: 40, vencidas: 5 },
-        total_registros_semana: 130,
-      });
-      return client().rpc("dash_resumen").then(function (q) { if (q.error) throw q.error; return q.data || {}; });
+    /* ---- DASHBOARD (admin) · resumen del piloto, con filtros ----
+       filtros = { area, nivel, periodo }. En Supabase lo calcula la RPC
+       dash_resumen(p_area, p_nivel, p_periodo) (SECURITY DEFINER, solo es_admin).
+       En demo, computa desde un dataset sintético determinista para que los
+       filtros funcionen de verdad y se vea el layout. */
+    dashResumen: function (filtros) {
+      filtros = filtros || {};
+      var fArea = filtros.area || null, fNiv = filtros.nivel || null, per = filtros.periodo || "semana";
+      if (!isSb()) {
+        // dataset sintético determinista (sin Math.random, para que no cambie al recargar)
+        var AREAS = ["cosecha", "produccion", "packing", "calidad"];
+        var NIVELES = { cosecha: ["N1", "N2", "N3", "N4"], produccion: ["N1", "N2", "N3", "N4"], packing: ["N1", "N2", "N3", "N4"], calidad: ["N2", "N3", "N4", "TAC"] };
+        var RITS = ["Acompañamiento 1 a 1", "Espacio de confianza", "Reconocimiento Sincero", "Caminata de Liderazgo", "Revisión de escaladas"];
+        var NOMS = ["Ana Torres", "Luis Ramos", "Marta Ríos", "Pedro Ruiz", "Sara Díaz", "Jorge León", "Elena Vega", "Raúl Pinto", "Nadia Cruz", "Iván Soto", "Rosa Melo", "Hugo Paz", "Lía Fuentes", "Omar Ríos"];
+        var mult = per === "acumulado" ? 8 : (per === "mes" ? 4 : 1);
+        var seed = 20260720, people = [];
+        function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
+        AREAS.forEach(function (a) {
+          NIVELES[a].forEach(function (n) {
+            var cnt = 2 + Math.floor(rnd() * 4);
+            for (var i = 0; i < cnt; i++) {
+              var activo = rnd() > 0.33;
+              people.push({ area: a, nivel: n, nombre: NOMS[Math.floor(rnd() * NOMS.length)],
+                activo: activo, marcas: activo ? (1 + Math.floor(rnd() * 4)) * mult : 0,
+                ritual: RITS[Math.floor(rnd() * RITS.length)], pts: activo ? Math.floor((10 + rnd() * 90)) * (mult >= 4 ? 1 : 1) : 0 });
+            }
+          });
+        });
+        var sel = people.filter(function (p) { return (!fArea || p.area === fArea) && (!fNiv || p.nivel === fNiv); });
+        // participación por área
+        var byArea = {};
+        sel.forEach(function (p) { var b = byArea[p.area] || (byArea[p.area] = { area: p.area, lideres: 0, activos: 0 }); b.lideres++; if (p.activo) b.activos++; });
+        // rituales
+        var byRit = {};
+        sel.forEach(function (p) { if (p.marcas > 0) byRit[p.ritual] = (byRit[p.ritual] || 0) + p.marcas; });
+        // ranking
+        var ranking = sel.filter(function (p) { return p.pts > 0; })
+          .map(function (p) { return { nombre: p.nombre, area: p.area, nivel: p.nivel, puntos: Math.min(100, p.pts) }; })
+          .sort(function (a, b) { return b.puntos - a.puntos; }).slice(0, 15);
+        // escaladas (proporcional a activos del filtro)
+        var act = sel.filter(function (p) { return p.activo; }).length;
+        var eTot = act * (per === "acumulado" ? 3 : (per === "mes" ? 2 : 1));
+        var esc = { pendientes: Math.round(eTot * 0.22), proceso: Math.round(eTot * 0.15), resueltas: Math.round(eTot * 0.55), vencidas: Math.round(eTot * 0.08) };
+        esc.total = esc.pendientes + esc.proceso + esc.resueltas + esc.vencidas;
+        return Promise.resolve({
+          participacion: Object.keys(byArea).map(function (k) { return byArea[k]; }),
+          rituales: Object.keys(byRit).map(function (k) { return { ritual: k, n: byRit[k] }; }),
+          puntos: ranking,
+          escaladas: esc,
+          total_registros: sel.reduce(function (a, p) { return a + p.marcas; }, 0),
+        });
+      }
+      return client().rpc("dash_resumen", { p_area: fArea, p_nivel: fNiv, p_periodo: per })
+        .then(function (q) { if (q.error) throw q.error; return q.data || {}; });
     },
 
     /* ---- SEGUIMIENTOS DE HOY (fecha propia + escaladas por vencer) ---- */
