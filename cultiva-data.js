@@ -211,6 +211,38 @@
       });
     },
 
+    /* ---- DASHBOARD (admin) · resumen de todo el piloto ----
+       Devuelve un objeto con las 4 secciones. En Supabase lo calcula la RPC
+       dash_resumen() (SECURITY DEFINER, solo para es_admin). En demo, muestra
+       datos de ejemplo para poder ver el layout. */
+    dashResumen: function () {
+      if (!isSb()) return Promise.resolve({
+        participacion: [
+          { area: "cosecha", lideres: 12, activos: 9 },
+          { area: "produccion", lideres: 18, activos: 11 },
+          { area: "packing", lideres: 9, activos: 7 },
+          { area: "calidad", lideres: 6, activos: 3 },
+        ],
+        rituales: [
+          { ritual: "Acompañamiento 1 a 1", n: 34 },
+          { ritual: "Espacio de confianza", n: 28 },
+          { ritual: "Reconocimiento Sincero", n: 19 },
+          { ritual: "Revisión de escaladas", n: 41 },
+          { ritual: "Caminata de Liderazgo", n: 8 },
+        ],
+        puntos: [
+          { nombre: "Marta Ríos", area: "packing", nivel: "N4", puntos: 92 },
+          { nombre: "Ana Torres", area: "cosecha", nivel: "N4", puntos: 78 },
+          { nombre: "Luis Ramos", area: "produccion", nivel: "N3", puntos: 64 },
+          { nombre: "Pedro Ruiz", area: "cosecha", nivel: "N3", puntos: 51 },
+          { nombre: "Sara Díaz", area: "calidad", nivel: "N4", puntos: 47 },
+        ],
+        escaladas: { total: 63, pendientes: 14, proceso: 9, resueltas: 40, vencidas: 5 },
+        total_registros_semana: 130,
+      });
+      return client().rpc("dash_resumen").then(function (q) { if (q.error) throw q.error; return q.data || {}; });
+    },
+
     /* ---- SEGUIMIENTOS DE HOY (fecha propia + escaladas por vencer) ---- */
     /* {propios: [{ritual_id, vals}], porResolver: n, enviadasPendientes: n} */
     seguimientosHoy: function (perfil) {
