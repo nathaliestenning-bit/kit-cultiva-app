@@ -1041,7 +1041,7 @@ Object.assign(window.PROFILES, {
     "id": "pack-n4",
     "area": "packing",
     "level": "N4",
-    "role": "Supervisor de Producción / Control",
+    "role": "Supervisor de Producción",
     "sub": "Donde arranca el cascadeo",
     "context": "La capa donde la métrica se mueve en Packing (1 supervisor por planta + 1 control en planta Chao, día y noche). Los rituales se apalancan en momentos que YA existen (la charla de 5 min, la pausa del turno, el relevo). En noche, todo se hace con autoridad equivalente y el registro queda en el cuaderno de relevo.",
     "rituals": [
@@ -1294,9 +1294,19 @@ Object.assign(window.PROFILES, {
 
 });
 
+/* Control de Línea (N4 Packing): mismo puesto que el Supervisor de Producción
+   pero SIN el ritual de escucha ("Espacio de confianza"). Se deriva de pack-n4
+   para no duplicar contenido; comparte los demás rituales. Perfil para el padrón
+   de Control de Línea: "pack-n4-cl". */
+window.PROFILES["pack-n4-cl"] = Object.assign({}, window.PROFILES["pack-n4"], {
+  id: "pack-n4-cl",
+  role: "Control de Línea",
+  rituals: window.PROFILES["pack-n4"].rituals.filter(function (r) { return r.dimension !== "escucha"; }),
+});
+
 /* índice área → perfiles (extiende el de data-cosecha.js) */
 window.PROFILES_BY_AREA.packing =
-  ["pack-n1", "pack-n2", "pack-n3", "pack-n4"].map(function (id) { return window.PROFILES[id]; });
+  ["pack-n1", "pack-n2", "pack-n3", "pack-n4", "pack-n4-cl"].map(function (id) { return window.PROFILES[id]; });
 
 /* datos demo de la bandeja de escaladas (cascadeo de Packing · día/noche) */
 Object.assign(window.ESCALADAS_DEMO, {
