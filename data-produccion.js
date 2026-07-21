@@ -724,7 +724,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Comparto",
-            "t": "\"Observé que [conducta] cuando [situación]. Esto generó [impacto]. ¿Cómo lo ves tú?\""
+            "t": "Observé que [conducta] cuando [situación]. Esto generó [impacto]. ¿Cómo lo ves tú?"
           },
           {
             "k": "Escucho",
@@ -748,10 +748,9 @@ Object.assign(window.PROFILES, {
           }
         ],
         "phrases": [
-          "\"Vi que [conducta] cuando [situación]. Eso generó [impacto]. ¿Cómo lo ves tú?\"",
-          "“Lo que mejor vi este mes fue cómo manejaste [situación específica] y que generó [impacto]. Quiero que sepas que lo registré.”",
-          "\"¿Qué necesitas de mí para que esto salga mejor?\"",
-          "\"Repíteme el acuerdo para asegurarnos de que quedamos igual.\"",
+          "\"Vi que [conducta u omisión] cuando [situación]. ¿Te parece si mejoramos eso?\"",
+          "\"Sin [entregable] no podemos [impacto operativo].\"",
+          "\"Cuando tengas ese inconveniente, no olvides que puedes llamarme.\"",
           "\"Antes de irme quiero reconocer que [conducta positiva]. Eso marca la diferencia.\""
         ],
         "no": [
@@ -841,16 +840,17 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "escucha",
         "icon": "ear",
-        "title": "Espacio de confianza",
+        "title": "Espacio de Escucha",
         "freq": "Semanal",
         "purpose": "Recoger inquietudes antes de que se conviertan en problemas, fomentar la comunicación, cercanía y espacios seguros.",
         "context": {
+          "freq": "Semanal",
           "when": "En espacios ya programados o existentes con tus reportes directos"
         },
         "steps": [
           {
             "k": "Abro",
-            "t": "\"Cómo están?\" \"¿Algo que necesiten conversar antes de empezar?\""
+            "t": "\"¿Cómo están? ¿Algo que necesiten conversar antes de empezar?\""
           },
           {
             "k": "Espero",
@@ -862,7 +862,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Resuelvo",
-            "t": "fomentando confianza y apertura"
+            "t": "fomentando confianza y apertura."
           },
           {
             "k": "Registro",
@@ -874,16 +874,16 @@ Object.assign(window.PROFILES, {
           }
         ],
         "phrases": [
-          "\"¿Cómo viene la semana? ¿Algo que necesite saber?\"",
-          "\"Ese tema lo veo yo — te aviso mañana.\"",
-          "\"Eso no está en mis manos. Lo escalo a mi jefe — vuelvo esta semana.\"",
-          "\"El lunes [nombre] planteó [tema]. Así quedó.\""
+          "\"¿Cómo van con su personal? ¿Necesitan algo?\"",
+          "\"Revisemos si podemos redistribuir: puedes mover [recurso] de [A] a [B].\"",
+          "\"Ese tema lo veo yo — te aviso mañana.\""
         ],
         "no": [
           "Prometer a tu equipo lo que no puedes cumplir.",
           "Escalar a mi jefe sin contexto — no puede actuar sobre algo que no entiende.",
           "No cerrar el loop con quien lo trajo."
         ],
+        "note": "También puedes aplicarlo 1:1. En privado el equipo se abre más.",
         "registro": {
           "soporte": "Registro vía app",
           "fields": [
@@ -911,21 +911,19 @@ Object.assign(window.PROFILES, {
               ]
             }
           ]
-        },
-        "note": "También puedes aplicarlo 1:1. En privado el equipo se abre más."
+        }
       },
       {
         "id": "reconocimiento",
         "kind": "full",
         "dimension": "valora",
         "icon": "award",
-        "title": "Reconocimiento Sincero",
+        "title": "Reconocimiento",
         "freq": "1 vez por semana",
         "purpose": "Hacer visible que la conducta positiva se observa y se nombra de manera oportuna.",
         "context": {
           "freq": "1 vez por semana",
-          "when": "En grupo",
-          "place": ""
+          "when": "En grupo"
         },
         "steps": [
           {
@@ -942,7 +940,7 @@ Object.assign(window.PROFILES, {
           }
         ],
         "phrases": [
-          "\"Antes de seguir, quiero mencionar a [nombre]. Vi [conducta específica] cuando [situación]. Eso sumó mucho en [impacto].\"",
+          "\"[Nombre], quiero felicitarte. Te diste cuenta a tiempo de [conducta], y eso impacta directamente en [impacto]. Gracias por tu atención.\"",
           "\"Si tuviera que poner un ejemplo de Cultiva en acción, sería [nombre] cuando [situación].\""
         ],
         "no": [
@@ -1009,44 +1007,45 @@ Object.assign(window.PROFILES, {
         "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "Diario",
-        "purpose": "Construir autoridad desde la relación — presencia visible que observa, conversa y da acompañamiento en el momento.",
+        "purpose": "Acompañar en el momento: reconocer el avance, señalar la desviación puntual explicando el porqué, pedir compromiso de corrección y verificar que se haga.",
         "context": {
           "freq": "Diario",
           "when": "En movimiento por el área durante la jornada"
         },
         "steps": [
           {
-            "k": "Me muevo",
-            "t": "por todo el sector — no solo donde hay problemas."
+            "k": "Recorro y saludo",
+            "t": "reconozco el avance cuando lo hay."
           },
           {
-            "k": "Observo",
-            "t": "quién se está esforzando, quién parece cansado."
+            "k": "Señalo la desviación puntual",
+            "t": "concreta y sin rodeos: \"Veo que [desviación].\""
           },
           {
-            "k": "Me acerco",
-            "t": "a 1-2 personas — una pregunta simple antes que cualquier instrucción."
+            "k": "Explico el porqué",
+            "t": "el impacto técnico (plagas, nutrientes, deshidratación de la fruta, enfermedades, etc.)."
           },
           {
-            "k": "Digo",
-            "t": "lo positivo ahí mismo con SCI: \"Vi que [conducta] cuando [situación]. Eso sumó en [impacto].\""
+            "k": "Pido compromiso",
+            "t": "\"¿Cuento contigo con esa corrección?\" / \"¿Te parece si lo corregimos de inmediato?\""
           },
           {
-            "k": "Corrijo",
-            "t": "lo que corresponda en privado, 1:1, nunca frente al grupo."
+            "k": "Verifico",
+            "t": "pido que me avisen al corregir o anuncio que volveré a revisar el trabajo."
           }
         ],
         "phrases": [
-          "\"¿Cómo te está yendo hoy? ¿Algo que te esté complicando?\"",
-          "\"Vi que [conducta] cuando [situación]. Eso está bien hecho.\"",
-          "\"¿Cómo ves el avance del trabajo hoy?\"",
-          "\"Un momento — quiero decirte algo en privado.\""
+          "\"Veo que vienes avanzando bien. Sin embargo, [desviación puntual].\"",
+          "\"Recuerda que [impacto técnico]: por eso [acción correcta].\"",
+          "\"¿Cuento contigo con esa corrección?\"",
+          "\"Corrige esto y avísame apenas lo hayas hecho, ¿te parece?\"",
+          "\"Volveré en unos minutos para ver tu trabajo, ¿te parece?\""
         ],
         "no": [
           "Aparecer solo cuando hay un problema (eso lo convierte en ronda de control).",
+          "Señalar la desviación sin explicar el porqué.",
           "Corregir en público frente al grupo.",
-          "Recorrer siempre el mismo sector o las mismas personas.",
-          "Esperar al cierre para dar acompañamiento positivo — dilo en el momento."
+          "No verificar que la corrección se haya hecho."
         ],
         "registro": {
           "hidden": true
@@ -1057,7 +1056,7 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "escucha",
         "icon": "ear",
-        "title": "Espacio de confianza",
+        "title": "Espacio de Escucha",
         "freq": "Diario",
         "purpose": "Recoger inquietudes antes de que se conviertan en problemas — y escalar con criterio.",
         "context": {
@@ -1068,15 +1067,19 @@ Object.assign(window.PROFILES, {
         "steps": [
           {
             "k": "Abro",
-            "t": "\"¿Algo que necesiten que escuche antes de empezar?\""
+            "t": "\"¿Hay algo que deba conocer antes de iniciar labores?\""
           },
           {
             "k": "Espero",
-            "t": "20-30 seg en silencio — la gente no responde de inmediato."
+            "t": "20-30 seg en silencio."
           },
           {
             "k": "Escucho",
-            "t": "sin interrumpir. Si nadie habla: \"¿Cómo vienen hoy?\""
+            "t": "sin interrumpir."
+          },
+          {
+            "k": "Me hago disponible",
+            "t": "si no estoy cerca, dejo claro que pueden llamarme con confianza."
           },
           {
             "k": "Decido",
@@ -1084,29 +1087,28 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Registro",
-            "t": "vía app: escribo la situación + establezco Urgencia (Hoy / Esta semana)."
+            "t": "vía app: la situación + Urgencia (Hoy / Esta semana)."
           },
           {
             "k": "Doy cierre",
-            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\""
+            "t": "al día siguiente con quien lo trajo."
           }
         ],
-        "note": "También puedes aplicarlo 1:1. En privado el equipo se abre más.",
         "phrases": [
-          "\"¿Algo que necesiten que sepa o que tenga que escalar?\"",
-          "\"Ese tema lo resuelvo yo hoy. Te aviso al almuerzo.\"",
-          "\"Ese tema no está en mis manos. Lo subo ahora — mañana te traigo respuesta.\"",
-          "\"Ayer [nombre] planteó [tema]. Lo resolví / llega el [día].\""
+          "\"¿Hay algo que deba conocer antes de iniciar labores?\"",
+          "\"Si no estoy cerca, llámenme con confianza. Prefiero una llamada a tiempo que un error que podamos evitar.\"",
+          "\"Ese tema lo resuelvo yo hoy. Te aviso al almuerzo.\""
         ],
         "no": [
           "Prometer lo que no puedes cumplir.",
           "Escalar sin escribir contexto suficiente — el superior no puede actuar sobre algo que no entiende.",
           "No cerrar el loop al día siguiente con quien habló."
         ],
+        "note": "También puedes aplicarlo 1:1. En privado el equipo se abre más.",
         "registro": {
           "soporte": "Escalada vía app",
           "autoBroadcast": {
-            "temaFijo": "Espacio de confianza",
+            "temaFijo": "Espacio de Escucha",
             "detalle": "contexto"
           },
           "fields": [
@@ -1141,13 +1143,12 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "valora",
         "icon": "award",
-        "title": "Reconocimiento Sincero",
+        "title": "Reconocimiento",
         "freq": "1 vez por semana",
         "purpose": "Hacer visible que la conducta positiva se observa y se nombra de manera oportuna.",
         "context": {
           "freq": "1 vez por semana",
-          "when": "En grupo",
-          "place": ""
+          "when": "En grupo"
         },
         "steps": [
           {
@@ -1164,7 +1165,7 @@ Object.assign(window.PROFILES, {
           }
         ],
         "phrases": [
-          "\"Antes de seguir, quiero mencionar a [nombre]. Vi [conducta específica] cuando [situación]. Eso sumó mucho en [impacto].\"",
+          "\"[Nombre], te felicito. Ayer vi que [conducta de ayuda o actitud]. Eso dice mucho de ti como persona. Gracias.\"",
           "\"Si tuviera que poner un ejemplo de Cultiva en acción, sería [nombre] cuando [situación].\""
         ],
         "no": [

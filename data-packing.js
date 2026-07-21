@@ -1070,41 +1070,49 @@ Object.assign(window.PROFILES, {
         "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "Diario (ambos turnos)",
-        "purpose": "Construir autoridad desde la relación — presencia visible que observa, conversa y da acompañamiento en el momento.",
+        "purpose": "Acompañar en las líneas (ambos turnos): reconocer el avance, señalar la desviación con su impacto en el cliente, desarrollar al líder a cargo para que haga su propio acompañamiento y tratar la seguridad como no negociable.",
         "context": {
           "freq": "Diario (ambos turnos)",
           "place": "En movimiento por las líneas durante el turno"
         },
         "steps": [
           {
-            "k": "Me muevo",
-            "t": "por todo el sector — no solo donde hay problemas."
+            "k": "Recorro las líneas",
+            "t": "en ambos turnos, no solo donde hay problemas."
           },
           {
-            "k": "Observo",
-            "t": "quién se está esforzando, quién parece cansado."
+            "k": "Observo y reconozco el avance",
+            "t": "\"Veo que tu línea avanza con buen ritmo.\""
           },
           {
-            "k": "Me acerco",
-            "t": "a 1-2 personas — una pregunta simple antes que cualquier instrucción."
+            "k": "Señalo la desviación con su impacto",
+            "t": "\"Están reportando [desviación], y esa calificación es la calidad que le llega al cliente.\""
           },
           {
-            "k": "Digo",
-            "t": "lo positivo ahí mismo con SCI: \"Vi que [conducta] cuando [situación]. Eso sumó en [impacto].\""
+            "k": "Desarrollo al líder a cargo",
+            "t": "le pido que haga su propio acompañamiento 1 a 1, saque muestreo e identifique de dónde vienen las desviaciones, en vez de resolverlo yo."
           },
           {
-            "k": "Corrijo",
-            "t": "lo que corresponda en privado, 1:1, nunca frente al grupo."
+            "k": "En seguridad, no negocio",
+            "t": "si falta un EPP, lo corrijo en el momento: \"por tu seguridad y bienestar\"."
+          },
+          {
+            "k": "Cierro pidiendo retorno",
+            "t": "\"¿Me comentas una vez corregido?\""
           }
         ],
         "phrases": [
-          "\"¿Cómo te está yendo en este turno? ¿Algo que te esté complicando?\"",
-          "\"Vi que [conducta] cuando [situación]. Eso está bien hecho.\"",
-          "\"¿Hay algo del turno que deba saber antes de seguir?\""
+          "\"Veo que tu línea avanza con buen ritmo. Sin embargo, [desviación], y esa calificación es la calidad que llega al cliente.\"",
+          "\"Haz acompañamiento 1 a 1 con tu equipo: saca el muestreo e identifica de dónde vienen las desviaciones.\"",
+          "\"Ellos deben verte como su líder: acompáñalos y oriéntalos cuando algo no sale bien.\"",
+          "\"Te pido que uses tu EPP por tu propia seguridad y bienestar. No ejecutamos labores sin EPP.\"",
+          "\"¿Me comentas una vez corregido?\""
         ],
         "no": [
           "Aparecer solo cuando hay un problema en la línea.",
+          "Resolver por el líder lo que él debe acompañar con su equipo.",
           "Corregir en público frente al equipo.",
+          "Dejar pasar una falta de EPP.",
           "Tratar el turno noche como turno de segunda."
         ],
         "registro": {
@@ -1116,7 +1124,7 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "escucha",
         "icon": "ear",
-        "title": "Espacio de confianza",
+        "title": "Espacio de Escucha",
         "freq": "Diario (ambos turnos)",
         "purpose": "Recoger inquietudes antes de que se conviertan en problemas — y escalar con criterio.",
         "context": {
@@ -1127,45 +1135,48 @@ Object.assign(window.PROFILES, {
         "steps": [
           {
             "k": "Abro",
-            "t": "\"¿Algo que necesiten que escuche antes de empezar?\""
+            "t": "\"¿Tienen alguna consulta, duda o inquietud?\""
           },
           {
             "k": "Espero",
-            "t": "20-30 seg en silencio — la gente no responde de inmediato."
+            "t": "20-30 seg en silencio."
           },
           {
             "k": "Escucho",
-            "t": "sin interrumpir. Si nadie habla: \"¿Cómo vienen hoy?\""
+            "t": "sin interrumpir."
           },
           {
             "k": "Decido",
             "t": "para cada tema: ¿resuelvo yo o escalo?"
           },
           {
+            "k": "Me comprometo con seguimiento",
+            "t": "si depende de otra área, lo verifico y pido que me lo recuerden para retomarlo."
+          },
+          {
             "k": "Registro",
-            "t": "vía app: escribo la situación + establezco Urgencia (Hoy / Esta semana)."
+            "t": "vía app: la situación + Urgencia (Hoy / Esta semana)."
           },
           {
             "k": "Doy cierre",
-            "t": "al día siguiente: \"Ayer [nombre] planteó [tema]. [Lo resolví / llega el día X].\""
+            "t": "retomo el tema en el siguiente espacio."
           }
         ],
-        "note": "También puedes aplicarlo 1:1. En privado el equipo se abre más.",
         "phrases": [
-          "\"Antes de arrancar, ¿algo que necesiten que sepa o que tenga que escalar?\"",
-          "\"Ese tema lo resuelvo yo en este turno. Te aviso antes del cierre.\"",
-          "\"No está en mis manos. Lo subo ahora — mañana te traigo respuesta.\"",
-          "\"Ayer [nombre] planteó [tema]. Lo resolví / llega el [día].\""
+          "\"¿Tienen alguna consulta, duda o inquietud?\"",
+          "\"Voy a verificar con el área correspondiente. Mañana me lo recuerdan para volver a tocarlo aquí.\"",
+          "\"Ese tema lo resuelvo yo en este turno. Te aviso antes del cierre.\""
         ],
         "no": [
           "Prometer lo que no puedes cumplir.",
           "Escalar sin escribir contexto suficiente — el superior no puede actuar sobre algo que no entiende.",
           "No cerrar el loop al día siguiente con quien habló."
         ],
+        "note": "También puedes aplicarlo 1:1. En privado el equipo se abre más.",
         "registro": {
           "soporte": "Escalada vía app",
           "autoBroadcast": {
-            "temaFijo": "Espacio de confianza",
+            "temaFijo": "Espacio de Escucha",
             "detalle": "contexto"
           },
           "fields": [
@@ -1209,13 +1220,12 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "valora",
         "icon": "award",
-        "title": "Reconocimiento Sincero",
+        "title": "Reconocimiento",
         "freq": "1 vez por semana",
         "purpose": "Hacer visible que la conducta positiva se observa y se nombra — en ambos turnos.",
         "context": {
           "freq": "1 vez por semana",
-          "when": "En grupo",
-          "place": ""
+          "when": "En grupo"
         },
         "steps": [
           {
@@ -1232,7 +1242,7 @@ Object.assign(window.PROFILES, {
           }
         ],
         "phrases": [
-          "\"Antes de seguir, quiero mencionar a [nombre]. Vi [conducta específica] cuando [situación]. Eso sumó mucho en [impacto].\"",
+          "\"Quiero felicitar a [persona o grupo] por [conducta]. Gracias a ustedes [impacto]. Eso refleja su compromiso.\"",
           "\"Si tuviera que poner un ejemplo de Cultiva en acción, sería [nombre] cuando [situación].\""
         ],
         "no": [
@@ -1298,11 +1308,134 @@ Object.assign(window.PROFILES, {
    pero SIN el ritual de escucha ("Espacio de confianza"). Se deriva de pack-n4
    para no duplicar contenido; comparte los demás rituales. Perfil para el padrón
    de Control de Línea: "pack-n4-cl". */
-window.PROFILES["pack-n4-cl"] = Object.assign({}, window.PROFILES["pack-n4"], {
-  id: "pack-n4-cl",
-  role: "Control de Línea",
-  rituals: window.PROFILES["pack-n4"].rituals.filter(function (r) { return r.dimension !== "escucha"; }),
-});
+(function () {
+  var _p4 = window.PROFILES["pack-n4"];
+  var _byId = function (id) { return _p4.rituals.filter(function (r) { return r.id === id; })[0]; };
+  window.PROFILES["pack-n4-cl"] = Object.assign({}, _p4, {
+    id: "pack-n4-cl",
+    role: "Control de Línea",
+    rituals: [
+      _byId("saludo-con-proposito"),
+      {
+        "id": "presencia-activa-en-planta",
+        "kind": "full",
+        "dimension": "lidera",
+        "icon": "message-square-quote",
+        "title": "Acompañamiento 1 a 1",
+        "freq": "Diario (ambos turnos)",
+        "purpose": "Acompañar a la línea en el momento: ante la duda, medir con muestreo (no buscar culpables) y corregir con evidencia; la seguridad no se negocia.",
+        "context": {
+          "freq": "Diario (ambos turnos)",
+          "place": "En la línea durante el turno"
+        },
+        "steps": [
+          {
+            "k": "Observo la línea",
+            "t": "noto si están pasando defectos o desviaciones."
+          },
+          {
+            "k": "No busco culpables",
+            "t": "\"No busco un responsable, quiero entender qué está pasando.\""
+          },
+          {
+            "k": "Mido",
+            "t": "propongo un muestreo para revisar la línea completa."
+          },
+          {
+            "k": "Muestro la evidencia",
+            "t": "comparto el resultado y pido corregir donde el dato lo señala."
+          },
+          {
+            "k": "En seguridad, no negocio",
+            "t": "si falta un EPP, lo corrijo en el momento: \"por tu seguridad y bienestar\"."
+          }
+        ],
+        "phrases": [
+          "\"Veo que están pasando algunos [defectos]. No busco un responsable, quiero entender qué pasa.\"",
+          "\"¿Les parece si hago un muestreo para revisar la línea completa?\"",
+          "\"El muestreo confirma que están pasando defectos en varios puntos; retiremos con mayor atención.\"",
+          "\"Te pido que uses tu EPP por tu propia seguridad y bienestar. No ejecutamos labores sin EPP.\""
+        ],
+        "no": [
+          "Buscar culpables antes de medir.",
+          "Discutir opiniones en vez de mostrar el dato del muestreo.",
+          "Exponer a una persona al corregir frente al grupo.",
+          "Dejar pasar una falta de EPP."
+        ],
+        "registro": {
+          "hidden": true
+        }
+      },
+      {
+        "id": "reconocimiento",
+        "kind": "full",
+        "dimension": "valora",
+        "icon": "award",
+        "title": "Reconocimiento",
+        "freq": "1 vez por semana",
+        "purpose": "Hacer visible que la conducta positiva se observa y se nombra — en ambos turnos.",
+        "context": {
+          "freq": "1 vez por semana",
+          "when": "En grupo"
+        },
+        "steps": [
+          {
+            "k": "Observo",
+            "t": "conscientemente a los trabajadores de su turno que destaquen en conducta o rendimiento durante el período."
+          },
+          {
+            "k": "Anoto",
+            "t": "la conducta específica y el impacto que tuvo para el equipo o la operación."
+          },
+          {
+            "k": "Nombro",
+            "t": "en el momento oportuno frente al grupo: \"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
+          }
+        ],
+        "phrases": [
+          "\"Quiero felicitar a [nombre] porque [enseñó o apoyó al equipo]. Gracias a eso [impacto en la línea].\"",
+          "\"Si tuviera que poner un ejemplo de Cultiva en acción, sería [nombre] cuando [situación].\""
+        ],
+        "no": [
+          "Reconocimiento vago: \"buen trabajo\" o \"todos lo hicieron bien\".",
+          "Reconocer siempre a los mismos.",
+          "Hacerlo en privado cuando merece ser público (o viceversa).",
+          "Hacerlo con excesiva frecuencia — pierde sinceridad."
+        ],
+        "registro": {
+          "soporte": "Registro de reconocimiento",
+          "fields": [
+            {
+              "k": "persona",
+              "l": "Persona reconocida",
+              "t": "person"
+            },
+            {
+              "k": "turno",
+              "l": "Turno",
+              "t": "sel",
+              "o": [
+                "Día",
+                "Noche"
+              ]
+            },
+            {
+              "k": "conducta",
+              "l": "Conducta",
+              "t": "area"
+            },
+            {
+              "k": "impacto",
+              "l": "Impacto",
+              "t": "area"
+            }
+          ]
+        }
+      },
+      _byId("cierre-con-agradecimiento"),
+    ],
+  });
+})();
 
 /* índice área → perfiles (extiende el de data-cosecha.js) */
 window.PROFILES_BY_AREA.packing =
