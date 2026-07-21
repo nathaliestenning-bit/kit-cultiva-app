@@ -223,7 +223,7 @@
         // dataset sintético determinista (sin Math.random, para que no cambie al recargar)
         var AREAS = ["cosecha", "produccion", "packing", "calidad"];
         var NIVELES = { cosecha: ["N1", "N2", "N3", "N4"], produccion: ["N1", "N2", "N3", "N4"], packing: ["N1", "N2", "N3", "N4"], calidad: ["N2", "N3", "N4", "TAC"] };
-        var RITS = ["Acompañamiento 1 a 1", "Espacio de confianza", "Reconocimiento Sincero", "Caminata de Liderazgo", "Revisión de escaladas"];
+        var RITS = ["Acompañamiento 1 a 1", "Espacio de Escucha", "Reconocimiento", "Reconocimiento Sincero", "Revisión de escaladas"];
         var NOMS = ["Ana Torres", "Luis Ramos", "Marta Ríos", "Pedro Ruiz", "Sara Díaz", "Jorge León", "Elena Vega", "Raúl Pinto", "Nadia Cruz", "Iván Soto", "Rosa Melo", "Hugo Paz", "Lía Fuentes", "Omar Ríos"];
         var mult = per === "acumulado" ? 8 : (per === "mes" ? 4 : 1);
         var seed = 20260720, people = [];

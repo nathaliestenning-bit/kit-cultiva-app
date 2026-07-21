@@ -333,7 +333,9 @@ const VIDEO_BASE = "https://qytcqopoqlqogctxnbwk.supabase.co/storage/v1/object/p
 const N4_VIDEOS = {
   "Acompañamiento 1 a 1":   VIDEO_BASE + "acompanamiento-1a1.mp4",
   "Espacio de confianza":   VIDEO_BASE + "espacio-de-confianza.mp4",
+  "Espacio de Escucha":     VIDEO_BASE + "espacio-de-confianza.mp4",
   "Reconocimiento Sincero": VIDEO_BASE + "reconocimiento-sincero.mp4",
+  "Reconocimiento":         VIDEO_BASE + "reconocimiento-sincero.mp4",
 };
 // Videos exclusivos de la posición Técnico TAC, por id de ritual.
 // (el archivo subido quedó con doble extensión ".mp4.mp4"; se apunta al nombre real)

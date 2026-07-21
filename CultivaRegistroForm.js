@@ -37,7 +37,9 @@ function emptyValues(fields) {
    (todos los perfiles). Default "Sí": no escala salvo que el líder marque "No". */
 const RESUELVO_FIELD = { k: "resuelvoYo", l: "¿Lo resuelvo yo?", t: "bool", def: true };
 function isEspacioConfianza(ritual) {
-  return /espacio de confianza/i.test((ritual && ritual.title) || "");
+  // el ritual de escucha se llamó "Espacio de confianza" y ahora "Espacio de Escucha";
+  // aceptamos ambos para conservar el toggle "¿Lo resuelvo yo?" y la escalada.
+  return /espacio de (confianza|escucha)/i.test((ritual && ritual.title) || "");
 }
 
 /* devuelve {label, alerta} del tema elegido */
