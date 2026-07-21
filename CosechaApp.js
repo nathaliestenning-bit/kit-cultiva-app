@@ -872,7 +872,11 @@ function Dashboard({ onBack, userName }) {
   const esc = d.escaladas || {};
   const escSegs = [["Pendientes", esc.pendientes, "#A8631A"], ["En proceso", esc.proceso, "#4156A2"], ["Resueltas", esc.resueltas, "#18571F"], ["Vencidas", esc.vencidas, "#A81519"]];
   const escTot = escSegs.reduce((a, s) => a + (s[1] || 0), 0);
-  const rit = (d.rituales || []).slice().sort((a, b) => (b.n || 0) - (a.n || 0)).slice(0, 8);
+  // agrupar por TÍTULO: un mismo ritual tiene ids internos distintos por perfil,
+  // pero se muestra con el mismo nombre → se suman en una sola barra.
+  const ritByTitle = {};
+  (d.rituales || []).forEach((r) => { const t = RITUAL_TITLES[r.ritual] || r.ritual; ritByTitle[t] = (ritByTitle[t] || 0) + (r.n || 0); });
+  const rit = Object.keys(ritByTitle).map((t) => ({ ritual: t, n: ritByTitle[t] })).sort((a, b) => b.n - a.n).slice(0, 8);
   const maxRit = rit.reduce((m, r) => Math.max(m, r.n || 0), 0);
   const rank = (d.puntos || []).slice(0, 10);
   const fmtTs = (t) => { try { return new Date(t).toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit" }); } catch (e) { return "…"; } };
@@ -915,7 +919,7 @@ function Dashboard({ onBack, userName }) {
           ),
           h("div", { className: "dash-panel" },
             h("h3", { className: "dash-h" }, I("bar-chart-3", "ico-xs"), "Rituales más aplicados"),
-            rit.length ? rit.map((r) => h(HBar, { key: r.ritual, label: RITUAL_TITLES[r.ritual] || r.ritual, value: r.n || 0, max: maxRit || 1, color: "#C9651C" })) : h("p", { className: "dash-empty" }, "Sin datos.")),
+            rit.length ? rit.map((r) => h(HBar, { key: r.ritual, label: r.ritual, value: r.n || 0, max: maxRit || 1, color: "#C9651C" })) : h("p", { className: "dash-empty" }, "Sin datos.")),
           h("div", { className: "dash-panel" },
             h("h3", { className: "dash-h" }, I("trophy", "ico-xs"), "Ranking de puntos"),
             rank.length ? rank.map((p, i) => h("div", { key: i, className: "dash-rank" + (i < 3 ? " top" : "") },
