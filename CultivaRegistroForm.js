@@ -42,6 +42,16 @@ function isEspacioConfianza(ritual) {
   return /espacio de (confianza|escucha)/i.test((ritual && ritual.title) || "");
 }
 
+/* etiqueta del estado de una escalada que YO levanté, para mostrarle al autor
+   si su líder ya la resolvió (visibilidad "del lado del que la hizo"). */
+const ESC_ST = {
+  pendiente: { t: "Escalado · esperando a tu líder", c: "#8A5A12", ico: "clock" },
+  proceso:   { t: "Escalado · en proceso", c: "#8A5A12", ico: "loader" },
+  resuelvo:  { t: "Resuelto por tu líder", c: "#2F7A44", ico: "check-check" },
+  derivo:    { t: "Escalado · derivado", c: "#8A5A12", ico: "corner-up-right" },
+  escalo:    { t: "Escalado · subió más arriba", c: "#8A5A12", ico: "arrow-up" },
+};
+
 /* devuelve {label, alerta} del tema elegido */
 function temaInfo(val) {
   if (!val) return null;
@@ -78,6 +88,7 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
   const [escaladoIds, setEscaladoIds] = rUse({}); // ts -> true
   const [drafts, setDrafts] = rUse({});           // ts -> { campoDiferido: valor }
   const [savedFollow, setSavedFollow] = rUse({});  // ts -> true (acaba de guardar seguimiento)
+  const [escStatus, setEscStatus] = rUse({});      // registro_id -> { status } (escaladas que levanté)
 
   function seedDrafts(h) {
     const d = {};
@@ -92,7 +103,7 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
   rEff(() => {
     setVals(emptyValues(formFields));
     setTemaOtro(""); setErrs({}); setJustSent(null); setOpen(true); setSavedFollow({});
-    setHistory([]); setEscaladoIds({}); setDrafts({});
+    setHistory([]); setEscaladoIds({}); setDrafts({}); setEscStatus({});
     let alive = true;
     window.CultivaData.listRegistros(profileId, ritual.id).then((h) => {
       if (!alive) return;
@@ -101,6 +112,12 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
       setEscaladoIds(esc);
       setDrafts(seedDrafts(h));
     }).catch(() => {});
+    // estado de resolución de las escaladas que YO levanté (por registro_id)
+    if (window.CultivaData.misEscaladasPorRegistro) {
+      window.CultivaData.misEscaladasPorRegistro()
+        .then((m) => { if (alive) setEscStatus(m || {}); })
+        .catch(() => {});
+    }
     return () => { alive = false; };
   }, [storeKey]);
 
@@ -345,14 +362,18 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
       ),
       open && rh("div", { className: "hist-list" },
         history.map((e, i) => {
-          const isEsc = !!escaladoIds[e.ts] || e.escalado;
+          // estado de la escalada que YO levanté desde este registro (si existe)
+          const escInfo = e.id ? escStatus[e.id] : null;
+          const st = escInfo ? ESC_ST[escInfo.status] : null;
+          const isEsc = !!escaladoIds[e.ts] || e.escalado || !!escInfo;
           const dirty = followDirty(e);
           const filled = followFilled(e);
           const justSaved = !!savedFollow[e.ts];
           return rh("div", { key: e.ts + ":" + i, className: "hist-item" + (isEsc ? " esc" : "") },
             rh("div", { className: "hist-top" },
-              isEsc ? rh("span", { className: "hist-badge esc" }, RI("arrow-up", "ico-xs"), "Escalado a tu " + (escalateTo || "líder"))
-                    : rh("span", { className: "hist-badge" }, RI("check", "ico-xs"), "Guardado"),
+              st ? rh("span", { className: "hist-badge esc", style: { color: st.c } }, RI(st.ico, "ico-xs"), st.t)
+                 : isEsc ? rh("span", { className: "hist-badge esc" }, RI("arrow-up", "ico-xs"), "Escalado a tu " + (escalateTo || "líder"))
+                 : rh("span", { className: "hist-badge" }, RI("check", "ico-xs"), "Guardado"),
               rh("span", { className: "hist-ts" }, fmt(e.ts)),
             ),
             rh("div", { className: "hist-detail" },
