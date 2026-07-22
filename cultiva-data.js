@@ -61,6 +61,24 @@
         });
     },
 
+    /* estado de las escaladas que YO levanté, indexado por registro_id.
+       Permite mostrarle a quien levantó un tema si su líder ya lo resolvió
+       (visibilidad "del lado del que la hizo"). RLS: from_legajo = yo. */
+    misEscaladasPorRegistro: function () {
+      if (!isSb()) return Promise.resolve({});
+      return me().then(function (legajo) {
+        return client().from("escaladas")
+          .select("registro_id,status,updated_at")
+          .eq("from_legajo", legajo).then(function (q) {
+            var map = {};
+            (q.data || []).forEach(function (r) {
+              if (r.registro_id) map[r.registro_id] = { status: r.status, ts: Date.parse(r.updated_at) };
+            });
+            return map;
+          });
+      }).catch(function () { return {}; });
+    },
+
     /* guarda un registro nuevo; devuelve la entrada persistida (con id/ts). */
     saveRegistro: function (perfil, ritualId, entry) {
       if (!isSb()) {
