@@ -386,7 +386,7 @@ window.PROFILES = {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno: \"[Nombre], te agradezco por [conducta], eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno: \"[Nombre], te felicito por [conducta], eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -678,7 +678,7 @@ window.PROFILES = {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno: \"[Nombre], te agradezco por [conducta], eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno: \"[Nombre], te felicito por [conducta], eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -748,7 +748,7 @@ window.PROFILES = {
         "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "Semanal",
-        "purpose": "Desarrollar al Líder de Cosecha en terreno con observación, pregunta y acuerdo (SCI): que no se quede en comunicar, sino que verifique que lo indicado se cumpla.",
+        "purpose": "Desarrollar al Líder de Cosecha en terreno con observación, pregunta y acuerdo (modelo CIA — Comportamiento o Problema · Impacto · Acuerdo): que no se quede en comunicar, sino que verifique que lo indicado se cumpla.",
         "context": {
           "freq": "Semanal",
           "when": "15-25 min",
@@ -761,7 +761,7 @@ window.PROFILES = {
           },
           {
             "k": "Comparto",
-            "t": "con SCI: \"Observé que [conducta] cuando [situación]. Esto generó [impacto]. ¿Cómo lo ves?\""
+            "t": "con CIA: \"Observé que [comportamiento o problema]. Esto generó [impacto]. ¿Qué acuerdo tomamos para corregirlo?\""
           },
           {
             "k": "Indago",
@@ -785,7 +785,7 @@ window.PROFILES = {
           }
         ],
         "phrases": [
-          "\"Observé que [conducta] cuando [situación]. Esto generó [impacto]. ¿Cómo lo ves?\"",
+          "\"Observé que [comportamiento o problema]. Esto generó [impacto]. ¿Qué acuerdo tomamos para corregirlo?\"",
           "\"Entiendo que lo comunicaste, pero ¿te aseguraste de que se cumpliera?\"",
           "\"Este problema genera [impacto en la operación]. Te pido que lo soluciones de inmediato.\"",
           "\"¿Cómo podemos evitar que esta situación se repita?\"",
@@ -977,7 +977,7 @@ window.PROFILES = {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo: \"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno frente al grupo: \"[Nombre], te felicito por [conducta] — eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -1062,7 +1062,7 @@ window.PROFILES = {
           },
           {
             "k": "Reconozco primero",
-            "t": "nombro lo positivo con SCI: \"Vi que [conducta]. Eso está bien hecho.\""
+            "t": "nombro lo positivo: \"Vi que [comportamiento]. Eso está bien hecho.\""
           },
           {
             "k": "Ajusto el detalle",
@@ -1200,7 +1200,7 @@ window.PROFILES = {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo: \"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno frente al grupo: \"[Nombre], te felicito por [conducta] — eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [

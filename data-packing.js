@@ -358,7 +358,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno: \"[Nombre], te agradezco por [conducta], eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno: \"[Nombre], te felicito por [conducta], eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -674,7 +674,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno: \"[Nombre], te agradezco por [conducta], eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno: \"[Nombre], te felicito por [conducta], eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -737,7 +737,7 @@ Object.assign(window.PROFILES, {
         "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "2 Supervisores al mes",
-        "purpose": "Desarrollar al líder en terreno, en tiempo real, mediante observación, pregunta y acuerdo — SCI integrado.",
+        "purpose": "Desarrollar al líder en terreno, en tiempo real, mediante observación, pregunta y acuerdo — modelo CIA integrado (Comportamiento o Problema · Impacto · Acuerdo).",
         "context": {
           "freq": "2 Supervisores al mes",
           "when": "20 min",
@@ -754,7 +754,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Comparto",
-            "t": "\"Observé que [conducta] cuando [situación]. Esto generó [impacto]. ¿Cómo lo ves tú?\""
+            "t": "\"Observé que [comportamiento o problema]. Esto generó [impacto]. ¿Qué acuerdo tomamos para corregirlo?\""
           },
           {
             "k": "Escucho",
@@ -778,8 +778,8 @@ Object.assign(window.PROFILES, {
           }
         ],
         "phrases": [
-          "\"Vi que [conducta] cuando [situación]. Eso generó [impacto]. ¿Cómo lo ves tú?\"",
-          "“Lo que mejor vi este mes fue cómo manejaste [situación específica] y que generó [impacto]. Quiero que sepas que lo registré.”",
+          "\"Vi [comportamiento o problema]. Eso generó [impacto]. ¿Qué acuerdo tomamos?\"",
+          "“Lo que mejor vi este mes fue [comportamiento], que generó [impacto]. Quiero que sepas que lo registré.”",
           "\"¿Qué necesitas de mí para que esto salga mejor?\"",
           "\"Repíteme el acuerdo para asegurarnos de que quedamos igual.\"",
           "\"Antes de irme quiero reconocer que [conducta positiva]. Eso marca la diferencia.\""
@@ -990,7 +990,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo: \"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno frente al grupo: \"[Nombre], te felicito por [conducta] — eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -1238,7 +1238,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo: \"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno frente al grupo: \"[Nombre], te felicito por [conducta] — eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
@@ -1389,7 +1389,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Nombro",
-            "t": "en el momento oportuno frente al grupo: \"[Nombre], te agradezco por [conducta] — eso nos ayudó en [impacto].\""
+            "t": "en el momento oportuno frente al grupo: \"[Nombre], te felicito por [conducta] — eso nos ayudó en [impacto].\""
           }
         ],
         "phrases": [
