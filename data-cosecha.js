@@ -880,7 +880,7 @@ window.PROFILES = {
         "kind": "full",
         "dimension": "escucha",
         "icon": "ear",
-        "title": "Espacio de Escucha",
+        "title": "Espacio de confianza",
         "freq": "Semanal",
         "purpose": "Recoger inquietudes del equipo antes de que se conviertan en problemas y orientar hacia la solución correcta.",
         "context": {
@@ -1094,7 +1094,7 @@ window.PROFILES = {
         "kind": "full",
         "dimension": "escucha",
         "icon": "ear",
-        "title": "Espacio de Escucha",
+        "title": "Espacio de confianza",
         "freq": "Diario",
         "purpose": "Recoger inquietudes antes de que se conviertan en problemas — y escalar con criterio.",
         "context": {
@@ -1147,7 +1147,7 @@ window.PROFILES = {
         "registro": {
           "soporte": "Escalada vía app",
           "autoBroadcast": {
-            "temaFijo": "Espacio de Escucha",
+            "temaFijo": "Espacio de confianza",
             "detalle": "contexto"
           },
           "fields": [
