@@ -707,7 +707,7 @@ Object.assign(window.PROFILES, {
         "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "2 Supervisores por semana",
-        "purpose": "Desarrollar al líder en terreno, en tiempo real, mediante observación, pregunta y acuerdo — SCI integrado.",
+        "purpose": "Desarrollar al líder en terreno, en tiempo real, mediante observación, pregunta y acuerdo — modelo CIA integrado (Comportamiento o Problema · Impacto · Acuerdo).",
         "context": {
           "freq": "2 Supervisores por semana",
           "when": "20 min",
@@ -724,7 +724,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Comparto",
-            "t": "Observé que [conducta] cuando [situación]. Esto generó [impacto]. ¿Cómo lo ves tú?"
+            "t": "Observé que [comportamiento o problema]. Esto generó [impacto]. ¿Qué acuerdo tomamos para corregirlo?"
           },
           {
             "k": "Escucho",
@@ -748,7 +748,7 @@ Object.assign(window.PROFILES, {
           }
         ],
         "phrases": [
-          "\"Vi que [conducta u omisión] cuando [situación]. ¿Te parece si mejoramos eso?\"",
+          "\"Vi [comportamiento o problema]. ¿Qué acuerdo tomamos para mejorarlo?\"",
           "\"Sin [entregable] no podemos [impacto operativo].\"",
           "\"Cuando tengas ese inconveniente, no olvides que puedes llamarme.\"",
           "\"Antes de irme quiero reconocer que [conducta positiva]. Eso marca la diferencia.\""
