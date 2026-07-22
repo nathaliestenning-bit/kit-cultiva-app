@@ -342,6 +342,7 @@ const N4_VIDEOS = {
 const TAC_VIDEOS = {
   "reconocimiento": VIDEO_BASE + "tac-reconocimiento.mp4.mp4",
   "acercamiento-calido": VIDEO_BASE + "tac-charla-de-impulso.mp4",  // ritual "Charla de Impulso"
+  "escucho-para-ayudar": VIDEO_BASE + "tac-dialogo-con-evidencia.mp4",  // ritual "Diálogo con Evidencia"
 };
 // URL del video que corresponde a este perfil+ritual (o null si no hay).
 function videoDeRitual(profile, ritual) {
