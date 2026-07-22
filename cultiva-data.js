@@ -46,11 +46,16 @@
     mode: function () { return isSb() ? "supabase" : "demo"; },
     me: me,
 
-    /* historial de un ritual (más reciente primero). */
+    /* historial de un ritual (más reciente primero).
+       Se filtra SOLO por ritual_id: la RLS ya acota a los registros del
+       propio usuario (legajo = current_legajo()). NO se filtra por `perfil`
+       a propósito — si el perfil del usuario en el padrón cambió después de
+       registrar (p. ej. pack-n4 → pack-n4-cl), filtrar por perfil ocultaría
+       sus registros anteriores aunque son suyos. */
     listRegistros: function (perfil, ritualId) {
       if (!isSb()) return Promise.resolve(rRead(perfil, ritualId));
       return client().from("registros").select("*")
-        .eq("perfil", perfil).eq("ritual_id", ritualId)
+        .eq("ritual_id", ritualId)
         .order("created_at", { ascending: false }).then(function (q) {
           return (q.data || []).map(rowToEntry);
         });
