@@ -341,6 +341,7 @@ const N4_VIDEOS = {
 // (el archivo subido quedó con doble extensión ".mp4.mp4"; se apunta al nombre real)
 const TAC_VIDEOS = {
   "reconocimiento": VIDEO_BASE + "tac-reconocimiento.mp4.mp4",
+  "acercamiento-calido": VIDEO_BASE + "tac-charla-de-impulso.mp4",  // ritual "Charla de Impulso"
 };
 // URL del video que corresponde a este perfil+ritual (o null si no hay).
 function videoDeRitual(profile, ritual) {
