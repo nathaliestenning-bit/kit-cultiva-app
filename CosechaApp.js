@@ -971,6 +971,7 @@ function CosechaApp() {
     if (!window.CultivaAuth) return;
     window.CultivaAuth.restore().then((p) => {
       if (p && p.user && p.user.es_admin) {
+        setAdminMode(true);
         setUser(p.user); setProfileId(null); setAccessMode("user"); setView("dashboard");
       } else if (p && p.user && window.PROFILES[p.user.perfil]) {
         setUser(p.user); setProfileId(p.user.perfil); setAccessMode("user"); setView("gallery");
@@ -981,8 +982,10 @@ function CosechaApp() {
   const profile = profileId ? window.PROFILES[profileId] : null;
   const ritual = profile && activeId ? profile.rituals.find((r) => r.id === activeId) : null;
 
+  function setAdminMode(v) { if (window.CultivaData && window.CultivaData.setAdmin) window.CultivaData.setAdmin(!!v); }
   function logout() {
     if (window.CultivaAuth) window.CultivaAuth.signOut().catch(() => {});
+    setAdminMode(false);
     setUser(null); setProfileId(null); setActiveId(null); setAccessMode(null); setView("login");
   }
   function galleryBack() {
@@ -992,7 +995,7 @@ function CosechaApp() {
 
   return h("div", { className: "app", ref: scrollRef },
     view === "login" ? h(window.LoginScreen, {
-      onLogin: (u) => { setUser(u); setProfileId(u.perfil); setAccessMode("user"); setView(u.es_admin ? "dashboard" : "gallery"); },
+      onLogin: (u) => { setAdminMode(!!u.es_admin); setUser(u); setProfileId(u.perfil); setAccessMode("user"); setView(u.es_admin ? "dashboard" : "gallery"); },
       onReview: () => { setUser(null); setProfileId(null); setAccessMode("review"); setView("start"); },
       onMaestro: () => { setUser(null); setProfileId(null); setAccessMode("maestro"); setView("maestro"); },
     }) : null,

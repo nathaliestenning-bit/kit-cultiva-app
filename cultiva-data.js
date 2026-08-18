@@ -26,6 +26,12 @@
     });
   }
 
+  /* Modo admin: cuando quien está conectado es administrador, todo registro
+     que haga (mientras navega los rituales) queda señalado con _admin:true.
+     El legajo ya lo pega la base de datos (default current_legajo()). */
+  var _adminMode = false;
+  function markVals(v) { v = v || {}; return _adminMode ? Object.assign({}, v, { _admin: true }) : v; }
+
   // ---------------- DEMO (localStorage) ----------------
   function dKey(pid) { return "cultiva3:escbox:" + pid; }
   function dRead(pid) { try { var r = localStorage.getItem(dKey(pid)); return r ? JSON.parse(r) : {}; } catch (e) { return {}; } }
@@ -81,14 +87,15 @@
 
     /* guarda un registro nuevo; devuelve la entrada persistida (con id/ts). */
     saveRegistro: function (perfil, ritualId, entry) {
+      var e = Object.assign({}, entry, { vals: markVals(entry.vals) });
       if (!isSb()) {
-        var arr = [entry].concat(rRead(perfil, ritualId)).slice(0, 30);
-        rWrite(perfil, ritualId, arr); return Promise.resolve(entry);
+        var arr = [e].concat(rRead(perfil, ritualId)).slice(0, 30);
+        rWrite(perfil, ritualId, arr); return Promise.resolve(e);
       }
       return client().from("registros")
-        .insert({ perfil: perfil, ritual_id: ritualId, vals: entry.vals, escalado: false })
+        .insert({ perfil: perfil, ritual_id: ritualId, vals: e.vals, escalado: false })
         .select().single().then(function (q) {
-          return q.data ? rowToEntry(q.data) : entry;
+          return q.data ? rowToEntry(q.data) : e;
         });
     },
 
@@ -154,14 +161,14 @@
       if (!isSb()) {
         var arr = rRead(perfil, ritualId);
         if (!arr.some(function (e) { return e.ts >= dayStart; })) {
-          rWrite(perfil, ritualId, [{ ts: Date.now(), hecho: true, vals: {} }].concat(arr).slice(0, 60));
+          rWrite(perfil, ritualId, [{ ts: Date.now(), hecho: true, vals: markVals({}) }].concat(arr).slice(0, 60));
         }
         return Promise.resolve();
       }
       return client().from("registros").select("id").eq("perfil", perfil).eq("ritual_id", ritualId)
         .gte("created_at", new Date(dayStart).toISOString()).limit(1).then(function (q) {
           if (q.data && q.data.length) return;
-          return client().from("registros").insert({ perfil: perfil, ritual_id: ritualId, vals: { _hecho: true }, escalado: false }).then(function () {});
+          return client().from("registros").insert({ perfil: perfil, ritual_id: ritualId, vals: markVals({ _hecho: true }), escalado: false }).then(function () {});
         });
     },
 
@@ -399,6 +406,9 @@
         .then(function (r) { if (r.error) throw r.error; return r.data; });
     },
   };
+
+  /* el app llama a esto tras login/restore: true si el usuario es admin */
+  Data.setAdmin = function (v) { _adminMode = !!v; };
 
   window.CultivaData = Data;
 })();
