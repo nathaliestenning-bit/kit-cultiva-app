@@ -15,7 +15,7 @@ Object.assign(window.PROFILES, {
     "id": "cal-n1",
     "area": "calidad",
     "level": "N1",
-    "role": "Gerente de Calidad",
+    "role": "Sub-gerente de Calidad",
     "sub": "Garante del sistema",
     "context": "1 persona en el piloto. Garante del sistema. Modela Cultiva hacia el Jefe y destraba temas estructurales. Si no lo hace visiblemente, los niveles abajo no lo van a hacer.",
     "rituals": [
@@ -133,7 +133,7 @@ Object.assign(window.PROFILES, {
         "context": {
           "freq": "1 visita a campo y planta trimestralmente",
           "when": "En el lote o en la línea, nunca en oficina",
-          "place": "Gerente/Sub Gerente + Supervisor de Fundo/Líder de Cosecha/Operarios"
+          "place": "Sub-gerente de Calidad + Jefe de Calidad / Coordinador de Calidad / Supervisor de Calidad / Técnico TAC"
         },
         "steps": [
           {
