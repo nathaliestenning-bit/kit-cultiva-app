@@ -849,7 +849,7 @@ function Chips({ opts, value, onPick }) {
   );
 }
 
-function Dashboard({ onBack, userName }) {
+function Dashboard({ onBack, userName, onExplore }) {
   const D = window.CultivaData;
   const [data, setData] = useState(null);
   const [ts, setTs] = useState(null);
@@ -892,7 +892,11 @@ function Dashboard({ onBack, userName }) {
       h("div", { className: "topbar-id" },
         h("span", { className: "topbar-role" }, "Dashboard · Piloto Cultiva"),
         h("span", { className: "topbar-area" }, I("layout-dashboard", "ico-xs"), userName || "Vista de gerencia")),
-      h("button", { className: "icon-btn", type: "button", onClick: load, "aria-label": "Actualizar", style: { marginLeft: "auto" } }, I("refresh-cw")),
+      onExplore ? h("button", {
+        type: "button", onClick: onExplore, "aria-label": "Ver rituales",
+        style: { marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: "6px", padding: "7px 13px", borderRadius: "999px", border: "none", background: "#18571F", color: "#fff", fontWeight: 700, fontSize: "13px", cursor: "pointer", whiteSpace: "nowrap" },
+      }, I("layout-grid", "ico-sm"), "Ver rituales") : null,
+      h("button", { className: "icon-btn", type: "button", onClick: load, "aria-label": "Actualizar", style: onExplore ? null : { marginLeft: "auto" } }, I("refresh-cw")),
     ),
     h("div", { className: "dash-scroll" },
       // ---- filtros ----
@@ -957,6 +961,7 @@ function CosechaApp() {
   const [activeId, setActiveId] = useState(null);
   const [maestroColab, setMaestroColab] = useState(null);
   const [exploreMaestro, setExploreMaestro] = useState(false);
+  const [exploreAdmin, setExploreAdmin] = useState(false);
   const scrollRef = useRef(null);
 
   useEffect(() => { if (scrollRef.current) scrollRef.current.scrollTop = 0; }, [view, activeId]);
@@ -1001,12 +1006,14 @@ function CosechaApp() {
     }) : null,
     view === "dashboard" ? h(Dashboard, {
       onBack: logout, userName: accessMode === "user" && user ? user.nombre : null,
+      onExplore: () => { setExploreAdmin(true); setAccessMode("review"); setProfileId(null); setView("start"); },
     }) : null,
     view === "start" ? h(Start, {
       onEnter: (pid) => { setProfileId(pid); setView("gallery"); },
-      backLabel: exploreMaestro ? "Volver" : undefined,
+      backLabel: (exploreMaestro || exploreAdmin) ? "Volver" : undefined,
       onBackToLogin: () => {
         if (exploreMaestro) { setExploreMaestro(false); setAccessMode("maestro"); setProfileId(null); setView("maestro"); }
+        else if (exploreAdmin) { setExploreAdmin(false); setAccessMode("user"); setProfileId(null); setView("dashboard"); }
         else { setProfileId(null); setView("login"); }
       },
     }) : null,
