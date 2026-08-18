@@ -918,7 +918,7 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "valora",
         "icon": "award",
-        "title": "Reconocimiento",
+        "title": "Reconocimiento Sincero",
         "freq": "1 vez por semana",
         "purpose": "Hacer visible que la conducta positiva se observa y se nombra de manera oportuna.",
         "context": {
@@ -1143,7 +1143,7 @@ Object.assign(window.PROFILES, {
         "kind": "full",
         "dimension": "valora",
         "icon": "award",
-        "title": "Reconocimiento",
+        "title": "Reconocimiento Sincero",
         "freq": "1 vez por semana",
         "purpose": "Hacer visible que la conducta positiva se observa y se nombra de manera oportuna.",
         "context": {
