@@ -26,7 +26,7 @@ Object.assign(window.PROFILES, {
         "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "1 vez al mes",
-        "purpose": "\"Desarrollar al nivel de abajo mediante observación, pregunta y acuerdo concreto — SCI integrado.",
+        "purpose": "Desarrollar al nivel de abajo mediante observación, pregunta y acuerdo concreto — modelo CIA integrado (Comportamiento o Problema · Impacto · Acuerdo).",
         "context": {
           "freq": "1 vez al mes",
           "when": "30-45 min",
@@ -43,7 +43,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Comparto",
-            "t": "\"Observé que [conducta] cuando [situación]. Esto generó [impacto]. ¿Cómo lo ves tú?\""
+            "t": "\"Observé que [comportamiento o problema]. Esto generó [impacto]. ¿Qué acuerdo tomamos para corregirlo?\""
           },
           {
             "k": "Escucho",
@@ -67,8 +67,8 @@ Object.assign(window.PROFILES, {
           }
         ],
         "phrases": [
-          "\"Vi que [conducta] cuando [situación]. Eso generó [impacto]. ¿Cómo lo ves tú?\"",
-          "“Lo que mejor vi este mes fue cómo manejaste [situación específica] y que generó [impacto]. Quiero que sepas que lo registré.”",
+          "\"Vi [comportamiento o problema]. Eso generó [impacto]. ¿Qué acuerdo tomamos?\"",
+          "“Lo que mejor vi este mes fue [comportamiento], que generó [impacto]. Quiero que sepas que lo registré.”",
           "\"No vine a corregirte, vine a alinearnos. ¿Qué necesitas de mí?\"",
           "\"¿Qué crees que pasó? ¿Qué cambiarías tú?\"",
           "\"Repíteme el acuerdo para asegurarnos de que quedamos igual.\"",
@@ -395,7 +395,7 @@ Object.assign(window.PROFILES, {
         "icon": "message-square-quote",
         "title": "Acompañamiento 1 a 1",
         "freq": "1 vez al mes",
-        "purpose": "Desarrollar al nivel de abajo mediante observación, pregunta y acuerdo concreto — SCI integrado.",
+        "purpose": "Desarrollar al nivel de abajo mediante observación, pregunta y acuerdo concreto — modelo CIA integrado (Comportamiento o Problema · Impacto · Acuerdo).",
         "context": {
           "freq": "1 vez al mes",
           "when": "30 min",
@@ -412,7 +412,7 @@ Object.assign(window.PROFILES, {
           },
           {
             "k": "Comparto",
-            "t": "\"Observé que [conducta] cuando [situación]. Esto generó [impacto]. ¿Cómo lo ves tú?\""
+            "t": "\"Observé que [comportamiento o problema]. Esto generó [impacto]. ¿Qué acuerdo tomamos para corregirlo?\""
           },
           {
             "k": "Escucho",
@@ -436,8 +436,8 @@ Object.assign(window.PROFILES, {
           }
         ],
         "phrases": [
-          "\"Vi que [conducta] cuando [situación]. Eso generó [impacto]. ¿Cómo lo ves tú?\"",
-          "“Lo que mejor vi este mes fue cómo manejaste [situación específica] y que generó [impacto]. Quiero que sepas que lo registré.”",
+          "\"Vi [comportamiento o problema]. Eso generó [impacto]. ¿Qué acuerdo tomamos?\"",
+          "“Lo que mejor vi este mes fue [comportamiento], que generó [impacto]. Quiero que sepas que lo registré.”",
           "\"No vine a corregirte, vine a alinearnos. ¿Qué necesitas de mí?\"",
           "\"¿Qué crees que pasó? ¿Qué cambiarías tú?\"",
           "\"Repíteme el acuerdo para asegurarnos de que quedamos igual.\"",
