@@ -404,18 +404,8 @@ window.PROFILES = {
           "fields": [
             {
               "k": "persona",
-              "l": "Persona reconocida",
+              "l": "Nombre de la persona a reconocer",
               "t": "person"
-            },
-            {
-              "k": "conducta",
-              "l": "Conducta",
-              "t": "area"
-            },
-            {
-              "k": "impacto",
-              "l": "Impacto",
-              "t": "area"
             }
           ]
         },
@@ -696,18 +686,8 @@ window.PROFILES = {
           "fields": [
             {
               "k": "persona",
-              "l": "Persona reconocida",
+              "l": "Nombre de la persona a reconocer",
               "t": "person"
-            },
-            {
-              "k": "conducta",
-              "l": "Conducta",
-              "t": "area"
-            },
-            {
-              "k": "impacto",
-              "l": "Impacto",
-              "t": "area"
             }
           ]
         },
@@ -995,18 +975,8 @@ window.PROFILES = {
           "fields": [
             {
               "k": "persona",
-              "l": "Líder reconocido",
+              "l": "Nombre de la persona a reconocer",
               "t": "person"
-            },
-            {
-              "k": "conducta",
-              "l": "Conducta",
-              "t": "area"
-            },
-            {
-              "k": "impacto",
-              "l": "Impacto",
-              "t": "area"
             }
           ]
         }
@@ -1218,18 +1188,8 @@ window.PROFILES = {
           "fields": [
             {
               "k": "persona",
-              "l": "Trabajador reconocido",
+              "l": "Nombre de la persona a reconocer",
               "t": "person"
-            },
-            {
-              "k": "conducta",
-              "l": "Conducta",
-              "t": "area"
-            },
-            {
-              "k": "impacto",
-              "l": "Impacto",
-              "t": "area"
             }
           ]
         }

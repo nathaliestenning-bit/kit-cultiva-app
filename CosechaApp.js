@@ -422,6 +422,9 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
   }
 
   const isEscucha = ritual.registro && ritual.registro.escuchaTemas;
+  // Solo Reconocimiento (dimensión "valora") mantiene registro. En el resto de
+  // rituales se desactivó toda opción de registro (formulario y "Marcar como…").
+  const esReco = ritual.dimension === "valora";
   // autoBroadcast: la subida a la cadena es automática al guardar → sin botón "Escalar" manual
   const canEscalate = ritual.registro && (ritual.registro.escuchaTemas || ritual.registro.escalates) && !ritual.registro.autoBroadcast;
   // video del ritual (N4 por título; TAC solo en rituales mapeados) — se ubica bajo el "Paso a paso"
@@ -447,7 +450,7 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
               I("quote", "reminder-q"),
               h("p", null, ritual.reminder),
             ),
-            doneBlock("Marcar como hecho hoy"),
+            esReco ? doneBlock("Marcar como hecho hoy") : null,
             // rituales light no tienen "Paso a paso": el video va al final
             videoUrl ? h(RitualVideo, { url: videoUrl }) : null,
           )
@@ -492,7 +495,7 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
               : (ritual.no ? h(Accordion, { icon: "x-circle", title: "Qué NO hacer", color: "#A81519" },
                   h("ul", { className: "no-list" }, ritual.no.map((x, i) => h("li", { key: i }, x)))) : null),
 
-            (ritual.registro && !ritual.registro.hidden) ? h(Accordion, { icon: "square-pen", title: "Registrar", color: "#4156A2", defaultOpen: true },
+            (esReco && ritual.registro && !ritual.registro.hidden) ? h(Accordion, { icon: "square-pen", title: "Registrar", color: "#4156A2", defaultOpen: true },
               h(window.CultivaRegistroForm, {
                 ritual: ritual, profileId: profile.id,
                 escalateTo: canEscalate ? ESCALATE_TO[profile.id] : null,
@@ -501,7 +504,7 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
             // rituales "full" SIN formulario de registro: botón para marcar "se realizó".
             // Excepción: los de escaladas NO lo llevan — sus puntos se ganan al
             // gestionar los temas en la bandeja (ver EscaladasInbox).
-            (ritual.kind !== "escaladas" && (!ritual.registro || ritual.registro.hidden)) ? doneBlock("Marcar como realizado") : null,
+            (esReco && ritual.kind !== "escaladas" && (!ritual.registro || ritual.registro.hidden)) ? doneBlock("Marcar como realizado") : null,
           ),
     ),
   );

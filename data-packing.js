@@ -376,27 +376,8 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Persona reconocida",
+              "l": "Nombre de la persona a reconocer",
               "t": "person"
-            },
-            {
-              "k": "turno",
-              "l": "Turno",
-              "t": "sel",
-              "o": [
-                "Día",
-                "Noche"
-              ]
-            },
-            {
-              "k": "conducta",
-              "l": "Conducta",
-              "t": "area"
-            },
-            {
-              "k": "impacto",
-              "l": "Impacto",
-              "t": "area"
             }
           ]
         },
@@ -692,27 +673,8 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Persona reconocida",
+              "l": "Nombre de la persona a reconocer",
               "t": "person"
-            },
-            {
-              "k": "turno",
-              "l": "Turno",
-              "t": "sel",
-              "o": [
-                "Día",
-                "Noche"
-              ]
-            },
-            {
-              "k": "conducta",
-              "l": "Conducta",
-              "t": "area"
-            },
-            {
-              "k": "impacto",
-              "l": "Impacto",
-              "t": "area"
             }
           ]
         },
@@ -1008,27 +970,8 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Persona reconocida",
+              "l": "Nombre de la persona a reconocer",
               "t": "person"
-            },
-            {
-              "k": "turno",
-              "l": "Turno",
-              "t": "sel",
-              "o": [
-                "Día",
-                "Noche"
-              ]
-            },
-            {
-              "k": "conducta",
-              "l": "Conducta",
-              "t": "area"
-            },
-            {
-              "k": "impacto",
-              "l": "Impacto",
-              "t": "area"
             }
           ]
         }
@@ -1256,27 +1199,8 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Persona reconocida",
+              "l": "Nombre de la persona a reconocer",
               "t": "person"
-            },
-            {
-              "k": "turno",
-              "l": "Turno",
-              "t": "sel",
-              "o": [
-                "Día",
-                "Noche"
-              ]
-            },
-            {
-              "k": "conducta",
-              "l": "Conducta",
-              "t": "area"
-            },
-            {
-              "k": "impacto",
-              "l": "Impacto",
-              "t": "area"
             }
           ]
         }
@@ -1407,27 +1331,8 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Persona reconocida",
+              "l": "Nombre de la persona a reconocer",
               "t": "person"
-            },
-            {
-              "k": "turno",
-              "l": "Turno",
-              "t": "sel",
-              "o": [
-                "Día",
-                "Noche"
-              ]
-            },
-            {
-              "k": "conducta",
-              "l": "Conducta",
-              "t": "area"
-            },
-            {
-              "k": "impacto",
-              "l": "Impacto",
-              "t": "area"
             }
           ]
         }
