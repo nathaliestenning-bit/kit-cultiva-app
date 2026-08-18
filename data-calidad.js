@@ -352,18 +352,8 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Persona reconocida",
+              "l": "Nombre de la persona a reconocer",
               "t": "person"
-            },
-            {
-              "k": "conducta",
-              "l": "Conducta",
-              "t": "area"
-            },
-            {
-              "k": "impacto",
-              "l": "Impacto",
-              "t": "area"
             }
           ]
         }
@@ -617,18 +607,8 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Persona reconocida",
+              "l": "Nombre de la persona a reconocer",
               "t": "person"
-            },
-            {
-              "k": "conducta",
-              "l": "Conducta",
-              "t": "area"
-            },
-            {
-              "k": "impacto",
-              "l": "Impacto",
-              "t": "area"
             }
           ]
         },
@@ -899,18 +879,8 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Supervisor reconocido",
+              "l": "Nombre de la persona a reconocer",
               "t": "person"
-            },
-            {
-              "k": "conducta",
-              "l": "Conducta",
-              "t": "area"
-            },
-            {
-              "k": "impacto",
-              "l": "Impacto",
-              "t": "area"
             }
           ]
         }
@@ -1193,18 +1163,8 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "TAC reconocido",
+              "l": "Nombre de la persona a reconocer",
               "t": "person"
-            },
-            {
-              "k": "conducta",
-              "l": "Conducta en relación con operaciones",
-              "t": "area"
-            },
-            {
-              "k": "impacto",
-              "l": "Impacto",
-              "t": "area"
             }
           ]
         }
@@ -1406,18 +1366,8 @@ Object.assign(window.PROFILES, {
           "fields": [
             {
               "k": "persona",
-              "l": "Trabajador",
+              "l": "Nombre de la persona a reconocer",
               "t": "person"
-            },
-            {
-              "k": "conducta",
-              "l": "Conducta observable",
-              "t": "area"
-            },
-            {
-              "k": "flag",
-              "l": "Colilla entregada",
-              "t": "bool"
             }
           ]
         }
