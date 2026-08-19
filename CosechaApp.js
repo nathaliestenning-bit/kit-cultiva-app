@@ -202,7 +202,7 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
   const cierre = R.filter((r) => r.kind === "light" && !/saludo|inicio/i.test(r.id + " " + r.freq));
   const escaladas = R.filter((r) => r.kind === "escaladas");
   const groups = window.DIM_ORDER
-    .map((d) => ({ dim: d, def: window.DIMS[d], items: R.filter((r) => r.dimension === d && (r.kind === "full" || r.kind === "escaladas")) }))
+    .map((d) => ({ dim: d, def: window.DIMS[d], items: R.filter((r) => r.dimension === d && r.kind === "full") }))
     .filter((g) => g.items.length);
   const escCount = (window.ESCALADAS_DEMO[profile.id] || []).length;
   const ritualsById = {}; R.forEach((r) => { ritualsById[r.id] = r; });
@@ -749,7 +749,7 @@ function MaestroColab({ legajo, onBack }) {
   const byRitual = {}; data.registros.forEach((r) => { (byRitual[r.ritual_id] = byRitual[r.ritual_id] || []).push(r); });
   const rituals = prof ? prof.rituals : [];
   const groups = window.DIM_ORDER
-    .map((d) => ({ dim: d, def: window.DIMS[d], items: rituals.filter((r) => r.dimension === d && (r.kind === "full" || r.kind === "escaladas")) }))
+    .map((d) => ({ dim: d, def: window.DIMS[d], items: rituals.filter((r) => r.dimension === d && r.kind === "full") }))
     .filter((g) => g.items.length);
   const conReg = rituals.map((r) => ({ r: r, regs: (byRitual[r.id] || []).filter((x) => x.vals && Object.keys(x.vals).length), total: (byRitual[r.id] || []).length })).filter((x) => x.total > 0);
   const totalReg = data.registros.length;
