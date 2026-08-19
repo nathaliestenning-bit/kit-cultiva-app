@@ -200,9 +200,10 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
   const R = profile.rituals;
   const inicio = R.filter((r) => r.kind === "light" && /saludo|inicio/i.test(r.id + " " + r.freq));
   const cierre = R.filter((r) => r.kind === "light" && !/saludo|inicio/i.test(r.id + " " + r.freq));
-  const escaladas = R.filter((r) => r.kind === "escaladas");
+  // Rituales antiguos/desactivados: hoy el de escaladas; a futuro, cualquiera con r.archivado.
+  const antiguos = R.filter((r) => r.kind === "escaladas" || r.archivado);
   const groups = window.DIM_ORDER
-    .map((d) => ({ dim: d, def: window.DIMS[d], items: R.filter((r) => r.dimension === d && r.kind === "full") }))
+    .map((d) => ({ dim: d, def: window.DIMS[d], items: R.filter((r) => r.dimension === d && r.kind === "full" && !r.archivado) }))
     .filter((g) => g.items.length);
   const escCount = (window.ESCALADAS_DEMO[profile.id] || []).length;
   const ritualsById = {}; R.forEach((r) => { ritualsById[r.id] = r; });
@@ -286,6 +287,31 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
 
     cierre.length ? h(DimHeader, { key: "ch", dim: cierre[0].dimension }) : null,
     cierre.map((r) => h(DayStrip, { key: r.id, ritual: r, foot: true })),
+
+    // Rituales antiguos (desactivados): archivados y consultables, atenuados.
+    antiguos.length ? h("section", { key: "antiguos", className: "dim-group" },
+      h("div", { className: "dim-head", style: { "--dc": "#9a8c7a" } },
+        h("span", { className: "dim-dot" }),
+        h("span", { className: "dim-label" }, "Rituales antiguos"),
+      ),
+      h("div", { className: "thumb-grid" },
+        antiguos.map((r) => {
+          const isEsc = r.kind === "escaladas";
+          return h("button", {
+            key: r.id, type: "button", className: "thumb" + (isEsc ? " thumb-esc" : ""),
+            style: { "--dc": "#9a8c7a", opacity: 0.7 },
+            onClick: () => onOpen(r.id),
+          },
+            h("span", { className: "thumb-top" },
+              h("span", { className: "thumb-ico" }, I(r.icon)),
+              isEsc ? h("span", { className: "esc-badge" + (escCount === 0 ? " zero" : ""), style: { marginLeft: "auto" } }, escCount, " ", I("inbox", "ico-xs")) : null,
+            ),
+            h("span", { className: "thumb-name" }, r.title),
+            h("span", { className: "thumb-freq" }, I("archive", "ico-xs"), "Desactivado"),
+          );
+        }),
+      ),
+    ) : null,
   );
 }
 
@@ -915,8 +941,8 @@ function Dashboard({ onBack, userName, onExplore }) {
         h("div", { className: "dash-kpis" },
           h(Kpi, { icon: "activity", label: "Rituales aplicados (" + perLbl + ")", value: (d.total_registros != null ? d.total_registros : "—"), color: "#C9651C" }),
           h(Kpi, { icon: "users", label: "Participación", value: pctGlobal + "%", sub: totAct + " de " + totLid + " líderes activos", color: "#2F6E7A" }),
-          h(Kpi, { icon: "inbox", label: "Escaladas pendientes", value: (esc.pendientes != null ? esc.pendientes : "—"), sub: (esc.total || 0) + " en total", color: "#A8631A" }),
-          h(Kpi, { icon: "alert-triangle", label: "Vencidas (SLA 48h)", value: (esc.vencidas != null ? esc.vencidas : "—"), color: (esc.vencidas > 0 ? "#A81519" : "#18571F") }),
+          h(Kpi, { icon: "inbox", label: "Escaladas pendientes", value: (esc.pendientes != null ? esc.pendientes : "—"), sub: (esc.total || 0) + " en total · histórico", color: "#A8631A" }),
+          h(Kpi, { icon: "alert-triangle", label: "Vencidas (SLA 48h)", value: (esc.vencidas != null ? esc.vencidas : "—"), sub: "histórico", color: (esc.vencidas > 0 ? "#A81519" : "#18571F") }),
         ),
         // ---- gráficos ----
         h("div", { className: "dash-grid" },
@@ -939,8 +965,9 @@ function Dashboard({ onBack, userName, onExplore }) {
                 h("div", { className: "dash-rank-name" }, p.nombre),
                 h("div", { className: "dash-rank-sub" }, (DASH_AREA[p.area] || p.area) + (p.nivel ? " · " + p.nivel : ""))),
               h("b", { className: "dash-rank-pts" }, p.puntos, h("span", null, " pts")))) : h("p", { className: "dash-empty" }, "Sin datos.")),
-          h("div", { className: "dash-panel" },
-            h("h3", { className: "dash-h" }, I("git-branch", "ico-xs"), "Escaladas"),
+          h("div", { className: "dash-panel", style: { opacity: 0.82 } },
+            h("h3", { className: "dash-h" }, I("archive", "ico-xs"), "Escaladas (histórico)"),
+            h("div", { style: { fontSize: "11.5px", color: "#8a7a68", margin: "-2px 0 8px" } }, "Ritual desactivado · datos del piloto"),
             escTot > 0 ? h("div", { className: "esc-stack" }, escSegs.filter((s) => s[1] > 0).map((s) =>
               h("span", { key: s[0], className: "esc-seg", title: s[0] + ": " + s[1], style: { flex: s[1], background: s[2] } }))) : null,
             h("div", { className: "esc-legend" }, escSegs.map((s) =>
