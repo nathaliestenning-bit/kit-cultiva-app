@@ -200,31 +200,15 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
   const R = profile.rituals;
   const inicio = R.filter((r) => r.kind === "light" && /saludo|inicio/i.test(r.id + " " + r.freq));
   const cierre = R.filter((r) => r.kind === "light" && !/saludo|inicio/i.test(r.id + " " + r.freq));
-  // Rituales antiguos/desactivados: hoy el de escaladas; a futuro, cualquiera con r.archivado.
-  const antiguos = R.filter((r) => r.kind === "escaladas" || r.archivado);
-  const groups = window.DIM_ORDER
-    .map((d) => ({ dim: d, def: window.DIMS[d], items: R.filter((r) => r.dimension === d && r.kind === "full" && !r.archivado) }))
-    .filter((g) => g.items.length);
-  const escCount = (window.ESCALADAS_DEMO[profile.id] || []).length;
   const ritualsById = {}; R.forEach((r) => { ritualsById[r.id] = r; });
-
-  // puntos de la semana (tope 100)
-  const [pts, setPts] = useState(null);
-  useEffect(() => {
-    let alive = true; const D = window.CultivaData;
-    if (D && D.listRegistrosPerfil) {
-      D.listRegistrosPerfil(profile.id)
-        .then((regs) => { if (alive) setPts(D.puntosDe(regs, D.weekStartTs())); })
-        .catch(() => { if (alive) setPts(0); });
-    }
-    return () => { alive = false; };
-  }, [profile.id]);
-
-  const [ptsOpen, setPtsOpen] = useState(false);   // panel de puntos (desde el chip)
 
   // seguimientos de hoy (fecha propia + escaladas por vencer)
   const [segs, setSegs] = useState(null);
   const [segsOpen, setSegsOpen] = useState(false);
+  // Ritual de escaladas DESACTIVADO: no se muestra a los colaboradores. Excepción:
+  // a N1/N2/N3 se les sigue mostrando mientras su bandeja recibida tenga temas SIN
+  // resolver; cuando llega a 0, también desaparece. (No se elimina, solo se oculta.)
+  const [inboxOpen, setInboxOpen] = useState(null);
   useEffect(() => {
     let alive = true; const D = window.CultivaData;
     if (D && D.seguimientosHoy) {
@@ -233,6 +217,21 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
     }
     return () => { alive = false; };
   }, [profile.id]);
+  useEffect(() => {
+    let alive = true; const D = window.CultivaData;
+    if (D && D.listInbox) {
+      D.listInbox(profile.id)
+        .then((list) => { if (alive) setInboxOpen((list || []).filter((x) => (x.state && x.state.status) !== "resuelvo").length); })
+        .catch(() => { if (alive) setInboxOpen(0); });
+    } else if (alive) { setInboxOpen(0); }
+    return () => { alive = false; };
+  }, [profile.id]);
+
+  const escCount = inboxOpen || 0;
+  const mostrarEsc = escCount > 0;   // el ritual de escaladas solo aparece si la bandeja > 0
+  const groups = window.DIM_ORDER
+    .map((d) => ({ dim: d, def: window.DIMS[d], items: R.filter((r) => r.dimension === d && (r.kind === "full" || (r.kind === "escaladas" && mostrarEsc))) }))
+    .filter((g) => g.items.length);
 
   return h("div", { className: "screen gallery" },
     h("div", { className: "topbar" },
@@ -240,11 +239,7 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
       h("div", { className: "topbar-id" },
         h("span", { className: "topbar-role topbar-role-sm" }, profile.role),
       ),
-      h("button", { className: "topbar-pts", type: "button", onClick: () => setPtsOpen(true), "aria-label": "Ver tus puntos" },
-        I("star", "ico-xs"), h("b", null, (pts == null ? "…" : pts) + "/100")),
     ),
-
-    ptsOpen ? h(PuntosModal, { pts: pts, level: profile.level, onEquipo: onEquipo, onClose: () => setPtsOpen(false) }) : null,
 
     h(SeguimientosBanner, {
       segs: segs, open: segsOpen, onToggle: () => setSegsOpen(!segsOpen),
@@ -287,31 +282,6 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
 
     cierre.length ? h(DimHeader, { key: "ch", dim: cierre[0].dimension }) : null,
     cierre.map((r) => h(DayStrip, { key: r.id, ritual: r, foot: true })),
-
-    // Rituales antiguos (desactivados): archivados y consultables, atenuados.
-    antiguos.length ? h("section", { key: "antiguos", className: "dim-group" },
-      h("div", { className: "dim-head", style: { "--dc": "#9a8c7a" } },
-        h("span", { className: "dim-dot" }),
-        h("span", { className: "dim-label" }, "Rituales antiguos"),
-      ),
-      h("div", { className: "thumb-grid" },
-        antiguos.map((r) => {
-          const isEsc = r.kind === "escaladas";
-          return h("button", {
-            key: r.id, type: "button", className: "thumb" + (isEsc ? " thumb-esc" : ""),
-            style: { "--dc": "#9a8c7a", opacity: 0.7 },
-            onClick: () => onOpen(r.id),
-          },
-            h("span", { className: "thumb-top" },
-              h("span", { className: "thumb-ico" }, I(r.icon)),
-              isEsc ? h("span", { className: "esc-badge" + (escCount === 0 ? " zero" : ""), style: { marginLeft: "auto" } }, escCount, " ", I("inbox", "ico-xs")) : null,
-            ),
-            h("span", { className: "thumb-name" }, r.title),
-            h("span", { className: "thumb-freq" }, I("archive", "ico-xs"), "Desactivado"),
-          );
-        }),
-      ),
-    ) : null,
   );
 }
 
@@ -785,8 +755,6 @@ function MaestroColab({ legajo, onBack }) {
     h("div", { style: { padding: "16px 18px", overflowY: "auto" } },
       h("h1", { style: { fontSize: "20px", fontWeight: 800, color: "#1E2761", margin: "0 0 2px" } }, data.nombre || ("Legajo " + legajo)),
       h("p", { style: { fontSize: "13px", color: "#8a7a68", margin: 0 } }, role + (data.area ? " · " + data.area : "") + (data.nivel ? " · " + data.nivel : "")),
-      h("div", { style: { display: "inline-flex", alignItems: "center", gap: "6px", marginTop: "10px", background: "#faf6ef", borderRadius: "999px", padding: "6px 12px", fontSize: "13px" } },
-        I("star", "ico-xs"), h("b", null, pts + " pts"), h("span", { style: { color: "#8a7a68" } }, "esta semana")),
 
       // rituales del colaborador (galería compacta, solo lectura)
       h("h2", { style: { fontSize: "15px", fontWeight: 800, margin: "18px 0 6px", color: "#3a2f22" } }, "Sus rituales"),
@@ -839,6 +807,14 @@ const RITUAL_TITLES = (function () {
   try { Object.keys(window.PROFILES || {}).forEach((pid) => (window.PROFILES[pid].rituals || []).forEach((r) => { if (r.id && r.title && !m[r.id]) m[r.id] = r.title; })); } catch (e) {}
   return m;
 })();
+/* títulos de rituales ANTIGUOS/desactivados (hoy: escaladas). El Dashboard puede
+   filtrarlos con el control "Rituales antiguos". */
+const ANTIGUO_TITLES = (function () {
+  const s = {};
+  try { Object.keys(window.PROFILES || {}).forEach((pid) => (window.PROFILES[pid].rituals || []).forEach((r) => { if (r.title && (r.kind === "escaladas" || r.archivado)) s[r.title] = true; })); } catch (e) {}
+  return s;
+})();
+const ANTIGUOS_OPTS = [["ocultar", "Ocultar"], ["mostrar", "Mostrar"]];
 
 function Kpi({ icon, label, value, sub, color }) {
   return h("div", { className: "dash-kpi", style: { "--kc": color || "#3a2f22" } },
@@ -885,6 +861,7 @@ function Dashboard({ onBack, userName, onExplore }) {
   const [area, setArea] = useState("");
   const [nivel, setNivel] = useState("");
   const [periodo, setPeriodo] = useState("semana");
+  const [verAntiguos, setVerAntiguos] = useState("ocultar");   // filtro de rituales antiguos (escaladas)
 
   function load() {
     if (!D || !D.dashResumen) return;
@@ -909,7 +886,10 @@ function Dashboard({ onBack, userName, onExplore }) {
   // pero se muestra con el mismo nombre → se suman en una sola barra.
   const ritByTitle = {};
   (d.rituales || []).forEach((r) => { const t = RITUAL_TITLES[r.ritual] || r.ritual; ritByTitle[t] = (ritByTitle[t] || 0) + (r.n || 0); });
-  const rit = Object.keys(ritByTitle).map((t) => ({ ritual: t, n: ritByTitle[t] })).sort((a, b) => b.n - a.n).slice(0, 8);
+  const rit = Object.keys(ritByTitle)
+    .filter((t) => verAntiguos === "mostrar" || !ANTIGUO_TITLES[t])
+    .map((t) => ({ ritual: t, n: ritByTitle[t], antiguo: !!ANTIGUO_TITLES[t] }))
+    .sort((a, b) => b.n - a.n).slice(0, 8);
   const maxRit = rit.reduce((m, r) => Math.max(m, r.n || 0), 0);
   const rank = (d.puntos || []).slice(0, 10);
   const fmtTs = (t) => { try { return new Date(t).toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit" }); } catch (e) { return "…"; } };
@@ -933,6 +913,7 @@ function Dashboard({ onBack, userName, onExplore }) {
         h("div", { className: "dash-fgroup" }, h("span", { className: "dash-flabel" }, "Área"), h(Chips, { opts: AREA_OPTS, value: area, onPick: setArea })),
         h("div", { className: "dash-fgroup" }, h("span", { className: "dash-flabel" }, "Nivel"), h(Chips, { opts: NIVEL_OPTS, value: nivel, onPick: setNivel })),
         h("div", { className: "dash-fgroup" }, h("span", { className: "dash-flabel" }, "Periodo"), h(Chips, { opts: PERIODO_OPTS, value: periodo, onPick: setPeriodo })),
+        h("div", { className: "dash-fgroup" }, h("span", { className: "dash-flabel" }, "Rituales antiguos"), h(Chips, { opts: ANTIGUOS_OPTS, value: verAntiguos, onPick: setVerAntiguos })),
       ),
       h("div", { className: "dash-updated" }, "Actualizado " + fmtTs(ts) + " · se refresca solo cada minuto"),
 
@@ -941,8 +922,8 @@ function Dashboard({ onBack, userName, onExplore }) {
         h("div", { className: "dash-kpis" },
           h(Kpi, { icon: "activity", label: "Rituales aplicados (" + perLbl + ")", value: (d.total_registros != null ? d.total_registros : "—"), color: "#C9651C" }),
           h(Kpi, { icon: "users", label: "Participación", value: pctGlobal + "%", sub: totAct + " de " + totLid + " líderes activos", color: "#2F6E7A" }),
-          h(Kpi, { icon: "inbox", label: "Escaladas pendientes", value: (esc.pendientes != null ? esc.pendientes : "—"), sub: (esc.total || 0) + " en total · histórico", color: "#A8631A" }),
-          h(Kpi, { icon: "alert-triangle", label: "Vencidas (SLA 48h)", value: (esc.vencidas != null ? esc.vencidas : "—"), sub: "histórico", color: (esc.vencidas > 0 ? "#A81519" : "#18571F") }),
+          verAntiguos === "mostrar" ? h(Kpi, { icon: "inbox", label: "Escaladas pendientes", value: (esc.pendientes != null ? esc.pendientes : "—"), sub: (esc.total || 0) + " en total · histórico", color: "#A8631A" }) : null,
+          verAntiguos === "mostrar" ? h(Kpi, { icon: "alert-triangle", label: "Vencidas (SLA 48h)", value: (esc.vencidas != null ? esc.vencidas : "—"), sub: "histórico", color: (esc.vencidas > 0 ? "#A81519" : "#18571F") }) : null,
         ),
         // ---- gráficos ----
         h("div", { className: "dash-grid" },
@@ -956,16 +937,8 @@ function Dashboard({ onBack, userName, onExplore }) {
           ),
           h("div", { className: "dash-panel" },
             h("h3", { className: "dash-h" }, I("bar-chart-3", "ico-xs"), "Rituales más aplicados"),
-            rit.length ? rit.map((r) => h(HBar, { key: r.ritual, label: r.ritual, value: r.n || 0, max: maxRit || 1, color: "#C9651C" })) : h("p", { className: "dash-empty" }, "Sin datos.")),
-          h("div", { className: "dash-panel" },
-            h("h3", { className: "dash-h" }, I("trophy", "ico-xs"), "Ranking de puntos"),
-            rank.length ? rank.map((p, i) => h("div", { key: i, className: "dash-rank" + (i < 3 ? " top" : "") },
-              h("span", { className: "dash-rank-n", style: { "--ac": AREA_COLOR[p.area] || "#8a7a68" } }, i + 1),
-              h("div", { style: { flex: 1, minWidth: 0 } },
-                h("div", { className: "dash-rank-name" }, p.nombre),
-                h("div", { className: "dash-rank-sub" }, (DASH_AREA[p.area] || p.area) + (p.nivel ? " · " + p.nivel : ""))),
-              h("b", { className: "dash-rank-pts" }, p.puntos, h("span", null, " pts")))) : h("p", { className: "dash-empty" }, "Sin datos.")),
-          h("div", { className: "dash-panel", style: { opacity: 0.82 } },
+            rit.length ? rit.map((r) => h(HBar, { key: r.ritual, label: r.ritual + (r.antiguo ? " (histórico)" : ""), value: r.n || 0, max: maxRit || 1, color: r.antiguo ? "#9a8c7a" : "#C9651C" })) : h("p", { className: "dash-empty" }, "Sin datos.")),
+          verAntiguos === "mostrar" ? h("div", { className: "dash-panel", style: { opacity: 0.82 } },
             h("h3", { className: "dash-h" }, I("archive", "ico-xs"), "Escaladas (histórico)"),
             h("div", { style: { fontSize: "11.5px", color: "#8a7a68", margin: "-2px 0 8px" } }, "Ritual desactivado · datos del piloto"),
             escTot > 0 ? h("div", { className: "esc-stack" }, escSegs.filter((s) => s[1] > 0).map((s) =>
@@ -975,7 +948,7 @@ function Dashboard({ onBack, userName, onExplore }) {
                 h("span", { className: "esc-dot", style: { background: s[2] } }),
                 h("span", { className: "esc-leg-l" }, s[0]),
                 h("b", null, s[1] != null ? s[1] : "—")))),
-          ),
+          ) : null,
         ),
       ),
     ),
