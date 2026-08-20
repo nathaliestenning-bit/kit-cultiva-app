@@ -71,7 +71,6 @@ function Start({ onEnter, onBackToLogin, backLabel }) {
                   h("span", { className: "puesto-lvl" }, p.level)),
                 h("span", { className: "puesto-txt" },
                   h("span", { className: "puesto-name" }, p.role),
-                  h("span", { className: "puesto-sub" }, p.sub),
                 ),
                 I("arrow-right", "ico-sm"),
               )),
