@@ -5,6 +5,8 @@
    ============================================================ */
 const { createElement: h, useState, useEffect, useRef } = React;
 const I = (name, cls) => h("i", { "data-lucide": name, className: cls || "" });
+const T = (k) => (window.t ? window.t(k) : k);   // interfaz (UI) traducida
+const TC = (s) => (window.CultivaI18N ? window.CultivaI18N.tc(s) : s);   // contenido (frase) traducido
 
 /* a quién escala cada perfil su ritual de escucha (origen de escaladas) */
 const ESCALATE_TO = { "cos-n4": "Supervisor de Fundo", "prod-n4": "Jefe de Producción de Área", "pack-n4": "Jefe de Producción de Planta", "cal-tac": "Supervisor de Calidad" };
@@ -23,7 +25,7 @@ function Start({ onEnter, onBackToLogin, backLabel }) {
       h("span", { className: "start-logo" }, h("img", { src: (window.__resources && window.__resources.logo) || "../assets/logo-cultiva-color.png", alt: "Programa Cultiva" })),
       h("div", null,
         h("div", { className: "start-kicker" }, "Programa Cultiva"),
-        h("div", { className: "start-prog" }, "Liderazgo en acción"),
+        h("div", { className: "start-prog" }, T("brand.tagline")),
       ),
     ),
     h("div", { className: "start-steps" },
@@ -36,11 +38,11 @@ function Start({ onEnter, onBackToLogin, backLabel }) {
       ? h("div", { className: "start-body", key: "s1" },
           h("div", { className: "review-banner" },
             I("key-round", "ico-xs"),
-            h("span", null, h("b", null, "Acceso de revisión*"), " — sin restricciones a todas las áreas y perfiles."),
-            onBackToLogin ? h("button", { className: "review-exit", type: "button", onClick: onBackToLogin }, backLabel || "Salir") : null,
+            h("span", null, h("b", null, T("start.reviewTag")), " ", T("start.reviewNote")),
+            onBackToLogin ? h("button", { className: "review-exit", type: "button", onClick: onBackToLogin }, backLabel || T("common.exit")) : null,
           ),
-          h("h1", { className: "start-q" }, "¿A qué área perteneces?"),
-          h("p", { className: "start-hint" }, "Selecciona un área para revisar sus rituales."),
+          h("h1", { className: "start-q" }, T("start.areaQ")),
+          h("p", { className: "start-hint" }, T("start.areaHint")),
           h("div", { className: "area-grid" },
             window.AREAS.map((a) =>
               h("button", {
@@ -51,16 +53,16 @@ function Start({ onEnter, onBackToLogin, backLabel }) {
               },
                 h("span", { className: "area-ico" }, I(a.icon)),
                 h("span", { className: "area-name" }, a.label),
-                a.ready ? null : h("span", { className: "soon-tag" }, "Próximamente"),
+                a.ready ? null : h("span", { className: "soon-tag" }, T("start.soon")),
               )),
           ),
         )
       : h("div", { className: "start-body", key: "s2" },
           h("button", { className: "back-link", type: "button", onClick: () => setStep(1) },
-            I("chevron-left", "ico-sm"), "Cambiar área"),
+            I("chevron-left", "ico-sm"), T("start.changeArea")),
           h("div", { className: "start-area-pill" }, I(areaDef.icon, "ico-sm"), areaDef.label),
-          h("h1", { className: "start-q" }, "¿Cuál es tu puesto?"),
-          h("p", { className: "start-hint" }, "Entrarás directo a los rituales de tu puesto."),
+          h("h1", { className: "start-q" }, T("start.puestoQ")),
+          h("p", { className: "start-hint" }, T("start.puestoHint")),
           h("div", { className: "puesto-list" },
             puestos.map((p) =>
               h("button", {
@@ -99,18 +101,18 @@ function SeguimientosBanner({ segs, open, onToggle, onOpenRitual, onEscaladas, r
   return h("div", { className: "segs-banner" + (open ? " open" : "") },
     h("button", { className: "segs-h", type: "button", onClick: onToggle },
       I("bell", "ico-sm"),
-      h("span", null, "Tienes ", h("b", null, total), " seguimiento", total === 1 ? "" : "s", " para hoy"),
+      h("span", null, T("seg.have"), " ", h("b", null, total), " ", (total === 1 ? T("seg.followSingular") : T("seg.followPlural"))),
       I(open ? "chevron-up" : "chevron-down", "ico-xs"),
     ),
     open ? h("div", { className: "segs-list" },
       segs.propios.map((p, i) =>
         h("button", { key: "p" + i, type: "button", className: "segs-item", onClick: () => onOpenRitual(p.ritual_id) },
           I("calendar-check", "ico-xs"),
-          h("span", null, "Seguimiento pactado en ", (ritualsById[p.ritual_id] || {}).title || p.ritual_id))),
+          h("span", null, T("seg.pactado"), " ", (ritualsById[p.ritual_id] || {}).title || p.ritual_id))),
       segs.porResolver > 0 ? h("button", { className: "segs-item alert", type: "button", onClick: onEscaladas },
-        I("inbox", "ico-xs"), h("span", null, "Tienes ", segs.porResolver, " escalada(s) por resolver hoy")) : null,
+        I("inbox", "ico-xs"), h("span", null, T("seg.have"), " ", segs.porResolver, " ", T("seg.escaladas"))) : null,
       segs.enviadasPendientes > 0 ? h("div", { className: "segs-item info" },
-        I("clock", "ico-xs"), h("span", null, "Tu líder aún no resuelve ", segs.enviadasPendientes, " tema(s) que escalaste")) : null,
+        I("clock", "ico-xs"), h("span", null, T("seg.enviadasPre"), " ", segs.enviadasPendientes, " ", T("seg.enviadasPost"))) : null,
     ) : null,
   );
 }
@@ -121,7 +123,7 @@ function EscStrip({ ritual, count, onOpen }) {
     h("span", { className: "ds-ico" }, I(ritual.icon)),
     h("span", { className: "ds-txt" },
       h("span", { className: "ds-title" }, ritual.title),
-      h("span", { className: "ds-reminder" }, "Revisa lo que tu equipo escaló hoy."),
+      h("span", { className: "ds-reminder" }, T("seg.escStripReminder")),
     ),
     h("span", { className: "esc-badge" + (count === 0 ? " zero" : "") }, count, " ", I("inbox", "ico-xs")),
     I("chevron-right", "esc-chev"),
@@ -234,7 +236,7 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
 
   return h("div", { className: "screen gallery" },
     h("div", { className: "topbar" },
-      h("button", { className: "icon-btn icon-btn-sm", type: "button", onClick: onBack, "aria-label": userName ? "Cerrar sesión" : "Cambiar puesto" }, I(userName ? "log-out" : "chevron-left")),
+      h("button", { className: "icon-btn icon-btn-sm", type: "button", onClick: onBack, "aria-label": userName ? T("gallery.logout") : T("gallery.changePuesto") }, I(userName ? "log-out" : "chevron-left")),
       h("div", { className: "topbar-id" },
         h("span", { className: "topbar-role topbar-role-sm" }, profile.role),
       ),
@@ -249,9 +251,9 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
     inicio.map((r) => h(DayStrip, { key: r.id, ritual: r })),
 
     h("div", { className: "gallery-head" },
-      userName ? h("p", { className: "gallery-hi" }, "Hola, ", h("b", null, userName)) : null,
-      h("h1", { className: "gallery-title" }, "Tus rituales"),
-      h("p", { className: "gallery-sub" }, "Elige uno para ver el detalle."),
+      userName ? h("p", { className: "gallery-hi" }, T("gallery.hi"), h("b", null, userName)) : null,
+      h("h1", { className: "gallery-title" }, T("gallery.title")),
+      h("p", { className: "gallery-sub" }, T("gallery.sub")),
     ),
 
     groups.map((g) =>
@@ -302,7 +304,7 @@ function Accordion({ icon, title, color, children, defaultOpen }) {
 function TemasHelp() {
   return h("div", { className: "temas-help" },
     h("p", { className: "temas-help-intro" },
-      "Cuando registres un tema, lo clasificas en una de estas opciones. Tenlas presentes mientras escuchas:"),
+      T("temas.helpIntro")),
     window.TEMAS.grupos.map((g) =>
       h("div", { key: g.id, className: "temas-cat" },
         h("span", { className: "temas-cat-h", style: { "--tc": g.color } },
@@ -354,7 +356,7 @@ function RitualVideo({ url }) {
   return h("div", { className: "ritual-video" + (open ? " open" : "") },
     h("button", { className: "ritual-video-h", type: "button", onClick: () => setOpen(!open), "aria-expanded": open },
       I("play-circle", "ico-xs"),
-      h("span", null, "Míralo en video"),
+      h("span", null, T("detail.video")),
       I(open ? "chevron-up" : "chevron-down", "ico-xs rv-chev")),
     open ? h("video", {
       className: "ritual-video-el", src: url, controls: true, playsInline: true, preload: "metadata",
@@ -412,7 +414,7 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
       h("button", { className: "done-btn", type: "button", disabled: marcando, onClick: marcarRealizado },
         I("circle", "ico-sm"), idle),
       hechoHoy ? h("div", { className: "done-log" }, I("check-circle-2", "ico-xs"),
-        h("span", null, "Registrado el ", fmtRealizado(hechoHoy))) : null,
+        h("span", null, T("done.registeredOn"), " ", fmtRealizado(hechoHoy))) : null,
     );
   }
 
@@ -427,7 +429,7 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
 
   return h("div", { className: "screen detail", style: { "--dc": dim.color } },
     h("div", { className: "topbar" },
-      h("button", { className: "icon-btn", type: "button", onClick: onBack, "aria-label": "Volver a la galería" }, I("arrow-left")),
+      h("button", { className: "icon-btn", type: "button", onClick: onBack, "aria-label": T("detail.back") }, I("arrow-left")),
       h("span", { className: "detail-dim", style: { color: dim.color } },
         h("span", { className: "dim-dot", style: { width: 10, height: 10, borderRadius: "50%", background: dim.color, display: "inline-block" } }), dim.label),
     ),
@@ -445,7 +447,7 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
               I("quote", "reminder-q"),
               h("p", null, ritual.reminder),
             ),
-            esReco ? doneBlock("Marcar como hecho hoy") : null,
+            esReco ? doneBlock(T("done.markToday")) : null,
             // rituales light no tienen "Paso a paso": el video va al final
             videoUrl ? h(RitualVideo, { url: videoUrl }) : null,
           )
@@ -453,7 +455,7 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
             ritual.purpose ? h("p", { className: "purpose" }, ritual.purpose) : null,
 
             ritual.kind === "escaladas" ? h("button", { className: "done-btn on", type: "button", onClick: onEscaladas, style: { marginBottom: "10px" } },
-              I("inbox", "ico-sm"), "Ver bandeja de escaladas") : null,
+              I("inbox", "ico-sm"), T("detail.inbox")) : null,
 
             ritual.context ? h("div", { className: "ctx" },
               ritual.context.freq ? h("div", { className: "ctx-row" }, I("repeat", "ico-xs"), h("span", null, ritual.context.freq)) : null,
@@ -462,7 +464,7 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
             ) : null,
 
             ritual.steps ? h("div", { className: "steps-block" },
-              h("div", { className: "block-h" }, I("list-checks", "ico-sm"), "Paso a paso"),
+              h("div", { className: "block-h" }, I("list-checks", "ico-sm"), T("detail.steps")),
               h("ol", { className: "steps" },
                 ritual.steps.map((s, i) =>
                   h("li", { key: i, className: "step" },
@@ -479,18 +481,18 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
 
             ritual.note ? h("div", { className: "note" }, I("lightbulb", "ico-xs"), h("span", null, ritual.note)) : null,
 
-            ritual.phrases ? h(Accordion, { icon: "quote", title: "Frases que ayudan", color: dim.color },
+            ritual.phrases ? h(Accordion, { icon: "quote", title: T("detail.phrases"), color: dim.color },
               h("div", { className: "phrases" },
                 ritual.phrases.map((p, i) => h("div", { key: i, className: "phrase" }, "“", p, "”")))) : null,
 
             // Escucha: ayuda-memoria gráfica en vez de "Qué NO hacer"
             isEscucha
-              ? h(Accordion, { icon: "list-tree", title: "Temas que puedes recoger", color: dim.color, defaultOpen: false },
+              ? h(Accordion, { icon: "list-tree", title: T("detail.topics"), color: dim.color, defaultOpen: false },
                   h(TemasHelp))
-              : (ritual.no ? h(Accordion, { icon: "x-circle", title: "Qué NO hacer", color: "#A81519" },
+              : (ritual.no ? h(Accordion, { icon: "x-circle", title: T("detail.dont"), color: "#A81519" },
                   h("ul", { className: "no-list" }, ritual.no.map((x, i) => h("li", { key: i }, x)))) : null),
 
-            (esReco && ritual.registro && !ritual.registro.hidden) ? h(Accordion, { icon: "square-pen", title: "Registrar", color: "#4156A2", defaultOpen: true },
+            (esReco && ritual.registro && !ritual.registro.hidden) ? h(Accordion, { icon: "square-pen", title: T("detail.register"), color: "#4156A2", defaultOpen: true },
               h(window.CultivaRegistroForm, {
                 ritual: ritual, profileId: profile.id,
                 escalateTo: canEscalate ? ESCALATE_TO[profile.id] : null,
@@ -499,7 +501,7 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
             // rituales "full" SIN formulario de registro: botón para marcar "se realizó".
             // Excepción: los de escaladas NO lo llevan — sus puntos se ganan al
             // gestionar los temas en la bandeja (ver EscaladasInbox).
-            (esReco && ritual.kind !== "escaladas" && (!ritual.registro || ritual.registro.hidden)) ? doneBlock("Marcar como realizado") : null,
+            (esReco && ritual.kind !== "escaladas" && (!ritual.registro || ritual.registro.hidden)) ? doneBlock(T("done.markDone")) : null,
           ),
     ),
   );
@@ -576,14 +578,14 @@ function EquipoEscaladas({ profile, onBack }) {
 
   return h("div", { className: "screen" },
     h("div", { className: "topbar" },
-      h("button", { className: "icon-btn", type: "button", onClick: onBack, "aria-label": "Volver" }, I("arrow-left")),
+      h("button", { className: "icon-btn", type: "button", onClick: onBack, "aria-label": T("common.back") }, I("arrow-left")),
       h("div", { className: "topbar-id" },
-        h("span", { className: "topbar-role" }, "Gestión de tu equipo"),
-        h("span", { className: "topbar-area" }, I("inbox", "ico-xs"), "Cómo gestionan las escaladas que reciben")),
+        h("span", { className: "topbar-role" }, T("equipo.title")),
+        h("span", { className: "topbar-area" }, I("inbox", "ico-xs"), T("equipo.sub"))),
     ),
     !loaded ? null : h("div", { style: { padding: "16px 18px" } },
       groups.length === 0
-        ? h("p", { style: { color: "#8a7a68", fontSize: "14px" } }, "Tu equipo aún no ha recibido escaladas para gestionar.")
+        ? h("p", { style: { color: "#8a7a68", fontSize: "14px" } }, T("equipo.empty"))
         : groups.map((g, gi) => {
             const total = g.items.length;
             const byStatus = {}; g.items.forEach((it) => { const s = it.status || "pendiente"; byStatus[s] = (byStatus[s] || 0) + 1; });
@@ -591,7 +593,7 @@ function EquipoEscaladas({ profile, onBack }) {
               h("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" } },
                 h("span", { style: { fontSize: "14px", fontWeight: 700, color: "#3a2f22" } }, g.nombre || "—",
                   g.nivel ? h("span", { style: { color: "#9a8a78", fontWeight: 400 } }, " · " + g.nivel) : null),
-                h("span", { style: { fontSize: "12px", color: "#8a7a68" } }, total + (total === 1 ? " escalada" : " escaladas"))),
+                h("span", { style: { fontSize: "12px", color: "#8a7a68" } }, total + " " + (total === 1 ? T("equipo.escSingular") : T("equipo.escPlural")))),
               h("div", { style: { display: "flex", flexWrap: "wrap", gap: "6px", margin: "8px 0 2px" } },
                 Object.keys(byStatus).map((s) => { const e = estOf(s); return h("span", { key: s,
                   style: { fontSize: "11px", fontWeight: 600, color: e.c, background: e.c + "14", borderRadius: "999px", padding: "3px 8px" } }, e.l + " · " + byStatus[s]); })),
@@ -600,7 +602,7 @@ function EquipoEscaladas({ profile, onBack }) {
                   style: { display: "flex", justifyContent: "space-between", gap: "8px", padding: "8px 0", borderTop: "1px solid #f0e7da" } },
                   h("div", null,
                     h("div", { style: { fontSize: "13px", fontWeight: 500, color: "#3a2f22" } }, it.tema || "—"),
-                    it.from_nombre ? h("div", { style: { fontSize: "11.5px", color: "#8a7a68" } }, "de " + it.from_nombre) : null),
+                    it.from_nombre ? h("div", { style: { fontSize: "11.5px", color: "#8a7a68" } }, T("equipo.from") + " " + it.from_nombre) : null),
                   h("span", { style: { fontSize: "11px", fontWeight: 700, color: e.c, whiteSpace: "nowrap" } }, e.l)); })),
             );
           }),
@@ -624,47 +626,47 @@ function MaestroHome({ onColab, onExplore, onLogout }) {
 
   if (!m) {
     return h("div", { className: "screen", style: { padding: "22px 20px", overflowY: "auto" } },
-      h("h1", { style: { fontSize: "22px", fontWeight: 800, color: "#1E2761", margin: "6px 0 4px" } }, "Modo maestro"),
-      h("p", { style: { fontSize: "13.5px", color: "#5a4a38", marginBottom: "6px" } }, "Regístrate una vez — queda guardado en este equipo y la próxima vez entras directo."),
-      h("label", { style: MTR_LABEL }, "Nombre y apellido"),
-      h("input", { className: "mtr-input", value: regNombre, placeholder: "Tu nombre", onChange: (e) => setRegNombre(e.target.value) }),
-      h("label", { style: MTR_LABEL }, "Legajo (opcional)"),
+      h("h1", { style: { fontSize: "22px", fontWeight: 800, color: "#1E2761", margin: "6px 0 4px" } }, T("mtr.title")),
+      h("p", { style: { fontSize: "13.5px", color: "#5a4a38", marginBottom: "6px" } }, T("mtr.registerOnce")),
+      h("label", { style: MTR_LABEL }, T("mtr.fullName")),
+      h("input", { className: "mtr-input", value: regNombre, placeholder: T("mtr.yourName"), onChange: (e) => setRegNombre(e.target.value) }),
+      h("label", { style: MTR_LABEL }, T("mtr.legajoOpt")),
       h("input", { className: "mtr-input", value: regLegajo, placeholder: "10XXXXXXXX", inputMode: "numeric", onChange: (e) => setRegLegajo(e.target.value) }),
       h("button", { className: "login-btn", type: "button", disabled: !regNombre.trim(),
         onClick: () => { const mm = { nombre: regNombre.trim(), legajo: regLegajo.trim() }; maestroSet(mm); setM(mm); } },
-        "Entrar", I("arrow-right", "ico-sm")),
-      h("button", { type: "button", onClick: onLogout, style: { all: "unset", cursor: "pointer", display: "block", textAlign: "center", width: "100%", marginTop: "14px", color: "#8a7a68", fontSize: "13px" } }, "Volver"),
+        T("mtr.enter"), I("arrow-right", "ico-sm")),
+      h("button", { type: "button", onClick: onLogout, style: { all: "unset", cursor: "pointer", display: "block", textAlign: "center", width: "100%", marginTop: "14px", color: "#8a7a68", fontSize: "13px" } }, T("common.back")),
     );
   }
 
   const favs = maestroFavs();
   return h("div", { className: "screen" },
     h("div", { className: "topbar" },
-      h("button", { className: "icon-btn icon-btn-sm", type: "button", onClick: onLogout, "aria-label": "Salir" }, I("log-out")),
-      h("div", { className: "topbar-id" }, h("span", { className: "topbar-role topbar-role-sm" }, "Modo maestro")),
+      h("button", { className: "icon-btn icon-btn-sm", type: "button", onClick: onLogout, "aria-label": T("common.exit") }, I("log-out")),
+      h("div", { className: "topbar-id" }, h("span", { className: "topbar-role topbar-role-sm" }, T("mtr.title"))),
     ),
     h("div", { style: { padding: "16px 18px", overflowY: "auto" } },
-      h("p", { style: { fontSize: "14px", color: "#5a4a38", margin: 0 } }, "Hola, ", h("b", null, m.nombre)),
-      h("h1", { style: { fontSize: "20px", fontWeight: 800, margin: "6px 0 12px", color: "#1E2761" } }, "¿A quién vas a acompañar?"),
-      h("label", { style: MTR_LABEL }, "Legajo del colaborador"),
+      h("p", { style: { fontSize: "14px", color: "#5a4a38", margin: 0 } }, T("gallery.hi"), h("b", null, m.nombre)),
+      h("h1", { style: { fontSize: "20px", fontWeight: 800, margin: "6px 0 12px", color: "#1E2761" } }, T("mtr.whoAccompany")),
+      h("label", { style: MTR_LABEL }, T("mtr.colabLegajo")),
       h("div", { style: { display: "flex", gap: "8px" } },
         h("input", { className: "mtr-input", style: { flex: 1, margin: 0 }, value: buscar, placeholder: "10XXXXXXXX", inputMode: "numeric",
           onChange: (e) => setBuscar(e.target.value), onKeyDown: (e) => { if (e.key === "Enter" && buscar.trim()) onColab(buscar.trim()); } }),
-        h("button", { className: "login-btn", style: { width: "auto", padding: "0 18px", margin: 0 }, type: "button", disabled: !buscar.trim(), onClick: () => onColab(buscar.trim()) }, "Ver")),
+        h("button", { className: "login-btn", style: { width: "auto", padding: "0 18px", margin: 0 }, type: "button", disabled: !buscar.trim(), onClick: () => onColab(buscar.trim()) }, T("mtr.view"))),
 
       favs.length ? h("div", { style: { marginTop: "22px" } },
-        h("div", { style: { fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".04em", color: "#8a7a68", marginBottom: "8px" } }, I("star", "ico-xs"), " Favoritos"),
+        h("div", { style: { fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".04em", color: "#8a7a68", marginBottom: "8px" } }, I("star", "ico-xs"), " " + T("mtr.favorites")),
         favs.map((f) => h("button", { key: f.legajo, type: "button", onClick: () => onColab(f.legajo),
           style: { display: "flex", alignItems: "center", gap: "10px", width: "100%", textAlign: "left", background: "#fff", border: "1px solid #eadfd0", borderRadius: "12px", padding: "11px 14px", margin: "6px 0", cursor: "pointer" } },
           I("user-round", "ico-sm"),
           h("span", { style: { flex: 1, minWidth: 0 } },
-            h("span", { style: { display: "block", fontSize: "14px", fontWeight: 600, color: "#3a2f22" } }, f.nombre || ("Legajo " + f.legajo)),
-            h("span", { style: { display: "block", fontSize: "11.5px", color: "#8a7a68" } }, "Legajo " + f.legajo)),
+            h("span", { style: { display: "block", fontSize: "14px", fontWeight: 600, color: "#3a2f22" } }, f.nombre || (T("mtr.legajoWord") + " " + f.legajo)),
+            h("span", { style: { display: "block", fontSize: "11.5px", color: "#8a7a68" } }, T("mtr.legajoWord") + " " + f.legajo)),
           I("chevron-right", "ico-sm")))) : null,
 
       h("button", { type: "button", onClick: onExplore,
         style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "7px", marginTop: "22px", width: "100%", padding: "11px", borderRadius: "12px", border: "1px solid #cdd7d9", background: "#eef4f5", color: "#2F6E7A", fontSize: "14px", cursor: "pointer" } },
-        I("layout-grid", "ico-sm"), "Explorar rituales (todas las áreas)"),
+        I("layout-grid", "ico-sm"), T("mtr.explore")),
     ),
   );
 }
@@ -728,14 +730,14 @@ function MaestroColab({ legajo, onBack }) {
   }
 
   const topbar = h("div", { className: "topbar" },
-    h("button", { className: "icon-btn icon-btn-sm", type: "button", onClick: onBack, "aria-label": "Volver" }, I("arrow-left")),
-    h("div", { className: "topbar-id" }, h("span", { className: "topbar-role topbar-role-sm" }, "Seguimiento")),
-    (data && data.found) ? h("button", { className: "icon-btn icon-btn-sm" + (fav ? " mtr-fav-on" : ""), type: "button", onClick: toggleFav, "aria-label": "Favorito",
+    h("button", { className: "icon-btn icon-btn-sm", type: "button", onClick: onBack, "aria-label": T("common.back") }, I("arrow-left")),
+    h("div", { className: "topbar-id" }, h("span", { className: "topbar-role topbar-role-sm" }, T("mtr.followup"))),
+    (data && data.found) ? h("button", { className: "icon-btn icon-btn-sm" + (fav ? " mtr-fav-on" : ""), type: "button", onClick: toggleFav, "aria-label": T("mtr.favorite"),
       style: { marginLeft: "auto", color: fav ? "#C9651C" : "#8a7a68" } }, I("star")) : null,
   );
 
-  if (data === null) return h("div", { className: "screen" }, topbar, h("p", { style: { padding: "18px", color: "#8a7a68" } }, "Cargando…"));
-  if (!data.found) return h("div", { className: "screen" }, topbar, h("p", { style: { padding: "18px", color: "#8a7a68" } }, "No encontramos el legajo ", h("b", null, legajo), " en el padrón."));
+  if (data === null) return h("div", { className: "screen" }, topbar, h("p", { style: { padding: "18px", color: "#8a7a68" } }, T("common.loading")));
+  if (!data.found) return h("div", { className: "screen" }, topbar, h("p", { style: { padding: "18px", color: "#8a7a68" } }, T("mtr.notFoundPre"), " ", h("b", null, legajo), " ", T("mtr.notFoundPost")));
 
   const prof = window.PROFILES[data.perfil];
   const role = prof ? prof.role : data.perfil;
@@ -752,12 +754,12 @@ function MaestroColab({ legajo, onBack }) {
 
   return h("div", { className: "screen" }, topbar,
     h("div", { style: { padding: "16px 18px", overflowY: "auto" } },
-      h("h1", { style: { fontSize: "20px", fontWeight: 800, color: "#1E2761", margin: "0 0 2px" } }, data.nombre || ("Legajo " + legajo)),
+      h("h1", { style: { fontSize: "20px", fontWeight: 800, color: "#1E2761", margin: "0 0 2px" } }, data.nombre || (T("mtr.legajoWord") + " " + legajo)),
       h("p", { style: { fontSize: "13px", color: "#8a7a68", margin: 0 } }, role + (data.area ? " · " + data.area : "") + (data.nivel ? " · " + data.nivel : "")),
 
       // rituales del colaborador (galería compacta, solo lectura)
-      h("h2", { style: { fontSize: "15px", fontWeight: 800, margin: "18px 0 6px", color: "#3a2f22" } }, "Sus rituales"),
-      !prof ? h("p", { style: { color: "#8a7a68" } }, "Perfil no disponible en la app.")
+      h("h2", { style: { fontSize: "15px", fontWeight: 800, margin: "18px 0 6px", color: "#3a2f22" } }, T("mtr.hisRituals")),
+      !prof ? h("p", { style: { color: "#8a7a68" } }, T("mtr.noProfile"))
         : h("div", { className: "mtr-rit" }, groups.map((g) =>
             h("section", { key: g.dim, className: "dim-group" },
               h("div", { className: "dim-head", style: { "--dc": g.def.color } },
@@ -773,8 +775,8 @@ function MaestroColab({ legajo, onBack }) {
         h("button", { type: "button", onClick: () => setSegOpen(!segOpen),
           style: { all: "unset", cursor: "pointer", display: "flex", width: "100%", alignItems: "center", gap: "8px", boxSizing: "border-box", padding: "13px 14px" } },
           I("clipboard-list", "ico-sm"),
-          h("span", { style: { flex: 1, fontSize: "14px", fontWeight: 800, color: "#3a2f22" } }, "Seguimiento"),
-          h("span", { style: { fontSize: "12px", fontWeight: 700, color: totalReg ? "#18571F" : "#b8a894" } }, totalReg + (totalReg === 1 ? " registro" : " registros")),
+          h("span", { style: { flex: 1, fontSize: "14px", fontWeight: 800, color: "#3a2f22" } }, T("mtr.followup")),
+          h("span", { style: { fontSize: "12px", fontWeight: 700, color: totalReg ? "#18571F" : "#b8a894" } }, totalReg + " " + (totalReg === 1 ? T("mtr.recordSingular") : T("mtr.recordPlural"))),
           I(segOpen ? "chevron-up" : "chevron-down", "ico-xs")),
         segOpen ? h("div", { style: { padding: "0 14px 12px" } },
           conReg.length ? conReg.map((x) => {
@@ -785,21 +787,21 @@ function MaestroColab({ legajo, onBack }) {
                 h("div", { style: { fontSize: "11px", color: "#8a7a68", marginBottom: "2px" } }, fmt(rg.ts)),
                 Object.keys(rg.vals).filter((k) => rg.vals[k] && k.charAt(0) !== "_").map((k) =>
                   h("div", { key: k, style: { fontSize: "12.5px", color: "#3a2f22", lineHeight: 1.4 } }, h("b", null, (flabels[k] || k) + ": "), String(rg.vals[k])))))
-                : h("div", { style: { fontSize: "12px", color: "#8a7a68" } }, x.total + " registrado(s) sin detalle."));
-          }) : h("div", { style: { fontSize: "13px", color: "#8a7a68", paddingTop: "8px" } }, "Aún sin registros.")) : null,
+                : h("div", { style: { fontSize: "12px", color: "#8a7a68" } }, x.total + " " + T("mtr.noDetail")));
+          }) : h("div", { style: { fontSize: "13px", color: "#8a7a68", paddingTop: "8px" } }, T("mtr.noRecords"))) : null,
       ),
     ),
   );
 }
 
 /* ---------- DASHBOARD (admin · vista de gerencia, estilo panel) ---------- */
-const DASH_AREA = { cosecha: "Cosecha", produccion: "Producción", packing: "Packing", calidad: "Calidad" };
+const DASH_AREA = { cosecha: TC("Cosecha"), produccion: TC("Producción"), packing: TC("Packing"), calidad: TC("Calidad") };
 /* color por área (orden categórico fijo; la etiqueta siempre acompaña al color) */
 const AREA_COLOR = { cosecha: "#2F6E7A", produccion: "#C9651C", packing: "#4156A2", calidad: "#D9A521" };
-const AREA_OPTS = [["", "Todas"], ["cosecha", "Cosecha"], ["produccion", "Producción"], ["packing", "Packing"], ["calidad", "Calidad"]];
-const NIVEL_OPTS = [["", "Todos"], ["N1", "N1"], ["N2", "N2"], ["N3", "N3"], ["N4", "N4"], ["TAC", "TAC"]];
-const PERIODO_OPTS = [["semana", "Esta semana"], ["mes", "Este mes"], ["acumulado", "Acumulado"]];
-const PERIODO_LBL = { semana: "esta semana", mes: "este mes", acumulado: "acumulado" };
+const AREA_OPTS = [["", T("dash.all")], ["cosecha", TC("Cosecha")], ["produccion", TC("Producción")], ["packing", TC("Packing")], ["calidad", TC("Calidad")]];
+const NIVEL_OPTS = [["", T("dash.allM")], ["N1", "N1"], ["N2", "N2"], ["N3", "N3"], ["N4", "N4"], ["TAC", "TAC"]];
+const PERIODO_OPTS = [["semana", T("dash.week")], ["mes", T("dash.month")], ["acumulado", T("dash.accum")]];
+const PERIODO_LBL = { semana: T("dash.thisWeek"), mes: T("dash.thisMonth"), acumulado: T("dash.accumLc") };
 /* id de ritual → título legible (Supabase agrega por ritual_id; aquí lo traducimos) */
 const RITUAL_TITLES = (function () {
   const m = {};
@@ -813,7 +815,7 @@ const ANTIGUO_TITLES = (function () {
   try { Object.keys(window.PROFILES || {}).forEach((pid) => (window.PROFILES[pid].rituals || []).forEach((r) => { if (r.title && (r.kind === "escaladas" || r.archivado)) s[r.title] = true; })); } catch (e) {}
   return s;
 })();
-const ANTIGUOS_OPTS = [["ocultar", "Ocultar"], ["mostrar", "Mostrar"]];
+const ANTIGUOS_OPTS = [["ocultar", T("dash.hide")], ["mostrar", T("dash.show")]];
 
 function Kpi({ icon, label, value, sub, color }) {
   return h("div", { className: "dash-kpi", style: { "--kc": color || "#3a2f22" } },
@@ -840,7 +842,7 @@ function Donut({ pct }) {
     h("circle", { cx: 66, cy: 66, r: r, fill: "none", stroke: "#18571F", strokeWidth: 15, strokeLinecap: "round",
       strokeDasharray: dash + " " + c, transform: "rotate(-90 66 66)" }),
     h("text", { x: 66, y: 63, textAnchor: "middle", fontSize: 30, fontWeight: 800, fill: "#18571F" }, pct + "%"),
-    h("text", { x: 66, y: 85, textAnchor: "middle", fontSize: 11, fill: "#8a7a68" }, "activos"),
+    h("text", { x: 66, y: 85, textAnchor: "middle", fontSize: 11, fill: "#8a7a68" }, T("dash.active")),
   );
 }
 function Chips({ opts, value, onPick }) {
@@ -879,7 +881,7 @@ function Dashboard({ onBack, userName, onExplore }) {
   const pctGlobal = totLid > 0 ? Math.round((totAct / totLid) * 100) : 0;
   const maxPart = part.reduce((m, p) => Math.max(m, p.lideres || 0), 0);
   const esc = d.escaladas || {};
-  const escSegs = [["Pendientes", esc.pendientes, "#A8631A"], ["En proceso", esc.proceso, "#4156A2"], ["Resueltas", esc.resueltas, "#18571F"], ["Vencidas", esc.vencidas, "#A81519"]];
+  const escSegs = [[T("dash.escPend"), esc.pendientes, "#A8631A"], [T("dash.escProc"), esc.proceso, "#4156A2"], [T("dash.escResolved"), esc.resueltas, "#18571F"], [T("dash.escOverdue"), esc.vencidas, "#A81519"]];
   const escTot = escSegs.reduce((a, s) => a + (s[1] || 0), 0);
   // agrupar por TÍTULO: un mismo ritual tiene ids internos distintos por perfil,
   // pero se muestra con el mismo nombre → se suman en una sola barra.
@@ -896,50 +898,50 @@ function Dashboard({ onBack, userName, onExplore }) {
 
   return h("div", { className: "screen dashboard" },
     h("div", { className: "topbar" },
-      h("button", { className: "icon-btn", type: "button", onClick: onBack, "aria-label": "Salir" }, I("log-out")),
+      h("button", { className: "icon-btn", type: "button", onClick: onBack, "aria-label": T("common.exit") }, I("log-out")),
       h("div", { className: "topbar-id" },
-        h("span", { className: "topbar-role" }, "Dashboard · Piloto Cultiva"),
-        h("span", { className: "topbar-area" }, I("layout-dashboard", "ico-xs"), userName || "Vista de gerencia")),
+        h("span", { className: "topbar-role" }, T("dash.title")),
+        h("span", { className: "topbar-area" }, I("layout-dashboard", "ico-xs"), userName || T("dash.mgmtView"))),
       onExplore ? h("button", {
-        type: "button", onClick: onExplore, "aria-label": "Ver rituales",
+        type: "button", onClick: onExplore, "aria-label": T("dash.viewRituals"),
         style: { marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: "6px", padding: "7px 13px", borderRadius: "999px", border: "none", background: "#18571F", color: "#fff", fontWeight: 700, fontSize: "13px", cursor: "pointer", whiteSpace: "nowrap" },
-      }, I("layout-grid", "ico-sm"), "Ver rituales") : null,
-      h("button", { className: "icon-btn", type: "button", onClick: load, "aria-label": "Actualizar", style: onExplore ? null : { marginLeft: "auto" } }, I("refresh-cw")),
+      }, I("layout-grid", "ico-sm"), T("dash.viewRituals")) : null,
+      h("button", { className: "icon-btn", type: "button", onClick: load, "aria-label": T("dash.refresh"), style: onExplore ? null : { marginLeft: "auto" } }, I("refresh-cw")),
     ),
     h("div", { className: "dash-scroll" },
       // ---- filtros ----
       h("div", { className: "dash-filters" },
-        h("div", { className: "dash-fgroup" }, h("span", { className: "dash-flabel" }, "Área"), h(Chips, { opts: AREA_OPTS, value: area, onPick: setArea })),
-        h("div", { className: "dash-fgroup" }, h("span", { className: "dash-flabel" }, "Nivel"), h(Chips, { opts: NIVEL_OPTS, value: nivel, onPick: setNivel })),
-        h("div", { className: "dash-fgroup" }, h("span", { className: "dash-flabel" }, "Periodo"), h(Chips, { opts: PERIODO_OPTS, value: periodo, onPick: setPeriodo })),
-        h("div", { className: "dash-fgroup" }, h("span", { className: "dash-flabel" }, "Rituales antiguos"), h(Chips, { opts: ANTIGUOS_OPTS, value: verAntiguos, onPick: setVerAntiguos })),
+        h("div", { className: "dash-fgroup" }, h("span", { className: "dash-flabel" }, T("dash.area")), h(Chips, { opts: AREA_OPTS, value: area, onPick: setArea })),
+        h("div", { className: "dash-fgroup" }, h("span", { className: "dash-flabel" }, T("dash.level")), h(Chips, { opts: NIVEL_OPTS, value: nivel, onPick: setNivel })),
+        h("div", { className: "dash-fgroup" }, h("span", { className: "dash-flabel" }, T("dash.period")), h(Chips, { opts: PERIODO_OPTS, value: periodo, onPick: setPeriodo })),
+        h("div", { className: "dash-fgroup" }, h("span", { className: "dash-flabel" }, T("dash.oldRituals")), h(Chips, { opts: ANTIGUOS_OPTS, value: verAntiguos, onPick: setVerAntiguos })),
       ),
-      h("div", { className: "dash-updated" }, "Actualizado " + fmtTs(ts) + " · se refresca solo cada minuto"),
+      h("div", { className: "dash-updated" }, T("dash.updated") + " " + fmtTs(ts) + " " + T("dash.autorefresh")),
 
-      !data ? h("p", { className: "dash-empty" }, "Cargando…") : h("div", null,
+      !data ? h("p", { className: "dash-empty" }, T("common.loading")) : h("div", null,
         // ---- KPIs ----
         h("div", { className: "dash-kpis" },
-          h(Kpi, { icon: "activity", label: "Rituales aplicados (" + perLbl + ")", value: (d.total_registros != null ? d.total_registros : "—"), color: "#C9651C" }),
-          h(Kpi, { icon: "users", label: "Participación", value: pctGlobal + "%", sub: totAct + " de " + totLid + " líderes activos", color: "#2F6E7A" }),
-          verAntiguos === "mostrar" ? h(Kpi, { icon: "inbox", label: "Escaladas pendientes", value: (esc.pendientes != null ? esc.pendientes : "—"), sub: (esc.total || 0) + " en total · histórico", color: "#A8631A" }) : null,
-          verAntiguos === "mostrar" ? h(Kpi, { icon: "alert-triangle", label: "Vencidas (SLA 48h)", value: (esc.vencidas != null ? esc.vencidas : "—"), sub: "histórico", color: (esc.vencidas > 0 ? "#A81519" : "#18571F") }) : null,
+          h(Kpi, { icon: "activity", label: T("dash.kpiApplied") + " (" + perLbl + ")", value: (d.total_registros != null ? d.total_registros : "—"), color: "#C9651C" }),
+          h(Kpi, { icon: "users", label: T("dash.kpiParticipation"), value: pctGlobal + "%", sub: totAct + " " + T("dash.of") + " " + totLid + " " + T("dash.activeLeaders"), color: "#2F6E7A" }),
+          verAntiguos === "mostrar" ? h(Kpi, { icon: "inbox", label: T("dash.escPending"), value: (esc.pendientes != null ? esc.pendientes : "—"), sub: (esc.total || 0) + " " + T("dash.inTotal") + " · " + T("dash.historic"), color: "#A8631A" }) : null,
+          verAntiguos === "mostrar" ? h(Kpi, { icon: "alert-triangle", label: T("dash.overdue"), value: (esc.vencidas != null ? esc.vencidas : "—"), sub: T("dash.historic"), color: (esc.vencidas > 0 ? "#A81519" : "#18571F") }) : null,
         ),
         // ---- gráficos ----
         h("div", { className: "dash-grid" },
           h("div", { className: "dash-panel" },
-            h("h3", { className: "dash-h" }, I("pie-chart", "ico-xs"), "Participación por área"),
+            h("h3", { className: "dash-h" }, I("pie-chart", "ico-xs"), T("dash.partByArea")),
             h("div", { className: "dash-part" },
-              h("div", { className: "dash-donut" }, h(Donut, { pct: pctGlobal }), h("span", { className: "dash-donut-sub" }, totAct + "/" + totLid + " líderes")),
+              h("div", { className: "dash-donut" }, h(Donut, { pct: pctGlobal }), h("span", { className: "dash-donut-sub" }, totAct + "/" + totLid + " " + T("dash.leaders"))),
               h("div", { className: "dash-part-bars" },
-                part.length ? part.map((p) => h(HBar, { key: p.area, label: DASH_AREA[p.area] || p.area, value: p.activos || 0, max: maxPart || 1, color: AREA_COLOR[p.area] || "#2F6E7A", right: (p.activos || 0) + "/" + (p.lideres || 0) })) : h("p", { className: "dash-empty" }, "Sin datos.")),
+                part.length ? part.map((p) => h(HBar, { key: p.area, label: DASH_AREA[p.area] || p.area, value: p.activos || 0, max: maxPart || 1, color: AREA_COLOR[p.area] || "#2F6E7A", right: (p.activos || 0) + "/" + (p.lideres || 0) })) : h("p", { className: "dash-empty" }, T("dash.noData"))),
             ),
           ),
           h("div", { className: "dash-panel" },
-            h("h3", { className: "dash-h" }, I("bar-chart-3", "ico-xs"), "Rituales más aplicados"),
-            rit.length ? rit.map((r) => h(HBar, { key: r.ritual, label: r.ritual + (r.antiguo ? " (histórico)" : ""), value: r.n || 0, max: maxRit || 1, color: r.antiguo ? "#9a8c7a" : "#C9651C" })) : h("p", { className: "dash-empty" }, "Sin datos.")),
+            h("h3", { className: "dash-h" }, I("bar-chart-3", "ico-xs"), T("dash.mostApplied")),
+            rit.length ? rit.map((r) => h(HBar, { key: r.ritual, label: r.ritual + (r.antiguo ? " " + T("dash.historicParen") : ""), value: r.n || 0, max: maxRit || 1, color: r.antiguo ? "#9a8c7a" : "#C9651C" })) : h("p", { className: "dash-empty" }, T("dash.noData"))),
           verAntiguos === "mostrar" ? h("div", { className: "dash-panel", style: { opacity: 0.82 } },
-            h("h3", { className: "dash-h" }, I("archive", "ico-xs"), "Escaladas (histórico)"),
-            h("div", { style: { fontSize: "11.5px", color: "#8a7a68", margin: "-2px 0 8px" } }, "Ritual desactivado · datos del piloto"),
+            h("h3", { className: "dash-h" }, I("archive", "ico-xs"), T("dash.escHistoric")),
+            h("div", { style: { fontSize: "11.5px", color: "#8a7a68", margin: "-2px 0 8px" } }, T("dash.ritualDisabled")),
             escTot > 0 ? h("div", { className: "esc-stack" }, escSegs.filter((s) => s[1] > 0).map((s) =>
               h("span", { key: s[0], className: "esc-seg", title: s[0] + ": " + s[1], style: { flex: s[1], background: s[2] } }))) : null,
             h("div", { className: "esc-legend" }, escSegs.map((s) =>

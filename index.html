@@ -695,6 +695,63 @@
     .dash-grid { grid-template-columns: 1fr 1fr; }
     .dash-grid .dash-panel:first-child { grid-column: 1 / -1; }   /* participación a lo ancho */
   }
+
+  /* ============ Selector de idioma (discreto, esquina) ============ */
+  .lang-select { position: absolute; top: 12px; right: 12px; z-index: 30; }
+  .lang-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(255,255,255,.12); color: #fff;
+    border: 1px solid rgba(255,255,255,.22); border-radius: 999px;
+    padding: 5px 9px; font-size: 12px; font-weight: 600; cursor: pointer;
+    backdrop-filter: blur(2px);
+  }
+  .lang-btn:hover { background: rgba(255,255,255,.2); }
+  .lang-btn-cur { max-width: 92px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .lang-menu {
+    position: absolute; top: calc(100% + 6px); right: 0; min-width: 150px;
+    background: #fff; border: 1px solid #e6ddcf; border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.18); overflow: hidden; padding: 4px;
+  }
+  .lang-opt {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    width: 100%; box-sizing: border-box; background: none; border: none;
+    padding: 9px 10px; border-radius: 8px; cursor: pointer;
+    font-size: 14px; color: #3a2f22; text-align: start;
+  }
+  .lang-opt:hover { background: #f5efe6; }
+  .lang-opt.on { color: #18571F; font-weight: 700; }
+
+  /* ============ ÁRABE · RTL (derecha a izquierda) ============ */
+  [dir="rtl"] body,
+  [dir="rtl"] .app,
+  [dir="rtl"] .screen { direction: rtl; }
+  [dir="rtl"] .login-q,
+  [dir="rtl"] .login-hint,
+  [dir="rtl"] .login-l,
+  [dir="rtl"] .start-q,
+  [dir="rtl"] .start-hint,
+  [dir="rtl"] .gallery-title,
+  [dir="rtl"] .gallery-sub,
+  [dir="rtl"] .gallery-hi,
+  [dir="rtl"] .detail-title,
+  [dir="rtl"] .purpose,
+  [dir="rtl"] .step-body,
+  [dir="rtl"] .phrase,
+  [dir="rtl"] .note,
+  [dir="rtl"] .thumb-name,
+  [dir="rtl"] .puesto-name,
+  [dir="rtl"] .dash-h,
+  [dir="rtl"] .hbar-label { text-align: right; }
+  /* el input de legajo queda alineado a la derecha */
+  [dir="rtl"] .login-input { text-align: right; direction: rtl; }
+  /* listas ordenadas: numeración a la derecha */
+  [dir="rtl"] .steps,
+  [dir="rtl"] .no-list { padding-right: 18px; padding-left: 0; }
+  /* selector de idioma: cambia de esquina en RTL */
+  [dir="rtl"] .lang-select { right: auto; left: 12px; }
+  [dir="rtl"] .lang-menu { right: auto; left: 0; }
+  /* iconos con margen automático: espejar el empuje en filas RTL */
+  [dir="rtl"] .esc-badge[style*="margin-left"] { margin-left: 0 !important; margin-right: auto !important; }
 </style>
 </head>
 <body>
@@ -722,6 +779,12 @@
   <script src="vendor/supabase.js"></script>
   <script src="cultiva-auth.js"></script>
   <script src="cultiva-data.js"></script>
+
+  <!-- i18n: diccionarios (UI + contenido) + motor. Debe ir tras los data-*.js
+       y antes de los componentes: el motor traduce el contenido al cargar. -->
+  <script src="i18n-ui.js"></script>
+  <script src="i18n-content.js"></script>
+  <script src="i18n.js"></script>
 
   <!-- Componentes (JS plano, ya pre-compilado: sin JSX en runtime) -->
   <script src="CultivaRegistroForm.js"></script>

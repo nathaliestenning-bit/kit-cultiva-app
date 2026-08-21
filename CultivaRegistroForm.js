@@ -14,6 +14,7 @@
    ============================================================ */
 const { createElement: rh, useState: rUse, useEffect: rEff } = React;
 const RI = (name, cls) => rh("i", { "data-lucide": name, className: cls || "" });
+const RT = (k) => (window.t ? window.t(k) : k);   // interfaz (UI) traducida
 /* check en SVG (NO Lucide): React lo controla y puede quitarlo sin el crash de
    removeChild que ocurría al resetear el toggle "Sí/No" tras guardar. */
 const CheckIco = (cls) => rh("svg", { className: cls || "", viewBox: "0 0 24 24",
@@ -275,7 +276,7 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
       const typeMap = { text: "text", date: "date", time: "time", num: "number", person: "text" };
       control = rh("input", Object.assign({}, common, {
         type: typeMap[f.t] || "text",
-        placeholder: f.ph || (f.t === "person" ? "Nombre…" : ""),
+        placeholder: f.ph || (f.t === "person" ? RT("form.namePlaceholder") : ""),
         inputMode: f.t === "num" ? "numeric" : undefined,
         onChange: (e) => setField(f.k, e.target.value),
       }));
@@ -330,13 +331,13 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
     justSent && rh("div", { className: "sent-banner" },
       RI("check-check", "ico-xs"),
       rh("div", null,
-        rh("b", null, "Registro guardado"), " · ", fmt(justSent.ts),
+        rh("b", null, RT("form.saved")), " · ", fmt(justSent.ts),
         rh("div", { className: "sent-sub" },
           justSent.escalado
-            ? "Marcaste «No lo resuelvo yo»: lo escalamos a tu jefe directo."
+            ? RT("form.subEscalated")
             : deferFields.length
-              ? "Completa el acuerdo y los comentarios abajo, en el registro guardado."
-              : (escalateTo ? "Puedes escalarlo desde el historial si te excede." : "Disponible para tu líder.")),
+              ? RT("form.subDefer")
+              : (escalateTo ? RT("form.subCanEscalate") : RT("form.subAvailable"))),
       ),
     ),
 
@@ -349,14 +350,14 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
 
     rh("div", { className: "registro-actions" },
       rh("button", { className: "btn-send", type: "button", onClick: submit },
-        RI("save", "ico-xs"), "Guardar registro"),
+        RI("save", "ico-xs"), RT("form.save")),
     ),
 
     // historial
     history.length > 0 && rh("div", { className: "hist" },
       rh("button", { className: "hist-h", type: "button", onClick: () => setOpen(!open) },
         RI("history", "ico-xs"),
-        rh("span", null, "Registros guardados"),
+        rh("span", null, RT("form.history")),
         rh("span", { className: "hist-count" }, history.length),
         RI(open ? "chevron-up" : "chevron-down", "ico-xs"),
       ),
