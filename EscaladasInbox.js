@@ -9,6 +9,8 @@
    ============================================================ */
 const { createElement: eh, useState: eUse, useEffect: eEff } = React;
 const EI = (name, cls) => eh("i", { "data-lucide": name, className: cls || "" });
+const ET = (k) => (window.t ? window.t(k) : k);                                  // interfaz
+const ETC = (s) => (window.CultivaI18N ? window.CultivaI18N.tc(s) : s);          // contenido
 
 function initials(name) {
   const p = (name || "").trim().split(/\s+/);
@@ -16,10 +18,10 @@ function initials(name) {
 }
 function timeAgo(ts) {
   const m = Math.round((Date.now() - ts) / 60000);
-  if (m < 60) return "hace " + m + " min";
+  if (m < 60) return ET("esc.ago") + " " + m + " " + ET("esc.min");
   const h = Math.round(m / 60);
-  if (h < 24) return "hace " + h + " h";
-  return "hace " + Math.round(h / 24) + " d";
+  if (h < 24) return ET("esc.ago") + " " + h + " " + ET("esc.hour");
+  return ET("esc.ago") + " " + Math.round(h / 24) + " " + ET("esc.day");
 }
 
 function EscaladaCard({ item, escState, superiorRole, canEscalateUp, onStatus, onMessage, onEscalateUp }) {
@@ -56,7 +58,7 @@ function EscaladaCard({ item, escState, superiorRole, canEscalateUp, onStatus, o
       eh("p", { className: "esc-detalle" }, item.detalle),
       item.requiere ? eh("div", { className: "esc-requiere" },
         EI("flag", "ico-sm"),
-        eh("div", null, eh("b", null, "Qué requiere de ti"), item.requiere)) : null,
+        eh("div", null, eh("b", null, ET("esc.requiresOfYou")), item.requiere)) : null,
 
       // estados
       eh("div", { className: "esc-states" },
@@ -70,27 +72,27 @@ function EscaladaCard({ item, escState, superiorRole, canEscalateUp, onStatus, o
             style: status === s.id ? { "--sc": s.color } : null,
             onClick: () => setStatus(s.id),
             // "Resuelvo yo" (acción) → "Resuelto" (estado) cuando ya está resuelto
-          }, EI(s.icon), (s.id === "resuelvo" && status === "resuelvo") ? "Resuelto" : s.label))),
+          }, EI(s.icon), (s.id === "resuelvo" && status === "resuelvo") ? ET("esc.resolved") : s.label))),
 
       // campo extra al escalar hacia arriba
       status === "escalo" ? eh("div", { className: "esc-escfield" },
-        eh("label", null, "¿Qué necesitas puntualmente de tu " + (superiorRole || "superior") + "?"),
-        eh("textarea", { value: reqSuperior, placeholder: "Sé específico con la solicitud…",
+        eh("label", null, ET("esc.needFromPre") + " " + (superiorRole || ET("esc.superior")) + ET("esc.needFromPost")),
+        eh("textarea", { value: reqSuperior, placeholder: ET("esc.beSpecific"),
           onChange: (e) => setReqSuperior(e.target.value) }),
         eh("button", { className: "btn-escalar-up", type: "button", onClick: escalarUp },
-          EI("arrow-up", "ico-xs"), st.escalatedUp ? "Actualizar solicitud" : "Escalar hacia arriba"),
+          EI("arrow-up", "ico-xs"), st.escalatedUp ? ET("esc.updateReq") : ET("esc.escalateUp")),
         st.escalatedUp ? eh("span", { style: { fontSize: "10.5px", color: "#8A5A12" } },
-          EI("check", "ico-xs"), " Enviado a tu " + (superiorRole || "superior")) : null,
+          EI("check", "ico-xs"), " " + ET("esc.sentTo") + " " + (superiorRole || ET("esc.superior"))) : null,
       ) : null,
 
       // herramientas
       eh("div", { className: "esc-tools" },
         eh("button", { className: "esc-tool" + (showComment ? " on" : ""), type: "button",
           onClick: () => { setShowComment(!showComment); setShowConsulta(false); setDraft(""); } },
-          EI("message-square"), "Comentar"),
+          EI("message-square"), ET("esc.comment")),
         eh("button", { className: "esc-tool" + (showConsulta ? " on" : ""), type: "button",
           onClick: () => { setShowConsulta(!showConsulta); setShowComment(false); setDraft(""); } },
-          EI("help-circle"), "Consultar"),
+          EI("help-circle"), ET("esc.consult")),
       ),
 
       // thread
@@ -99,7 +101,7 @@ function EscaladaCard({ item, escState, superiorRole, canEscalateUp, onStatus, o
           eh("span", { className: "esc-msg-bubble" }, m.text),
           eh("span", { className: "esc-msg-meta" },
             eh("span", { className: "esc-msg-kind" },
-              m.kind === "consulta" ? "Consulta" : m.kind === "respuesta" ? (item.from || "").split(" ")[0] : "Nota"),
+              m.kind === "consulta" ? ET("esc.consultLabel") : m.kind === "respuesta" ? (item.from || "").split(" ")[0] : ET("esc.noteLabel")),
             " · ", timeAgo(m.ts)),
         ))) : null,
 
@@ -107,7 +109,7 @@ function EscaladaCard({ item, escState, superiorRole, canEscalateUp, onStatus, o
       (showComment || showConsulta) ? eh("div", { className: "esc-composer" },
         eh("textarea", {
           value: draft, autoFocus: true,
-          placeholder: showConsulta ? "Pregunta al subordinado…" : "Escribe una nota…",
+          placeholder: showConsulta ? ET("esc.askSub") : ET("esc.writeNote"),
           onChange: (e) => setDraft(e.target.value),
         }),
         eh("button", { className: "esc-send", type: "button", disabled: !draft.trim(),
@@ -133,7 +135,7 @@ function EscaladasInbox({ profile, onBack, onEquipo }) {
 
   // rol superior (a quién escala este perfil) — demo
   const supMap = { "cos-n2": "Jefe de Cosecha", "cos-n3": "Jefe de Cosecha", "cos-n1": "Gerencia" };
-  const sup = supMap[profile.id] || "superior";
+  const sup = (supMap[profile.id] ? ETC(supMap[profile.id]) : null) || ET("esc.superior");
   // tope de la cadena (sin jefe a quién escalar): N1 de todas las áreas y N2 de Calidad
   const esTope = profile.level === "N1" || profile.id === "cal-n2";
   const canEscalateUp = !esTope;
@@ -164,28 +166,27 @@ function EscaladasInbox({ profile, onBack, onEquipo }) {
 
   return eh("div", { className: "screen escbox" },
     eh("div", { className: "topbar" },
-      eh("button", { className: "icon-btn", type: "button", onClick: onBack, "aria-label": "Volver" }, EI("arrow-left")),
+      eh("button", { className: "icon-btn", type: "button", onClick: onBack, "aria-label": ET("common.back") }, EI("arrow-left")),
       eh("div", { className: "topbar-id" },
-        eh("span", { className: "topbar-role" }, "Escaladas diarias"),
-        eh("span", { className: "topbar-area" }, EI("inbox", "ico-xs"), "De tus " +
-          (profile.id === "cos-n1" ? "Jefes" : profile.id === "cos-n2" ? "Supervisores" : "Líderes")),
+        eh("span", { className: "topbar-role" }, ET("esc.title")),
+        eh("span", { className: "topbar-area" }, EI("inbox", "ico-xs"), ET("esc.fromYour") + " " +
+          (profile.id === "cos-n1" ? ET("esc.rolChiefs") : profile.id === "cos-n2" ? ET("esc.rolSupervisors") : ET("esc.rolLeaders"))),
       ),
     ),
     eh("div", { className: "escbox-scroll" },
       eh("div", { className: "escbox-hero" },
-        eh("h1", { className: "escbox-title" }, "Temas escalados a ti"),
-        eh("p", { className: "escbox-sub" },
-          "Lo que tu equipo te subió hoy. Dale destino a cada tema: resuélvelo, ponlo en proceso, derívalo o escálalo."),
+        eh("h1", { className: "escbox-title" }, ET("esc.heroTitle")),
+        eh("p", { className: "escbox-sub" }, ET("esc.heroSub")),
         (onEquipo && ["N1", "N2", "N3"].indexOf(profile.level) >= 0) ? eh("button", {
           type: "button", onClick: onEquipo,
           style: { marginTop: "12px", display: "inline-flex", alignItems: "center", gap: "7px",
             fontSize: "13px", padding: "10px 16px", borderRadius: "999px", cursor: "pointer",
             border: "1px solid #cdd7d9", background: "#eef4f5", color: "#2F6E7A" },
-        }, EI("users", "ico-xs"), "Mi equipo") : null,
+        }, EI("users", "ico-xs"), ET("esc.myTeam")) : null,
       ),
       loaded ? eh("div", { className: "escbox-filters" },
-        [["todos", "Todos", list.length], ["pendientes", "Pendientes", pendientes.length],
-         ["resueltos", "Resueltos", resueltos.length]]
+        [["todos", ET("esc.fltAll"), list.length], ["pendientes", ET("esc.fltPending"), pendientes.length],
+         ["resueltos", ET("esc.fltResolved"), resueltos.length]]
           .map(([id, lbl, n]) =>
             eh("button", { key: id, type: "button", className: "escbox-filter" + (filter === id ? " on" : ""),
               onClick: () => setFilter(id) }, lbl, " (" + n + ")")),
@@ -194,7 +195,7 @@ function EscaladasInbox({ profile, onBack, onEquipo }) {
         ? null
         : shown.length === 0
         ? eh("div", { className: "escbox-empty" }, EI("inbox"),
-            eh("div", null, "Sin temas en esta vista."))
+            eh("div", null, ET("esc.emptyView")))
         : eh("div", { className: "esc-list" },
             shown.map((it) => eh(EscaladaCard, {
               key: it.id, item: it, escState: stateOf(it.id),
