@@ -195,7 +195,8 @@ window.UI_STRINGS = {
     "escst.derivo": "Escalado · derivado",
     "escst.escalo": "Escalado · subió más arriba",
     "mtr.recordedNoDetail": "Registrado (sin detalle).",
-    "escucha.warning": "Da seguimiento a cada tema que se levante aquí. Eres el principal punto de contacto de tu equipo."
+    "escucha.warning": "Da seguimiento a los temas que se comenten aquí. Si surge algo que deba escalarse, tú eres el contacto principal para darle seguimiento y respuesta.",
+    "escucha.warnTitle": "Recordatorio"
   },
   "en": {
     "brand.tagline": "Leadership in action",
@@ -389,7 +390,8 @@ window.UI_STRINGS = {
     "escst.derivo": "Escalated · handed off",
     "escst.escalo": "Escalated · went further up",
     "mtr.recordedNoDetail": "Logged (no details).",
-    "escucha.warning": "Follow up on every topic raised here. You are your team's main point of contact."
+    "escucha.warning": "Follow up on the topics discussed here. If something comes up that needs escalating, you are the main point of contact to follow it through and respond.",
+    "escucha.warnTitle": "Reminder"
   },
   "pt": {
     "brand.tagline": "Liderança em ação",
@@ -583,7 +585,8 @@ window.UI_STRINGS = {
     "escst.derivo": "Escalado · encaminhado",
     "escst.escalo": "Escalado · subiu mais acima",
     "mtr.recordedNoDetail": "Registrado (sem detalhe).",
-    "escucha.warning": "Acompanhe cada tema levantado aqui. Você é o principal ponto de contato da sua equipe."
+    "escucha.warning": "Acompanhe os temas conversados aqui. Se surgir algo que precise ser escalado, você é o contato principal para dar seguimento e resposta.",
+    "escucha.warnTitle": "Lembrete"
   },
   "fr": {
     "brand.tagline": "Le leadership en action",
@@ -777,7 +780,8 @@ window.UI_STRINGS = {
     "escst.derivo": "Escaladé · transféré",
     "escst.escalo": "Escaladé · remonté plus haut",
     "mtr.recordedNoDetail": "Enregistré (sans détail).",
-    "escucha.warning": "Assure le suivi de chaque sujet évoqué ici. Tu es le principal point de contact de ton équipe."
+    "escucha.warning": "Assure le suivi des sujets abordés ici. Si quelque chose doit être remonté, tu es le contact principal pour en assurer le suivi et la réponse.",
+    "escucha.warnTitle": "Rappel"
   },
   "ar": {
     "brand.tagline": "القيادة في الميدان",
@@ -971,6 +975,7 @@ window.UI_STRINGS = {
     "escst.derivo": "تم التصعيد · تمت الإحالة",
     "escst.escalo": "تم التصعيد · رُفع إلى مستوى أعلى",
     "mtr.recordedNoDetail": "تم التسجيل (دون تفاصيل).",
-    "escucha.warning": "تابِع كل موضوع يُطرح هنا. أنت نقطة الاتصال الرئيسية لفريقك."
+    "escucha.warning": "تابِع المواضيع التي تُطرح هنا. وإذا ظهر ما يستدعي التصعيد، فأنت جهة الاتصال الرئيسية لمتابعته والرد عليه.",
+    "escucha.warnTitle": "تذكير"
   }
 };

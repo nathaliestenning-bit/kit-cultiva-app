@@ -367,6 +367,7 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
   const D = window.CultivaData;
   const [hechoHoy, setHechoHoy] = useState(null);   // ts del "realizado" de hoy, o null
   const [marcando, setMarcando] = useState(false);
+  const [avisoOpen, setAvisoOpen] = useState(true);  // aviso de seguimiento: abierto al entrar, minimizable
   function _dayStart() { const d = new Date(); d.setHours(0, 0, 0, 0); return d.getTime(); }
   useEffect(() => {
     let alive = true; setHechoHoy(null);
@@ -450,10 +451,20 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
             ritual.purpose ? h("p", { className: "purpose" }, ritual.purpose) : null,
 
             // Aviso (solo en "Espacio de confianza" y solo para perfiles que recibían
-            // escaladas): recordar que ellos son el punto de contacto y deben dar seguimiento.
+            // escaladas): recordatorio de que son el punto de contacto. Plegable: abierto
+            // al entrar, se puede minimizar para no saturar la vista.
             (esEspacioConfianza && teniaEscaladas) ? h("div", {
-              style: { display: "flex", gap: "9px", alignItems: "flex-start", background: "#FBECEA", border: "1px solid #Eed0cb", borderRadius: "12px", padding: "11px 13px", margin: "0 0 12px", color: "#9A3B31" },
-            }, I("alert-triangle", "ico-sm"), h("span", { style: { fontSize: "13px", lineHeight: 1.45 } }, T("escucha.warning"))) : null,
+              style: { background: "#FBECEA", border: "1px solid #Eed0cb", borderRadius: "12px", margin: "0 0 12px", color: "#9A3B31", overflow: "hidden" },
+            },
+              h("button", {
+                type: "button", onClick: () => setAvisoOpen(!avisoOpen),
+                style: { all: "unset", cursor: "pointer", boxSizing: "border-box", width: "100%", display: "flex", alignItems: "center", gap: "8px", padding: "10px 12px" },
+              },
+                I("alert-triangle", "ico-sm"),
+                h("span", { style: { flex: 1, fontSize: "12.5px", fontWeight: 700 } }, T("escucha.warnTitle")),
+                I(avisoOpen ? "chevron-up" : "chevron-down", "ico-xs")),
+              avisoOpen ? h("div", { style: { padding: "0 12px 11px 12px", fontSize: "13px", lineHeight: 1.5 } }, T("escucha.warning")) : null,
+            ) : null,
 
             ritual.kind === "escaladas" ? h("button", { className: "done-btn on", type: "button", onClick: onEscaladas, style: { marginBottom: "10px" } },
               I("inbox", "ico-sm"), T("detail.inbox")) : null,
