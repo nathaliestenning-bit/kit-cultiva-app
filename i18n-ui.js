@@ -194,7 +194,8 @@ window.UI_STRINGS = {
     "escst.resuelvo": "Resuelto por tu líder",
     "escst.derivo": "Escalado · derivado",
     "escst.escalo": "Escalado · subió más arriba",
-    "mtr.recordedNoDetail": "Registrado (sin detalle)."
+    "mtr.recordedNoDetail": "Registrado (sin detalle).",
+    "escucha.warning": "Da seguimiento a cada tema que se levante aquí. Eres el principal punto de contacto de tu equipo."
   },
   "en": {
     "brand.tagline": "Leadership in action",
@@ -387,7 +388,8 @@ window.UI_STRINGS = {
     "escst.resuelvo": "Resolved by your leader",
     "escst.derivo": "Escalated · handed off",
     "escst.escalo": "Escalated · went further up",
-    "mtr.recordedNoDetail": "Logged (no details)."
+    "mtr.recordedNoDetail": "Logged (no details).",
+    "escucha.warning": "Follow up on every topic raised here. You are your team's main point of contact."
   },
   "pt": {
     "brand.tagline": "Liderança em ação",
@@ -580,7 +582,8 @@ window.UI_STRINGS = {
     "escst.resuelvo": "Resolvido pelo seu líder",
     "escst.derivo": "Escalado · encaminhado",
     "escst.escalo": "Escalado · subiu mais acima",
-    "mtr.recordedNoDetail": "Registrado (sem detalhe)."
+    "mtr.recordedNoDetail": "Registrado (sem detalhe).",
+    "escucha.warning": "Acompanhe cada tema levantado aqui. Você é o principal ponto de contato da sua equipe."
   },
   "fr": {
     "brand.tagline": "Le leadership en action",
@@ -773,7 +776,8 @@ window.UI_STRINGS = {
     "escst.resuelvo": "Résolu par ton leader",
     "escst.derivo": "Escaladé · transféré",
     "escst.escalo": "Escaladé · remonté plus haut",
-    "mtr.recordedNoDetail": "Enregistré (sans détail)."
+    "mtr.recordedNoDetail": "Enregistré (sans détail).",
+    "escucha.warning": "Assure le suivi de chaque sujet évoqué ici. Tu es le principal point de contact de ton équipe."
   },
   "ar": {
     "brand.tagline": "القيادة في الميدان",
@@ -966,6 +970,7 @@ window.UI_STRINGS = {
     "escst.resuelvo": "تمت المعالجة من قِبل قائدك",
     "escst.derivo": "تم التصعيد · تمت الإحالة",
     "escst.escalo": "تم التصعيد · رُفع إلى مستوى أعلى",
-    "mtr.recordedNoDetail": "تم التسجيل (دون تفاصيل)."
+    "mtr.recordedNoDetail": "تم التسجيل (دون تفاصيل).",
+    "escucha.warning": "تابِع كل موضوع يُطرح هنا. أنت نقطة الاتصال الرئيسية لفريقك."
   }
 };

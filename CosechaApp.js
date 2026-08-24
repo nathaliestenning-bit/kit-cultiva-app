@@ -203,10 +203,6 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
   // seguimientos de hoy (fecha propia + escaladas por vencer)
   const [segs, setSegs] = useState(null);
   const [segsOpen, setSegsOpen] = useState(false);
-  // Ritual de escaladas DESACTIVADO: no se muestra a los colaboradores. Excepción:
-  // a N1/N2/N3 se les sigue mostrando mientras su bandeja recibida tenga temas SIN
-  // resolver; cuando llega a 0, también desaparece. (No se elimina, solo se oculta.)
-  const [inboxOpen, setInboxOpen] = useState(null);
   useEffect(() => {
     let alive = true; const D = window.CultivaData;
     if (D && D.seguimientosHoy) {
@@ -215,20 +211,12 @@ function Gallery({ profile, onOpen, onBack, onEscaladas, onEquipo, userName }) {
     }
     return () => { alive = false; };
   }, [profile.id]);
-  useEffect(() => {
-    let alive = true; const D = window.CultivaData;
-    if (D && D.listInbox) {
-      D.listInbox(profile.id)
-        .then((list) => { if (alive) setInboxOpen((list || []).filter((x) => (x.state && x.state.status) !== "resuelvo").length); })
-        .catch(() => { if (alive) setInboxOpen(0); });
-    } else if (alive) { setInboxOpen(0); }
-    return () => { alive = false; };
-  }, [profile.id]);
 
-  const escCount = inboxOpen || 0;
-  const mostrarEsc = escCount > 0;   // el ritual de escaladas solo aparece si la bandeja > 0
+  // Ritual "Revisión de escaladas" DESACTIVADO por completo: ya no se muestra a
+  // nadie, aunque la bandeja no esté en 0 (no se elimina de los datos, solo se oculta).
+  const escCount = 0;
   const groups = window.DIM_ORDER
-    .map((d) => ({ dim: d, def: window.DIMS[d], items: R.filter((r) => r.dimension === d && (r.kind === "full" || (r.kind === "escaladas" && mostrarEsc))) }))
+    .map((d) => ({ dim: d, def: window.DIMS[d], items: R.filter((r) => r.dimension === d && r.kind === "full") }))
     .filter((g) => g.items.length);
 
   return h("div", { className: "screen gallery" },
@@ -421,6 +409,11 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
   }
 
   const isEscucha = ritual.registro && ritual.registro.escuchaTemas;
+  // ¿este perfil tenía el ritual "Revisión de escaladas" (desactivado)? Si es así,
+  // en su "Espacio de confianza" se muestra un aviso de que él es el punto de contacto.
+  const teniaEscaladas = (profile.rituals || []).some((r) => r.kind === "escaladas");
+  // "Espacio de confianza" = ritual de escucha tipo full (independiente del idioma).
+  const esEspacioConfianza = ritual.dimension === "escucha" && ritual.kind === "full";
   // Solo Reconocimiento (dimensión "valora") mantiene registro. En el resto de
   // rituales se desactivó toda opción de registro (formulario y "Marcar como…").
   const esReco = ritual.dimension === "valora";
@@ -455,6 +448,12 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
           )
         : h("div", { className: "full-wrap" },
             ritual.purpose ? h("p", { className: "purpose" }, ritual.purpose) : null,
+
+            // Aviso (solo en "Espacio de confianza" y solo para perfiles que recibían
+            // escaladas): recordar que ellos son el punto de contacto y deben dar seguimiento.
+            (esEspacioConfianza && teniaEscaladas) ? h("div", {
+              style: { display: "flex", gap: "9px", alignItems: "flex-start", background: "#FBECEA", border: "1px solid #Eed0cb", borderRadius: "12px", padding: "11px 13px", margin: "0 0 12px", color: "#9A3B31" },
+            }, I("alert-triangle", "ico-sm"), h("span", { style: { fontSize: "13px", lineHeight: 1.45 } }, T("escucha.warning"))) : null,
 
             ritual.kind === "escaladas" ? h("button", { className: "done-btn on", type: "button", onClick: onEscaladas, style: { marginBottom: "10px" } },
               I("inbox", "ico-sm"), T("detail.inbox")) : null,
