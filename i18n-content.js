@@ -1,10 +1,7 @@
 /* ============================================================
-   CULTIVA · i18n — TRADUCCIONES DE CONTENIDO (rituales)
-   window.CONTENT_TR[lang][fraseEnEspañol] = traducción.
-   El español es la base (no se lista). Frases sin traducir caen
-   a español automáticamente.
-   (Generado por traducción automática experta; revisar con
-   hablante nativo antes de uso final — sobre todo árabe y francés.)
+   CULTIVA . i18n - TRADUCCIONES DE CONTENIDO (rituales)
+   window.CONTENT_TR[lang][fraseEs] = traduccion. Base: espanol.
+   (Generado por traduccion experta; revisar con hablante nativo.)
    ============================================================ */
 window.CONTENT_TR = {
 "en": {
@@ -658,7 +655,22 @@ window.CONTENT_TR = {
 "Otro": "Other",
 "Resuelvo yo": "I resolve it",
 "En proceso": "In progress",
-"Derivo": "I refer it"
+"Derivo": "I refer it",
+"El equipo paró o amenaza con parar labores.": "The team stopped work or is threatening to stop.",
+"No hay agua para consumo o para la labor.": "There's no water for drinking or for the work.",
+"Problemas con el registro o conteo de tareo.": "Problems with attendance logging or head count.",
+"Fotocheck perdido, dañado o que no marca.": "ID badge lost, damaged, or not scanning.",
+"Movilidad, recojo o traslado del personal.": "Transportation, pickup, or moving of personnel.",
+"Algo que sienten desigual: reparto de lotes, días o fruta, o presión que no se siente pareja.": "Something that feels unfair: how plots, days, or fruit are handed out, or pressure that doesn't feel even.",
+"La forma en que se les habló o trató les incomodó.": "The way they were spoken to or treated made them uncomfortable.",
+"Sienten que lo que hacen no se está viendo ni valorando.": "They feel that what they do isn't being seen or valued.",
+"Algo que ya habían pedido o reportado antes y siguen sin saber qué pasó.": "Something they had already asked for or reported before and still haven't heard what happened.",
+"Dudas o ganas sobre aprender, crecer o seguir en la empresa.": "Doubts or interest about learning, growing, or staying with the company.",
+"El grupo está cansado, tenso, desanimado o desconfiado.": "The group is tired, tense, discouraged, or distrustful.",
+"Una situación personal, de familia o de salud que los está afectando.": "A personal, family, or health situation that's affecting them.",
+"Un problema entre compañeros o algo serio que hay que manejar con cuidado.": "A problem between coworkers or something serious that needs to be handled carefully.",
+"Algo importante que no encaja en las opciones anteriores.": "Something important that doesn't fit the options above.",
+"Se registra la problemática, pero es MUY IMPORTANTE que contactes a Atención al Trabajador (992 890 000).": "The issue is logged, but it's VERY IMPORTANT that you contact Worker Support (992 890 000)."
 },
 "pt": {
 "Gerente / Subgerente de Cosecha": "Gerente / Subgerente de Colheita",
@@ -1311,7 +1323,22 @@ window.CONTENT_TR = {
 "Otro": "Outro",
 "Resuelvo yo": "Resolvo eu",
 "En proceso": "Em andamento",
-"Derivo": "Encaminho"
+"Derivo": "Encaminho",
+"El equipo paró o amenaza con parar labores.": "A equipe parou ou ameaça parar as atividades.",
+"No hay agua para consumo o para la labor.": "Não há água para consumo ou para o trabalho.",
+"Problemas con el registro o conteo de tareo.": "Problemas com o registro ou a contagem de ponto.",
+"Fotocheck perdido, dañado o que no marca.": "Crachá perdido, danificado ou que não registra.",
+"Movilidad, recojo o traslado del personal.": "Transporte, busca ou deslocamento do pessoal.",
+"Algo que sienten desigual: reparto de lotes, días o fruta, o presión que no se siente pareja.": "Algo que sentem como desigual: divisão de lotes, dias ou fruta, ou pressão que não parece equilibrada.",
+"La forma en que se les habló o trató les incomodó.": "A forma como falaram ou trataram eles causou incômodo.",
+"Sienten que lo que hacen no se está viendo ni valorando.": "Sentem que o que fazem não está sendo visto nem valorizado.",
+"Algo que ya habían pedido o reportado antes y siguen sin saber qué pasó.": "Algo que já haviam pedido ou reportado antes e ainda não sabem o que aconteceu.",
+"Dudas o ganas sobre aprender, crecer o seguir en la empresa.": "Dúvidas ou vontade sobre aprender, crescer ou continuar na empresa.",
+"El grupo está cansado, tenso, desanimado o desconfiado.": "O grupo está cansado, tenso, desanimado ou desconfiado.",
+"Una situación personal, de familia o de salud que los está afectando.": "Uma situação pessoal, familiar ou de saúde que está afetando eles.",
+"Un problema entre compañeros o algo serio que hay que manejar con cuidado.": "Um problema entre colegas ou algo sério que precisa ser tratado com cuidado.",
+"Algo importante que no encaja en las opciones anteriores.": "Algo importante que não se encaixa nas opções anteriores.",
+"Se registra la problemática, pero es MUY IMPORTANTE que contactes a Atención al Trabajador (992 890 000).": "A problemática é registrada, mas é MUITO IMPORTANTE que você entre em contato com o Atendimento ao Trabalhador (992 890 000)."
 },
 "fr": {
 "Gerente / Subgerente de Cosecha": "Directeur / Directeur adjoint Récolte",
@@ -1964,7 +1991,22 @@ window.CONTENT_TR = {
 "Otro": "Autre",
 "Resuelvo yo": "Je résous moi-même",
 "En proceso": "En cours",
-"Derivo": "Je transmets"
+"Derivo": "Je transmets",
+"El equipo paró o amenaza con parar labores.": "L'équipe a arrêté ou menace d'arrêter le travail.",
+"No hay agua para consumo o para la labor.": "Il n'y a pas d'eau pour la consommation ou pour le travail.",
+"Problemas con el registro o conteo de tareo.": "Problèmes avec l'enregistrement ou le comptage du pointage.",
+"Fotocheck perdido, dañado o que no marca.": "Badge perdu, endommagé ou qui ne fonctionne pas.",
+"Movilidad, recojo o traslado del personal.": "Mobilité, ramassage ou transport du personnel.",
+"Algo que sienten desigual: reparto de lotes, días o fruta, o presión que no se siente pareja.": "Quelque chose qu'ils ressentent comme inéquitable : répartition des lots, des jours ou des fruits, ou une pression qui ne semble pas juste.",
+"La forma en que se les habló o trató les incomodó.": "La façon dont on leur a parlé ou dont on les a traités les a mis mal à l'aise.",
+"Sienten que lo que hacen no se está viendo ni valorando.": "Ils sentent que ce qu'ils font n'est ni vu ni valorisé.",
+"Algo que ya habían pedido o reportado antes y siguen sin saber qué pasó.": "Quelque chose qu'ils avaient déjà demandé ou signalé auparavant et dont ils ignorent toujours ce qu'il en est advenu.",
+"Dudas o ganas sobre aprender, crecer o seguir en la empresa.": "Des doutes ou une envie concernant l'apprentissage, la progression ou le fait de rester dans l'entreprise.",
+"El grupo está cansado, tenso, desanimado o desconfiado.": "Le groupe est fatigué, tendu, découragé ou méfiant.",
+"Una situación personal, de familia o de salud que los está afectando.": "Une situation personnelle, familiale ou de santé qui les affecte.",
+"Un problema entre compañeros o algo serio que hay que manejar con cuidado.": "Un problème entre collègues ou quelque chose de sérieux qu'il faut gérer avec précaution.",
+"Algo importante que no encaja en las opciones anteriores.": "Quelque chose d'important qui ne correspond à aucune des options précédentes.",
+"Se registra la problemática, pero es MUY IMPORTANTE que contactes a Atención al Trabajador (992 890 000).": "La problématique est enregistrée, mais il est TRÈS IMPORTANT que tu contactes le Service d'Assistance au Travailleur (992 890 000)."
 },
 "ar": {
 "Gerente / Subgerente de Cosecha": "مدير / نائب مدير الحصاد",
@@ -2617,6 +2659,21 @@ window.CONTENT_TR = {
 "Otro": "أخرى",
 "Resuelvo yo": "أحلّه بنفسي",
 "En proceso": "قيد المعالجة",
-"Derivo": "أُحيله"
+"Derivo": "أُحيله",
+"El equipo paró o amenaza con parar labores.": "توقّف الفريق عن العمل أو يهدد بالتوقف.",
+"No hay agua para consumo o para la labor.": "لا يوجد ماء للشرب أو للعمل.",
+"Problemas con el registro o conteo de tareo.": "مشكلات في تسجيل أو احتساب الحضور والدوام.",
+"Fotocheck perdido, dañado o que no marca.": "بطاقة الهوية مفقودة أو تالفة أو لا تسجّل الدخول.",
+"Movilidad, recojo o traslado del personal.": "التنقّل أو نقل العاملين أو اصطحابهم.",
+"Algo que sienten desigual: reparto de lotes, días o fruta, o presión que no se siente pareja.": "شيء يشعرون أنه غير عادل: توزيع القطع الزراعية أو الأيام أو الفاكهة، أو ضغط لا يشعرون أنه متساوٍ.",
+"La forma en que se les habló o trató les incomodó.": "الطريقة التي خوطبوا أو عوملوا بها أزعجتهم.",
+"Sienten que lo que hacen no se está viendo ni valorando.": "يشعرون أن ما يقومون به لا يُرى ولا يُقدَّر.",
+"Algo que ya habían pedido o reportado antes y siguen sin saber qué pasó.": "شيء سبق أن طلبوه أو أبلغوا عنه ولا يزالون لا يعرفون ما جرى بشأنه.",
+"Dudas o ganas sobre aprender, crecer o seguir en la empresa.": "تساؤلات أو رغبة في التعلّم أو النمو أو الاستمرار في الشركة.",
+"El grupo está cansado, tenso, desanimado o desconfiado.": "المجموعة مُتعبة أو متوترة أو محبطة أو فاقدة للثقة.",
+"Una situación personal, de familia o de salud que los está afectando.": "وضع شخصي أو عائلي أو صحي يؤثّر فيهم.",
+"Un problema entre compañeros o algo serio que hay que manejar con cuidado.": "مشكلة بين الزملاء أو أمر خطير يجب التعامل معه بحذر.",
+"Algo importante que no encaja en las opciones anteriores.": "أمر مهم لا يندرج ضمن الخيارات السابقة.",
+"Se registra la problemática, pero es MUY IMPORTANTE que contactes a Atención al Trabajador (992 890 000).": "تُسجَّل المشكلة، لكن من المهم جدًّا أن تتصل بخدمة رعاية العاملين (992 890 000)."
 }
 };
