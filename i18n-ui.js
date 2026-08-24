@@ -163,7 +163,12 @@ window.UI_STRINGS = {
     "esc.fltAll": "Todos",
     "esc.fltPending": "Pendientes",
     "esc.fltResolved": "Resueltos",
-    "esc.emptyView": "Sin temas en esta vista."
+    "esc.emptyView": "Sin temas en esta vista.",
+    "gest.pendiente": "Pendiente",
+    "gest.proceso": "En proceso",
+    "gest.resuelvo": "Resuelto",
+    "gest.derivo": "Derivado",
+    "gest.escalo": "Escaló"
   },
   "en": {
     "brand.tagline": "Leadership in action",
@@ -324,7 +329,12 @@ window.UI_STRINGS = {
     "esc.fltAll": "All",
     "esc.fltPending": "Pending",
     "esc.fltResolved": "Resolved",
-    "esc.emptyView": "No topics in this view."
+    "esc.emptyView": "No topics in this view.",
+    "gest.pendiente": "Pending",
+    "gest.proceso": "In progress",
+    "gest.resuelvo": "Resolved",
+    "gest.derivo": "Referred",
+    "gest.escalo": "Escalated"
   },
   "pt": {
     "brand.tagline": "Liderança em ação",
@@ -485,7 +495,12 @@ window.UI_STRINGS = {
     "esc.fltAll": "Todos",
     "esc.fltPending": "Pendentes",
     "esc.fltResolved": "Resolvidos",
-    "esc.emptyView": "Sem temas nesta visão."
+    "esc.emptyView": "Sem temas nesta visão.",
+    "gest.pendiente": "Pendente",
+    "gest.proceso": "Em andamento",
+    "gest.resuelvo": "Resolvido",
+    "gest.derivo": "Encaminhado",
+    "gest.escalo": "Escalou"
   },
   "fr": {
     "brand.tagline": "Le leadership en action",
@@ -646,7 +661,12 @@ window.UI_STRINGS = {
     "esc.fltAll": "Tous",
     "esc.fltPending": "En attente",
     "esc.fltResolved": "Résolus",
-    "esc.emptyView": "Aucun sujet dans cette vue."
+    "esc.emptyView": "Aucun sujet dans cette vue.",
+    "gest.pendiente": "En attente",
+    "gest.proceso": "En cours",
+    "gest.resuelvo": "Résolu",
+    "gest.derivo": "Transféré",
+    "gest.escalo": "Escaladé"
   },
   "ar": {
     "brand.tagline": "القيادة في الميدان",
@@ -807,6 +827,11 @@ window.UI_STRINGS = {
     "esc.fltAll": "الكل",
     "esc.fltPending": "معلّقة",
     "esc.fltResolved": "محلولة",
-    "esc.emptyView": "لا مواضيع في هذا العرض."
+    "esc.emptyView": "لا مواضيع في هذا العرض.",
+    "gest.pendiente": "قيد الانتظار",
+    "gest.proceso": "قيد التنفيذ",
+    "gest.resuelvo": "تم الحل",
+    "gest.derivo": "محوّل",
+    "gest.escalo": "تم التصعيد"
   }
 };

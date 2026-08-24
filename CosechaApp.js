@@ -344,8 +344,13 @@ const TAC_VIDEOS = {
 // URL del video que corresponde a este perfil+ritual (o null si no hay).
 function videoDeRitual(profile, ritual) {
   if (!profile || !ritual) return null;
-  if (profile.level === "N4") return N4_VIDEOS[ritual.title] || null;
-  if (profile.id === "cal-tac") return TAC_VIDEOS[ritual.id] || null;
+  // N4_VIDEOS está indexado por el título en ESPAÑOL; como el título se traduce en
+  // runtime, comparamos traduciendo la clave española al idioma actual (TC).
+  if (profile.level === "N4") {
+    for (var k in N4_VIDEOS) { if (Object.prototype.hasOwnProperty.call(N4_VIDEOS, k) && TC(k) === ritual.title) return N4_VIDEOS[k]; }
+    return null;
+  }
+  if (profile.id === "cal-tac") return TAC_VIDEOS[ritual.id] || null;   // por id: estable
   return null;
 }
 function RitualVideo({ url }) {
@@ -547,11 +552,11 @@ function MiEquipo({ profile, onBack }) {
 
 /* ---------- Gestión de escaladas del equipo (solo lectura) --- */
 const GEST_EST = {
-  pendiente: { l: "Pendiente", c: "#8a7a68" },
-  proceso:   { l: "En proceso", c: "#A8631A" },
-  resuelvo:  { l: "Resuelto",   c: "#18571F" },
-  derivo:    { l: "Derivado",   c: "#4156A2" },
-  escalo:    { l: "Escaló",     c: "#A81519" },
+  pendiente: { l: T("gest.pendiente"), c: "#8a7a68" },
+  proceso:   { l: T("gest.proceso"),   c: "#A8631A" },
+  resuelvo:  { l: T("gest.resuelvo"),   c: "#18571F" },
+  derivo:    { l: T("gest.derivo"),     c: "#4156A2" },
+  escalo:    { l: T("gest.escalo"),     c: "#A81519" },
 };
 function EquipoEscaladas({ profile, onBack }) {
   const D = window.CultivaData;
@@ -1017,7 +1022,7 @@ function CosechaApp() {
     }) : null,
     view === "start" ? h(Start, {
       onEnter: (pid) => { setProfileId(pid); setView("gallery"); },
-      backLabel: (exploreMaestro || exploreAdmin) ? "Volver" : undefined,
+      backLabel: (exploreMaestro || exploreAdmin) ? T("common.back") : undefined,
       onBackToLogin: () => {
         if (exploreMaestro) { setExploreMaestro(false); setAccessMode("maestro"); setProfileId(null); setView("maestro"); }
         else if (exploreAdmin) { setExploreAdmin(false); setAccessMode("user"); setProfileId(null); setView("dashboard"); }
