@@ -36,7 +36,7 @@ function emptyValues(fields) {
 
 /* Campo "¿Lo resuelvo yo?" que se inyecta en el ritual "Espacio de confianza"
    (todos los perfiles). Default "Sí": no escala salvo que el líder marque "No". */
-const RESUELVO_FIELD = { k: "resuelvoYo", l: "¿Lo resuelvo yo?", t: "bool", def: true };
+const RESUELVO_FIELD = { k: "resuelvoYo", l: RT("form.resolveToggle"), t: "bool", def: true };
 function isEspacioConfianza(ritual) {
   // el ritual de escucha se llamó "Espacio de confianza" y ahora "Espacio de Escucha";
   // aceptamos ambos para conservar el toggle "¿Lo resuelvo yo?" y la escalada.
@@ -46,11 +46,11 @@ function isEspacioConfianza(ritual) {
 /* etiqueta del estado de una escalada que YO levanté, para mostrarle al autor
    si su líder ya la resolvió (visibilidad "del lado del que la hizo"). */
 const ESC_ST = {
-  pendiente: { t: "Escalado · esperando a tu líder", c: "#8A5A12", ico: "clock" },
-  proceso:   { t: "Escalado · en proceso", c: "#8A5A12", ico: "loader" },
-  resuelvo:  { t: "Resuelto por tu líder", c: "#2F7A44", ico: "check-check" },
-  derivo:    { t: "Escalado · derivado", c: "#8A5A12", ico: "corner-up-right" },
-  escalo:    { t: "Escalado · subió más arriba", c: "#8A5A12", ico: "arrow-up" },
+  pendiente: { t: RT("escst.pendiente"), c: "#8A5A12", ico: "clock" },
+  proceso:   { t: RT("escst.proceso"), c: "#8A5A12", ico: "loader" },
+  resuelvo:  { t: RT("escst.resuelvo"), c: "#2F7A44", ico: "check-check" },
+  derivo:    { t: RT("escst.derivo"), c: "#8A5A12", ico: "corner-up-right" },
+  escalo:    { t: RT("escst.escalo"), c: "#8A5A12", ico: "arrow-up" },
 };
 
 /* devuelve {label, alerta} del tema elegido */
@@ -250,7 +250,7 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
       );
     } else if (f.t === "area") {
       control = rh("textarea", Object.assign({}, common, {
-        rows: 2, placeholder: f.ph || "Escribe aquí…",
+        rows: 2, placeholder: f.ph || RT("form.writeHere"),
         onChange: (e) => setField(f.k, e.target.value),
       }));
     } else if (f.t === "sel") {
@@ -270,7 +270,7 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
         "aria-pressed": !!vals[f.k],
       },
         rh("span", { className: "fld-toggle-knob" }, vals[f.k] ? CheckIco("ico-xs") : null),
-        rh("span", { className: "fld-toggle-txt" }, vals[f.k] ? "Sí" : "No"),
+        rh("span", { className: "fld-toggle-txt" }, vals[f.k] ? RT("form.yes") : RT("form.no")),
       );
     } else {
       const typeMap = { text: "text", date: "date", time: "time", num: "number", person: "text" };
@@ -308,11 +308,11 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
       onChange: (ev) => setDraft(e.ts, f.k, ev.target.value) };
     let control;
     if (f.t === "area") {
-      control = rh("textarea", Object.assign({}, common, { rows: 2, placeholder: f.ph || "Escribe aquí…" }));
+      control = rh("textarea", Object.assign({}, common, { rows: 2, placeholder: f.ph || RT("form.writeHere") }));
     } else if (f.t === "date") {
       control = rh("input", Object.assign({}, common, { type: "date" }));
     } else {
-      control = rh("input", Object.assign({}, common, { type: "text", placeholder: f.ph || "Escribe aquí…" }));
+      control = rh("input", Object.assign({}, common, { type: "text", placeholder: f.ph || RT("form.writeHere") }));
     }
     return rh("div", { className: "fu-fld", key: f.k },
       rh("label", { className: "fld-l", htmlFor: idAttr }, f.l),
@@ -382,7 +382,7 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
                 let v = e.vals[f.k];
                 if (v === "" || v == null) return null;
                 if (f.t === "bool" && v === false && f.k !== "resuelvoYo") return null;
-                let disp = (f.t === "bool") ? (v ? "Sí" : "No") : (f.t === "tema" ? temaLabel(v) : String(v));
+                let disp = (f.t === "bool") ? (v ? RT("form.yes") : RT("form.no")) : (f.t === "tema" ? temaLabel(v) : String(v));
                 return rh("div", { key: f.k, className: "hist-kv" },
                   rh("span", { className: "hist-k" }, f.l), rh("span", { className: "hist-v" }, disp));
               }),
@@ -401,7 +401,7 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
               rh("button", {
                 className: "btn-fu", type: "button", disabled: !dirty,
                 onClick: () => dirty && saveFollow(e.ts),
-              }, RI("save", "ico-xs"), dirty ? "Guardar" : "Guardado"),
+              }, RI("save", "ico-xs"), dirty ? RT("form.saveFollow") : RT("form.savedFollow")),
             ) : null,
 
             // escalar (solo rituales que lo permiten)
@@ -412,7 +412,7 @@ function CultivaRegistroForm({ ritual, profileId, escalateTo }) {
               rh("button", {
                 className: "btn-escalar-mini", type: "button", disabled: isEsc,
                 onClick: () => !isEsc && escalar(e.ts),
-              }, RI(isEsc ? "check" : "arrow-up", "ico-xs"), isEsc ? "Escalado" : "Escalar"),
+              }, RI(isEsc ? "check" : "arrow-up", "ico-xs"), isEsc ? RT("form.escalated") : RT("form.escalate")),
             ) : null,
           );
         }),

@@ -142,12 +142,9 @@ function DimHeader({ dim }) {
 
 /* ---------- tarjeta de puntos (expandible con explicativo) ---------- */
 const PUNTOS_INFO = [
-  { icon: "star", h: "¿Qué son los puntos Cultiva?",
-    t: "Reconocen a los líderes que aplican sus rituales en campo. Cada ritual que registras —liderar, valorar y escuchar a tu equipo— suma puntos. Son la forma de hacer visible y tangible lo que haces cada día para fortalecer a tu equipo." },
-  { icon: "plus-circle", h: "¿Cómo se suman?",
-    t: "Cada ejecución de un ritual suma 10 puntos, y cada registro extra en un mismo ritual suma 3 puntos." },
-  { icon: "shield-check", h: "Validación de puntos",
-    t: "Los registros que hagas serán revisados para asegurar que la información sea veraz y esté debidamente sustentada." },
+  { icon: "star", h: T("pts.q1"), t: T("pts.a1") },
+  { icon: "plus-circle", h: T("pts.q2"), t: T("pts.a2") },
+  { icon: "shield-check", h: T("pts.q3"), t: T("pts.a3") },
 ];
 /* Panel de puntos: se abre desde el chip del encabezado (esquina sup. derecha).
    Muestra el progreso semanal + explicativo + "Ver a mi equipo". */
@@ -158,8 +155,8 @@ function PuntosModal({ pts, level, onEquipo, onClose }) {
   return h("div", { className: "pts-overlay", onClick: onClose },
     h("div", { className: "pts-modal", onClick: (e) => e.stopPropagation() },
       h("div", { className: "pts-modal-h" },
-        h("span", null, I("star", "ico-xs"), " Tus puntos · esta semana"),
-        h("button", { className: "pts-close", type: "button", onClick: onClose, "aria-label": "Cerrar" }, I("x")),
+        h("span", null, I("star", "ico-xs"), " " + T("pts.title")),
+        h("button", { className: "pts-close", type: "button", onClick: onClose, "aria-label": T("pts.close") }, I("x")),
       ),
       h("div", { style: { fontSize: "30px", fontWeight: 800, color: "#C9651C", margin: "2px 0 8px" } }, (pts == null ? "…" : pts) + " / 100"),
       h("div", { style: { height: "10px", background: "#f0e7da", borderRadius: "999px", overflow: "hidden" } },
@@ -175,7 +172,7 @@ function PuntosModal({ pts, level, onEquipo, onClose }) {
         style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "7px",
           marginTop: "4px", width: "100%", padding: "11px", borderRadius: "12px",
           border: "1px solid #cdd7d9", background: "#eef4f5", color: "#2F6E7A", fontSize: "14px", cursor: "pointer" } },
-        I("users", "ico-sm"), "Ver a mi equipo") : null,
+        I("users", "ico-sm"), T("pts.viewTeam")) : null,
     ),
   );
 }
@@ -344,8 +341,13 @@ const TAC_VIDEOS = {
 // URL del video que corresponde a este perfil+ritual (o null si no hay).
 function videoDeRitual(profile, ritual) {
   if (!profile || !ritual) return null;
-  if (profile.level === "N4") return N4_VIDEOS[ritual.title] || null;
-  if (profile.id === "cal-tac") return TAC_VIDEOS[ritual.id] || null;
+  // N4_VIDEOS está indexado por el título en ESPAÑOL; como el título se traduce en
+  // runtime, comparamos traduciendo la clave española al idioma actual (TC).
+  if (profile.level === "N4") {
+    for (var k in N4_VIDEOS) { if (Object.prototype.hasOwnProperty.call(N4_VIDEOS, k) && TC(k) === ritual.title) return N4_VIDEOS[k]; }
+    return null;
+  }
+  if (profile.id === "cal-tac") return TAC_VIDEOS[ritual.id] || null;   // por id: estable
   return null;
 }
 function RitualVideo({ url }) {
@@ -495,7 +497,7 @@ function Detail({ profile, ritual, onBack, onEscaladas }) {
             (esReco && ritual.registro && !ritual.registro.hidden) ? h(Accordion, { icon: "square-pen", title: T("detail.register"), color: "#4156A2", defaultOpen: true },
               h(window.CultivaRegistroForm, {
                 ritual: ritual, profileId: profile.id,
-                escalateTo: canEscalate ? ESCALATE_TO[profile.id] : null,
+                escalateTo: canEscalate ? TC(ESCALATE_TO[profile.id]) : null,
               })) : null,
 
             // rituales "full" SIN formulario de registro: botón para marcar "se realizó".
@@ -523,15 +525,15 @@ function MiEquipo({ profile, onBack }) {
 
   return h("div", { className: "screen" },
     h("div", { className: "topbar" },
-      h("button", { className: "icon-btn", type: "button", onClick: onBack, "aria-label": "Volver" }, I("arrow-left")),
+      h("button", { className: "icon-btn", type: "button", onClick: onBack, "aria-label": T("common.back") }, I("arrow-left")),
       h("div", { className: "topbar-id" },
-        h("span", { className: "topbar-role" }, "Mi equipo"),
-        h("span", { className: "topbar-area" }, I("users", "ico-xs"), "Puntos de tu equipo")),
+        h("span", { className: "topbar-role" }, T("mieq.title")),
+        h("span", { className: "topbar-area" }, I("users", "ico-xs"), T("mieq.sub"))),
     ),
     !loaded ? null : h("div", { style: { padding: "16px 18px" } },
-      h("h2", { style: { fontSize: "18px", margin: "6px 0 8px" } }, "Puntos de la semana"),
+      h("h2", { style: { fontSize: "18px", margin: "6px 0 8px" } }, T("mieq.weekPoints")),
       team.length === 0
-        ? h("p", { style: { color: "#8a7a68", fontSize: "14px" } }, "Aún no hay actividad de tu equipo esta semana.")
+        ? h("p", { style: { color: "#8a7a68", fontSize: "14px" } }, T("mieq.empty"))
         : team.map((m, i) => {
             const cap = Math.min(m.puntos || 0, 100);
             return h("div", { key: m.legajo || i, style: { margin: "12px 0" } },
@@ -547,11 +549,11 @@ function MiEquipo({ profile, onBack }) {
 
 /* ---------- Gestión de escaladas del equipo (solo lectura) --- */
 const GEST_EST = {
-  pendiente: { l: "Pendiente", c: "#8a7a68" },
-  proceso:   { l: "En proceso", c: "#A8631A" },
-  resuelvo:  { l: "Resuelto",   c: "#18571F" },
-  derivo:    { l: "Derivado",   c: "#4156A2" },
-  escalo:    { l: "Escaló",     c: "#A81519" },
+  pendiente: { l: T("gest.pendiente"), c: "#8a7a68" },
+  proceso:   { l: T("gest.proceso"),   c: "#A8631A" },
+  resuelvo:  { l: T("gest.resuelvo"),   c: "#18571F" },
+  derivo:    { l: T("gest.derivo"),     c: "#4156A2" },
+  escalo:    { l: T("gest.escalo"),     c: "#A81519" },
 };
 function EquipoEscaladas({ profile, onBack }) {
   const D = window.CultivaData;
@@ -682,14 +684,14 @@ function MaestroRitual({ ritual, color, regs, total }) {
       h("span", { style: { flex: 1, minWidth: 0 } },
         h("span", { style: { display: "block", fontSize: "14px", fontWeight: 700, color: "#3a2f22" } }, ritual.title),
         h("span", { style: { display: "block", fontSize: "11.5px", color: "#8a7a68" } }, ritual.freq)),
-      h("span", { style: { fontSize: "12px", fontWeight: 700, color: total ? "#18571F" : "#b8a894", whiteSpace: "nowrap" } }, total + (total === 1 ? " registro" : " registros")),
+      h("span", { style: { fontSize: "12px", fontWeight: 700, color: total ? "#18571F" : "#b8a894", whiteSpace: "nowrap" } }, total + " " + (total === 1 ? T("mtr.recordSingular") : T("mtr.recordPlural"))),
       I(open ? "chevron-up" : "chevron-down", "ico-xs")),
 
     open ? h("div", { style: { marginTop: "8px", borderTop: "1px solid #f0e7da", paddingTop: "8px" } },
       // contenido del ritual
       ritual.purpose ? h("p", { style: { fontSize: "12.5px", color: "#5a4a38", lineHeight: 1.45, margin: "0 0 8px" } }, ritual.purpose) : null,
       (ritual.steps && ritual.steps.length) ? h("div", null,
-        h("div", { style: { fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".03em", color: "#8a7a68", marginBottom: "5px" } }, "Paso a paso"),
+        h("div", { style: { fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".03em", color: "#8a7a68", marginBottom: "5px" } }, T("detail.steps")),
         h("ol", { style: { margin: 0, paddingLeft: "18px" } },
           ritual.steps.map((s, i) => h("li", { key: i, style: { fontSize: "12.5px", color: "#3a2f22", lineHeight: 1.45, marginBottom: "4px" } },
             s.k ? h("b", null, s.k + " — ") : null, s.t)))) : null,
@@ -698,7 +700,7 @@ function MaestroRitual({ ritual, color, regs, total }) {
       h("button", { type: "button", onClick: () => setSegOpen(!segOpen),
         style: { all: "unset", cursor: "pointer", display: "flex", width: "100%", alignItems: "center", gap: "6px", boxSizing: "border-box", marginTop: "10px", paddingTop: "8px", borderTop: "1px solid #f0e7da" } },
         I("clipboard-list", "ico-xs"),
-        h("span", { style: { flex: 1, fontSize: "12.5px", fontWeight: 700, color: "#2F6E7A" } }, "Seguimiento"),
+        h("span", { style: { flex: 1, fontSize: "12.5px", fontWeight: 700, color: "#2F6E7A" } }, T("mtr.followup")),
         h("span", { style: { fontSize: "12px", fontWeight: 700, color: total ? "#18571F" : "#b8a894" } }, total),
         I(segOpen ? "chevron-up" : "chevron-down", "ico-xs")),
       segOpen ? (regs.length ? h("div", { style: { marginTop: "6px" } },
@@ -706,7 +708,7 @@ function MaestroRitual({ ritual, color, regs, total }) {
             h("div", { style: { fontSize: "11px", color: "#8a7a68", marginBottom: "3px" } }, fmt(rg.ts)),
             Object.keys(rg.vals).filter((k) => rg.vals[k] && k.charAt(0) !== "_").map((k) =>
               h("div", { key: k, style: { fontSize: "12.5px", color: "#3a2f22", lineHeight: 1.4 } }, h("b", null, (flabels[k] || k) + ": "), String(rg.vals[k]))))))
-        : h("div", { style: { marginTop: "6px", fontSize: "12.5px", color: "#8a7a68" } }, total ? "Registrado (sin detalle)." : "Aún sin registros.")) : null,
+        : h("div", { style: { marginTop: "6px", fontSize: "12.5px", color: "#8a7a68" } }, total ? T("mtr.recordedNoDetail") : T("mtr.noRecords"))) : null,
     ) : null,
   );
 }
@@ -1017,7 +1019,7 @@ function CosechaApp() {
     }) : null,
     view === "start" ? h(Start, {
       onEnter: (pid) => { setProfileId(pid); setView("gallery"); },
-      backLabel: (exploreMaestro || exploreAdmin) ? "Volver" : undefined,
+      backLabel: (exploreMaestro || exploreAdmin) ? T("common.back") : undefined,
       onBackToLogin: () => {
         if (exploreMaestro) { setExploreMaestro(false); setAccessMode("maestro"); setProfileId(null); setView("maestro"); }
         else if (exploreAdmin) { setExploreAdmin(false); setAccessMode("user"); setProfileId(null); setView("dashboard"); }
