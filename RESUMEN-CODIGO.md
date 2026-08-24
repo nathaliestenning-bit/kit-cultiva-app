@@ -36,8 +36,13 @@ App **"Cultiva"**: PWA móvil de **rituales de liderazgo** + escaladas para **Ho
 - `cultiva-auth.js` — login por legajo (demo/Supabase), `profileFromRow`, restore de sesión. `window.CultivaAuth`.
 - `usuarios.js` — padrón **DEMO** (nombres de muestra, público, sin PII real) para el modo sin Supabase.
 
+**i18n (multi-idioma: es base, en/pt/fr/ar):**
+- `data-i18n-engine.js` (motor: idioma en localStorage `cultiva:lang`, predeterminado `es`; traduce el CONTENIDO en el sitio a nivel de frase; RTL para árabe; expone `window.t` y `window.CultivaI18N`), `data-i18n-ui.js` (`window.UI_STRINGS[lang][clave]` — ~193 cadenas de interfaz), `data-i18n-content.js` (`window.CONTENT_TR[lang][fraseEs]` — ~666 frases de rituales). **Se llaman `data-*` a propósito** (ver landmine de deploy). Cargan tras los `data-*.js` de rituales y antes de los componentes.
+- En los componentes: `T("clave")` = interfaz; `TC("frase")` / `window.CultivaI18N.tc()` = contenido. Cambiar idioma **recarga** la página (los datos vuelven a español y se retraducen limpio). El selector discreto está en el login (`LangSelect` en `LoginScreen.js`).
+- ⚠️ Traducciones **generadas automáticamente** — pendiente revisión de hablante nativo (sobre todo árabe y francés).
+
 **Infra / plataforma:**
-- `index.html` — shell del SPA. ⚠️ **Las clases CSS de los componentes viven en un `<style>` inline aquí** (NO en `assets/styles.css`).
+- `index.html` — shell del SPA. ⚠️ **Las clases CSS de los componentes viven en un `<style>` inline aquí** (NO en `assets/styles.css`); incluye el bloque CSS `[dir="rtl"]` para árabe.
 - `sw.js` — service worker: **network-first para el código** (.js/config/data/manifest) → reabrir el link muestra lo último sin borrar caché; cache-first solo para `assets/` y `vendor/`.
 - `config.js` — claves reales de Supabase (producción). Vacío = modo demo (localStorage).
 - `.github/workflows/deploy.yml` — deploy a Pages. `ping-supabase.yml` — cron anti-pausa (requiere secrets `SUPABASE_URL` + `SUPABASE_ANON_KEY`).
@@ -77,6 +82,7 @@ App **"Cultiva"**: PWA móvil de **rituales de liderazgo** + escaladas para **Ho
 - **El dashboard agrupa por título** → dos perfiles con el mismo ritual pero distinto título salen como dos barras (mantener títulos consistentes).
 - **Sin conector MCP a Supabase:** el SQL/RPC se pega a mano en el SQL Editor; los `.sql` viven en `supabase/`.
 - **Deploy:** merge a `main` → Actions publica en ~1 min. Todo reversible con `git revert`. Al desplegar cambios de contenido/código se hace **backup** (rama+tag) del `main` previo.
+- ⚠️ **LANDMINE — el deploy publica por LISTA BLANCA.** `deploy.yml` arma `dist/` copiando archivos **uno por uno** (para nunca subir `private/`/`scripts/`/`supabase/` con PII). Si agregas un **archivo nuevo del cliente**, NO se publica solo → da **404 en Pages** aunque esté en el repo (la app puede quedar rota y localhost NO lo detecta). Dos formas de incluirlo: (a) agregarlo al `cp` de `deploy.yml` (requiere token con scope `workflow`, o editar por la web de GitHub); o (b) **nombrarlo `data-*.js`**, que ya entra por el comodín `cp data-*.js dist/`. Por eso los archivos i18n se llaman `data-i18n-*.js`. **Siempre verificar en el sitio EN VIVO tras un deploy, no solo en local.**
 
 ## 7. Estado actual del contenido (ago-2026)
 
